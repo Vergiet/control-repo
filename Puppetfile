@@ -75,4 +75,4 @@ mod 'dylanratcliffe/facts_upload',         :latest
 mod 'albatrossflavour/os_patching',        :latest
 mod 'noma4i/windows_updates',              :latest
 mod 'kreeuwijk/vmtools_win',               :latest
-mod 'stm-debconf'                          '2.3.0'
+mod 'stm/debconf'                          '2.3.0'
