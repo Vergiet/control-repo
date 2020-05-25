@@ -47,7 +47,7 @@ mod 'puppetlabs/motd',                     :latest
 mod 'puppetlabs/apache',                   :latest
 mod 'puppetlabs/transition',               :latest
 mod 'puppetlabs/facts',                    '0.6.0'
-mod 'puppetlabs/puppetserver_gem', '1.1.1'
+mod 'puppetlabs/puppetserver_gem',         '1.1.1'
 mod 'puppetlabs/pwshlib',                  :latest
 mod 'puppet/archive',                      :latest
 mod 'puppet/grafana',                      :latest
@@ -55,7 +55,7 @@ mod 'puppet/telegraf',                     :latest
 mod 'puppet/download_file',                :latest
 mod 'puppet/windows_env',                  :latest
 mod 'puppet/windowsfeature',               :latest
-mod "puppet/windows_firewall",             :latest
+mod 'puppet/windows_firewall',             :latest
 mod 'puppet/cron',                         :latest
 mod 'puppetlabs/cron_core',                :latest
 mod 'timidri/meltdown',                    :latest
@@ -75,4 +75,4 @@ mod 'dylanratcliffe/facts_upload',         :latest
 mod 'albatrossflavour/os_patching',        :latest
 mod 'noma4i/windows_updates',              :latest
 mod 'kreeuwijk/vmtools_win',               :latest
-mod 'stm/debconf'                          '2.3.0'
+mod 'stm/debconf',                         '2.3.0'
