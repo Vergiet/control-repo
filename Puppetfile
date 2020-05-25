@@ -49,6 +49,8 @@ mod 'puppetlabs/transition',               :latest
 mod 'puppetlabs/facts',                    '0.6.0'
 mod 'puppetlabs/puppetserver_gem',         :latest
 mod 'puppetlabs/pwshlib',                  :latest
+mod 'puppetlabs/cron_core',                :latest
+
 mod 'puppet/archive',                      :latest
 mod 'puppet/grafana',                      :latest
 mod 'puppet/telegraf',                     :latest
@@ -57,7 +59,7 @@ mod 'puppet/windows_env',                  :latest
 mod 'puppet/windowsfeature',               :latest
 mod 'puppet/windows_firewall',             :latest
 mod 'puppet/cron',                         :latest
-mod 'puppetlabs/cron_core',                :latest
+
 mod 'timidri/meltdown',                    :latest
 mod 'stahnma/epel',                        :latest
 mod 'herculesteam/augeasproviders_core',   :latest
@@ -76,3 +78,4 @@ mod 'albatrossflavour/os_patching',        :latest
 mod 'noma4i/windows_updates',              :latest
 mod 'kreeuwijk/vmtools_win',               :latest
 mod 'stm/debconf',                         '2.3.0'
+mod 'beergeek-active_directory',           :latest
