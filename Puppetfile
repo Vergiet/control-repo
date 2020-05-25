@@ -17,14 +17,14 @@ forge 'https://forge.puppet.com'
 #  branch: 'docs_experiment'
 
 mod "puppetlabs/inifile",                  :latest
-#mod "puppetlabs/stdlib",                   :latest
+mod "puppetlabs/stdlib",                   '5.2.0'
 mod "puppetlabs/concat",                   :latest
 mod 'puppetlabs/apt',                      :latest
 mod 'puppetlabs/firewall',                 :latest
 mod 'puppetlabs/puppet_authorization',     :latest
 mod 'puppetlabs/hocon',                    :latest
 mod 'puppetlabs/docker',                   :latest
-#mod 'puppetlabs/translate',                :latest
+mod 'puppetlabs/translate',                '1.2.0'
 mod 'puppetlabs/exec',                     :latest
 mod 'puppetlabs/bolt_shim',                :latest
 mod 'puppetlabs/puppet_agent',             :latest
@@ -34,8 +34,8 @@ mod 'puppetlabs/chocolatey',               :latest
 #mod 'puppetlabs/dsc_lite',                 :latest
 mod 'puppetlabs/powershell',               '2.3.0'
 mod 'puppetlabs/mount_iso',                :latest
-#mod 'puppetlabs/reboot',                   :latest
-#mod 'puppetlabs/registry',                 :latest
+mod 'puppetlabs/reboot',                   '2.4.0'
+mod 'puppetlabs/registry',                 '2.1.0'
 mod 'puppetlabs/wsus_client',              :latest
 mod 'puppetlabs/cd4pe',                    :latest
 mod 'puppetlabs/scheduled_task',           :latest
@@ -46,6 +46,9 @@ mod 'puppetlabs/puppet_metrics_collector', :latest
 mod 'puppetlabs/motd',                     :latest
 mod 'puppetlabs/apache',                   :latest
 mod 'puppetlabs/transition',               :latest
+mod 'puppetlabs/facts',                    '0.6.0'
+mod 'puppetlabs/puppetserver_gem'          :latest
+mod 'puppetlabs-pwshlib',                  :latest
 mod 'puppet/archive',                      :latest
 mod 'puppet/grafana',                      :latest
 mod 'puppet/telegraf',                     :latest
@@ -53,6 +56,8 @@ mod 'puppet/download_file',                :latest
 mod 'puppet/windows_env',                  :latest
 mod 'puppet/windowsfeature',               :latest
 mod "puppet/windows_firewall",             :latest
+mod 'puppet/cron',                         :latest
+mod 'puppetlabs/cron_core',                :latest
 mod 'timidri/meltdown',                    :latest
 mod 'stahnma/epel',                        :latest
 mod 'herculesteam/augeasproviders_core',   :latest
@@ -60,13 +65,14 @@ mod 'herculesteam/augeasproviders_pam',    :latest
 mod 'fiddyspence/sysctl',                  :latest
 mod 'pcfens/static_custom_facts',          :latest
 mod 'benformosa/linux_disable_ipv6',       :latest
-#mod 'saz/timezone',                        :latest
+mod 'saz/timezone',                        :latest
 mod 'jpi/timezone_win',                    :latest
 mod 'trlinkin/noop',                       :latest
 mod 'hbuckle/powershellmodule',            :latest
 mod 'WhatsARanjit/node_manager',           :latest
 mod 'WhatsARanjit/diskspace',              :latest
 mod 'dylanratcliffe/facts_upload',         :latest
-#mod 'albatrossflavour/os_patching',        :latest
+mod 'albatrossflavour/os_patching',        :latest
 mod 'noma4i/windows_updates',              :latest
 mod 'kreeuwijk/vmtools_win',               :latest
+mod 'stm-debconf'                          '2.3.0'
