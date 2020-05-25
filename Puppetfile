@@ -32,7 +32,7 @@ mod 'puppetlabs/acl',                      :latest
 mod 'puppetlabs/chocolatey',               :latest
 #mod 'puppetlabs/iis',                      :latest
 #mod 'puppetlabs/dsc_lite',                 :latest
-#mod 'puppetlabs/powershell',               :latest
+mod 'puppetlabs/powershell',               :2.3.0
 mod 'puppetlabs/mount_iso',                :latest
 #mod 'puppetlabs/reboot',                   :latest
 #mod 'puppetlabs/registry',                 :latest
