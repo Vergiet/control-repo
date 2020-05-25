@@ -30,8 +30,8 @@ mod 'puppetlabs/bolt_shim',                :latest
 mod 'puppetlabs/puppet_agent',             :latest
 mod 'puppetlabs/acl',                      :latest
 mod 'puppetlabs/chocolatey',               :latest
-#mod 'puppetlabs/iis',                      :latest
-#mod 'puppetlabs/dsc_lite',                 :latest
+mod 'puppetlabs/iis',                      :latest
+mod 'puppetlabs/dsc_lite',                 :latest
 mod 'puppetlabs/powershell',               '2.3.0'
 mod 'puppetlabs/mount_iso',                :latest
 mod 'puppetlabs/reboot',                   '2.4.0'
@@ -47,7 +47,7 @@ mod 'puppetlabs/motd',                     :latest
 mod 'puppetlabs/apache',                   :latest
 mod 'puppetlabs/transition',               :latest
 mod 'puppetlabs/facts',                    '0.6.0'
-mod 'puppetlabs/puppetserver_gem',         '1.1.1'
+mod 'puppetlabs/puppetserver_gem',         :latest
 mod 'puppetlabs/pwshlib',                  :latest
 mod 'puppet/archive',                      :latest
 mod 'puppet/grafana',                      :latest
