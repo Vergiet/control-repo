@@ -30,4 +30,4 @@ node default {
   #   class { 'my_class': }
 }
 
-lookup('classes', {merge => unique}).include
+#lookup('classes', {merge => unique}).include
