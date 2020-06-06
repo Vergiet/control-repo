@@ -42,17 +42,13 @@ class vmm::master (
  
     dsc_sqlsetup {'dsc_sqlsetup':
       dsc_instancename         => 'MSSQLSERVER',
-      dsc_features             => 'SQLENGINE,AS',
+      dsc_features             => 'SQLENGINE',
       dsc_sqlcollation         => 'SQL_Latin1_General_CP1_CI_AS',
       dsc_sqlsvcaccount        => {
         'user'     => 'Administrator@ad.contoso.com',
         'password' => Sensitive('Beheer123'),
       },
       dsc_agtsvcaccount        => {
-        'user'     => 'Administrator@ad.contoso.com',
-        'password' => Sensitive('Beheer123'),
-      },
-      dsc_assvcaccount         => {
         'user'     => 'Administrator@ad.contoso.com',
         'password' => Sensitive('Beheer123'),
       },
@@ -67,12 +63,6 @@ class vmm::master (
       dsc_sqltempdbdir         => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Data',
       dsc_sqltempdblogdir      => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Data',
       dsc_sqlbackupdir         => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Backup',
-      dsc_asservermode         => 'TABULAR',
-      dsc_asconfigdir          => 'C:\\MSOLAP\\Config',
-      dsc_asdatadir            => 'C:\\MSOLAP\\Data',
-      dsc_aslogdir             => 'C:\\MSOLAP\\Log',
-      dsc_asbackupdir          => 'C:\\MSOLAP\\Backup',
-      dsc_astempdir            => 'C:\\MSOLAP\\Temp',
       dsc_sourcepath           => 'S:\\',
       dsc_updateenabled        => 'False',
       dsc_forcereboot          => 'False',
