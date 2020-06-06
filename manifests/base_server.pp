@@ -7,4 +7,12 @@ class base::server {
     dsc_validate => $true,
   }
 
+  domain_membership { 'joindomain':
+    domain => 'ad.contoso.com',
+    username => 'Administrator@ad.contoso.com',
+    password => Sensitive('Beheer123'),
+    machine_ou => 'OU=SERVERS,OU=ORG,DC=ad,DC=contoso,DC=com',
+    reboot => true,
+  }
+
 }
