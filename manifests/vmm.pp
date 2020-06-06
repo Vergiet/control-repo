@@ -14,9 +14,10 @@ class vmm::master (
       source => 'http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCVMM_2019.exe',
     }
 
-    exec { 'installvmm':
+    exec { 'extractvmm':
       command     => 'c:\\temp\\SCVMM_2019.exe /SP- /silent /suppressmsgboxes',
       subscribe   => File['vmminstaller'],
+      unless => 'test -f "C:\\System Center Virtual Machine Manager\\setup.exe"',
     }
 
 /* 
