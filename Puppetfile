@@ -71,6 +71,7 @@ mod 'benformosa/linux_disable_ipv6',       :latest
 mod 'saz/timezone',                        :latest
 mod 'jpi/timezone_win',                    :latest
 mod 'trlinkin/noop',                       :latest
+mod 'trlinkin-domain_membership',          :latest
 mod 'hbuckle/powershellmodule',            :latest
 mod 'WhatsARanjit/node_manager',           :latest
 mod 'WhatsARanjit/diskspace',              :latest
