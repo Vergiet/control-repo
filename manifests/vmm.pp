@@ -32,6 +32,33 @@ class vmm::master (
       path => 'c:\\temp\\SQL2019-SSEI-Eval.exe',
       source => 'https://download.microsoft.com/download/4/8/6/486005eb-7aa8-4128-aac0-6569782b37b0/SQL2019-SSEI-Eval.exe',
     }
+
+    exec { 'downloadsqliso':
+      command     => 'C:\\temp\\SQL2019-SSEI-Eval.exe /ACTION=Download /MEDIAPATH="C:\\temp\\" /QUIET /MEDIATYPE=ISO',
+      subscribe   => File['sqlinstaller'],
+      unless => 'C:\\Windows\\System32\\cmd.exe -c if exist "C:\\temp\\SQLServer2019-x64-ENU.iso" (exit) else (exit 1) ',
+    }
+
+
+    mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
+      subscribe => Exec['downloadsqliso'],
+      drive_letter => 'S',
+    }
+
+/*
+    ACTION Download
+    LANGUAGE en-US
+    MEDIAPATH Microsoft SQL Server Install Media
+    QUIET
+    MEDIATYPE
+
+
+
+
+    ACTION Download
+
+
+*/
 /* 
                     dsc_sqlsetup {'dsc_sqlsetup':
             InstanceName         = 'MSSQLSERVER'
