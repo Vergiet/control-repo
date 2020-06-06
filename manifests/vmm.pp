@@ -33,12 +33,12 @@ class vmm::master (
       source => 'https://dh2euwstodevinfinf01.blob.core.windows.net/temp/iso/SQLServer2019-x64-ENU.iso',
     }
 
-/* 
+
     mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
       subscribe => Exec['downloadsqliso'],
       drive_letter => 'S',
     }
- */
+
 /*
     ACTION Download
     LANGUAGE en-US
