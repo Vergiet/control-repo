@@ -6,7 +6,7 @@ class vmm::master (
       ensure => directory,
       path => 'c:\\temp\\',
     }
-
+/* 
     file { 'vmminstaller':
       ensure => present,
       subscribe => File['tempdir'],
@@ -38,7 +38,8 @@ class vmm::master (
       subscribe   => File['sqlinstaller'],
       provider => 'powershell',
       unless => 'test-path -path "C:\\temp\\SQLServer2019-x64-ENU.iso" -pathtype leaf',
-    }
+    } 
+*/
 
 /* 
     mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
