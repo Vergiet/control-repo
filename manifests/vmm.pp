@@ -74,7 +74,6 @@ class vmm::master (
       dsc_asbackupdir          => 'C:\\MSOLAP\\Backup',
       dsc_astempdir            => 'C:\\MSOLAP\\Temp',
       dsc_sourcepath           => 'S:\\',
-      dsc_npenabled            => 'true',
       dsc_tcpenabled           => 'true',
       dsc_updateenabled        => 'False',
       dsc_useenglish           => 'true',
