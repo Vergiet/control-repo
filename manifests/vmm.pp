@@ -75,7 +75,6 @@ class vmm::master (
       dsc_astempdir            => 'C:\\MSOLAP\\Temp',
       dsc_sourcepath           => 'S:\\',
       dsc_updateenabled        => 'False',
-      dsc_useenglish           => 'true',
       dsc_dorcereboot          => 'False',
 
       dsc_PsDscRunAsCredential => {
