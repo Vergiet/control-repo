@@ -21,8 +21,8 @@ class vmm::master (
     }
 
     dsc_windowsfeature { "NET-Framework-Core":
-        dsc_Ensure => "Present",
-        dsc_Name => "NET-Framework-Core",
+        dsc_ensure => "Present",
+        dsc_name => "NET-Framework-Core",
     }
 
 
