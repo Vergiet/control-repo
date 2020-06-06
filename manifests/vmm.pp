@@ -77,7 +77,7 @@ class vmm::master (
       dsc_updateenabled        => 'False',
       dsc_forcereboot          => 'False',
 
-      dsc_PsDscRunAsCredential => {
+      dsc_psdscrunascredential => {
         'user'     => 'Administrator@ad.contoso.com',
         'password' => Sensitive('Beheer123'),
       },
