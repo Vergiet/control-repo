@@ -35,8 +35,9 @@ class vmm::master (
 
     exec { 'downloadsqliso':
       command     => 'C:\\temp\\SQL2019-SSEI-Eval.exe /ACTION=Download /MEDIAPATH="C:\\temp\\" /QUIET /MEDIATYPE=ISO',
+      provider => 'powershell'
       subscribe   => File['sqlinstaller'],
-      unless => 'C:\\Windows\\System32\\cmd.exe -c if exist "C:\\temp\\SQLServer2019-x64-ENU.iso" (exit)',
+      unless => 'test-path -path "C:\\temp\\SQLServer2019-x64-ENU.iso" -pathtype leaf',
     }
 
 /* 
