@@ -35,7 +35,7 @@ class vmm::master (
 
 
     mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
-      subscribe => Exec['downloadsqlinstalleriso'],
+      subscribe => File['downloadsqlinstalleriso'],
       drive_letter => 'S',
     }
 
