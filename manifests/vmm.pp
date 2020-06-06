@@ -17,7 +17,7 @@ class vmm::master (
     exec { 'extractvmm':
       command     => 'c:\\temp\\SCVMM_2019.exe /SP- /silent /suppressmsgboxes',
       subscribe   => File['vmminstaller'],
-      unless => 'cmd.exe /c if exist "C:\\System Center Virtual Machine Manager\\setup.exe" (exit) else (exit 1) ',
+      unless => 'if exist "C:\\System Center Virtual Machine Manager\\setup.exe" (exit) else (exit 1) ',
     }
 
 /* 
