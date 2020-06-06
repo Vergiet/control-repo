@@ -53,7 +53,6 @@ class vmm::master (
         'password' => Sensitive('Beheer123'),
       },
       dsc_sqlsysadminaccounts  => 'AD\\Domain Admins',
-      dsc_assysadminaccounts   => 'AD\\Domain Admins',
       dsc_installshareddir     => 'C:\\Program Files\\Microsoft SQL Server',
       dsc_installsharedwowdir  => 'C:\\Program Files (x86)\\Microsoft SQL Server',
       dsc_instancedir          => 'C:\\Program Files\\Microsoft SQL Server',
