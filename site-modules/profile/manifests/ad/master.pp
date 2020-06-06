@@ -2,12 +2,17 @@ class profile::ad::pdc (
   String $ntds_dir = 'c:\NTDS',
 ) {
 
+  file {[$ntds_dir,]:
+    ensure   => directory,
+  }
+
+/* 
   dsc_file  {'adfile':
     dsc_destinationpath => $ntds_dir
     dsc_type => 'Directory',
     dsc_ensure => 'Present',
   } ->
-
+ */
   dsc_windowsfeature  { 'addsinstall':
     dsc_ensure => 'Present',
     dsc_name => 'AD-Domain-Services',
