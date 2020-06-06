@@ -84,7 +84,7 @@ class vmm::master (
         'user'     => 'Administrator@ad.contoso.com',
         'password' => Sensitive('Beheer123'),
       },
-      subscribe                => dsc_windowsfeature['NET-Framework-Core'],
+      subscribe                => Dsc_windowsfeature['NET-Framework-Core'],
     }
 # 
 /* 
