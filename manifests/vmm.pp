@@ -26,7 +26,7 @@ class vmm::master (
     }
 
 
-    file { 'sqlinstaller':
+    file { 'downloadsqlinstalleriso':
       ensure => present,
       subscribe => File['tempdir'],
       path => 'c:\\temp\\SQLServer2019-x64-ENU.iso',
