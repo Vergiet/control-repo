@@ -25,6 +25,12 @@ class base::server {
         'user'     => 'Administrator@ad.contoso.com',
         'password' => Sensitive('Beheer123')
       },
+    dsc_joinou => 'OU=SERVERS,OU=ORG,DC=ad,DC=contoso,DC=com',
+  }
+
+  reboot {'dsc_reboot':
+    message => 'DSC has requested a reboot',
+    when    => pending,
   }
 
 }
