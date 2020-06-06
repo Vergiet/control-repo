@@ -39,12 +39,12 @@ class vmm::master (
       unless => 'C:\\Windows\\System32\\cmd.exe -c if exist "C:\\temp\\SQLServer2019-x64-ENU.iso" (exit) else (exit 1) ',
     }
 
-
+/* 
     mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
       subscribe => Exec['downloadsqliso'],
       drive_letter => 'S',
     }
-
+ */
 /*
     ACTION Download
     LANGUAGE en-US
