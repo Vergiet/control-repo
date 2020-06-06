@@ -75,7 +75,7 @@ class vmm::master (
       dsc_astempdir            => 'C:\\MSOLAP\\Temp',
       dsc_sourcepath           => 'S:\\',
       dsc_updateenabled        => 'False',
-      dsc_dorcereboot          => 'False',
+      dsc_forcereboot          => 'False',
 
       dsc_PsDscRunAsCredential => {
         'user'     => 'Administrator@ad.contoso.com',
