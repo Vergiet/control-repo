@@ -6,7 +6,7 @@ class vmm::master (
       ensure => directory,
       path => 'c:\\temp\\',
     }
-/* 
+
     file { 'vmminstaller':
       ensure => present,
       subscribe => File['tempdir'],
@@ -29,17 +29,9 @@ class vmm::master (
     file { 'sqlinstaller':
       ensure => present,
       subscribe => File['tempdir'],
-      path => 'c:\\temp\\SQL2019-SSEI-Eval.exe',
-      source => 'https://download.microsoft.com/download/4/8/6/486005eb-7aa8-4128-aac0-6569782b37b0/SQL2019-SSEI-Eval.exe',
+      path => 'c:\\temp\\SQLServer2019-x64-ENU.iso',
+      source => 'https://dh2euwstodevinfinf01.blob.core.windows.net/temp/iso/SQLServer2019-x64-ENU.iso',
     }
-
-    exec { 'downloadsqliso':
-      command     => 'C:\\temp\\SQL2019-SSEI-Eval.exe /ACTION=Download /MEDIAPATH="C:\\temp\\" /QUIET /MEDIATYPE=ISO',
-      subscribe   => File['sqlinstaller'],
-      provider => 'powershell',
-      unless => 'test-path -path "C:\\temp\\SQLServer2019-x64-ENU.iso" -pathtype leaf',
-    } 
-*/
 
 /* 
     mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
