@@ -51,7 +51,6 @@ mod 'puppetlabs/puppetserver_gem',         :latest
 mod 'puppetlabs/pwshlib',                  :latest
 mod 'puppetlabs/cron_core',                :latest
 mod 'puppetlabs/dsc',                      '1.9.0'
-mod 'puppetlabs/windows',                  :latest
 
 mod 'puppet/archive',                      :latest
 mod 'puppet/grafana',                      :latest
