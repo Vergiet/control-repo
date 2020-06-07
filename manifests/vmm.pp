@@ -4,14 +4,14 @@ class vmm::master (
 
     file { 'vmminstaller':
       ensure => present,
-      subscribe => File['vmm_tempdir'],
+      #subscribe => File['vmm_tempdir'],
       path => 'c:\\temp\\SCVMM_2019.exe',
       source => 'http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCVMM_2019.exe',
     }
 
     exec { 'extractvmm':
       command     => 'c:\\temp\\SCVMM_2019.exe /SP- /silent /suppressmsgboxes',
-      subscribe   => File['vmminstaller'],
+      #subscribe   => File['vmminstaller'],
       unless => 'C:\\Windows\\System32\\cmd.exe -c if exist "C:\\System Center Virtual Machine Manager\\setup.exe" (exit) else (exit 1) ',
     }
 
