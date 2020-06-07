@@ -34,6 +34,7 @@ node default {
 
 node /^vmm\d+$/ {
   
+  include temp::folder
   include base::server
   include sql::standalone
   include vmm::master
