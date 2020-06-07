@@ -20,7 +20,8 @@ class vmm::master (
     }
 
     package { 'sql2012.nativeclient':
-      ensure   => present,
+      ensure   => installed,
+      provider          => 'chocolatey',
     }
 
 /*     
