@@ -2,11 +2,6 @@ class vmm::master (
   
 ) {
 
-    file {'vmm_tempdir':
-      ensure => directory,
-      path => 'c:\\temp\\',
-    }
-
     file { 'vmminstaller':
       ensure => present,
       subscribe => File['vmm_tempdir'],
