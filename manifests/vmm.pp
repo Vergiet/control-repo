@@ -30,6 +30,11 @@ class vmm::master (
     }
 
 
+    package { 'windows-adk-all':
+      ensure   => installed,
+      provider          => 'chocolatey',
+    }
+
 
 /*     
     exec { 'installvmm':
