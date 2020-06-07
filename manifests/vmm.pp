@@ -22,13 +22,14 @@ class vmm::master (
       ensure   => latest,
     }
 
+/*     
     exec { 'installvmm':
       command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/vmmservicedomain "ad.contoso.com"", "/vmmserviceUserName "administrator"", "/vmmserviceuserpassword "Beheer123"", "/SqlDBAdminDomain "ad.contoso.com"", "/SqlDBAdminName "administrator"", "/SqlDBAdminpassword "Beheer123"" -NoNewWindow -Wait',
       subscribe   => File['vmminstaller'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\System Center Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
     }
-
+ */
 /* 
     dsc_xscvmmmanagementserversetup { "VMMMS":
         dsc_ensure => "Present",
