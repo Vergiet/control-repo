@@ -56,7 +56,6 @@ class vmm::master (
     }
 
     dsc_xsqlserverfirewall { 'InstallDefaultInstancefw':
-    {
         subscribe => Dsc_sqlsetup['InstallDefaultInstance'],
         dsc_sourcepath => 'S:\\',
         dsc_instancename => 'MSSQLSERVER',
