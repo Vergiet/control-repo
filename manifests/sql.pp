@@ -53,7 +53,7 @@ class sql::standalone (
       unless => 'if (Test-Path -Path "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18" -PathType Container){exit} else {exit 1}',
     }
 
-    reboot {'dsc_reboot':
+    reboot {'sql_dsc_reboot':
       message => 'DSC has requested a reboot',
       when    => pending,
     }

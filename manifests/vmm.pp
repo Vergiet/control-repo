@@ -20,6 +20,8 @@ class vmm::master (
       unless => 'C:\\Windows\\System32\\cmd.exe -c if exist "C:\\System Center Virtual Machine Manager\\setup.exe" (exit) else (exit 1) ',
     }
 
+
+/* 
     dsc_windowsfeature { "NET-Framework-45-Core":
         dsc_ensure => "Present",
         dsc_name => "NET-Framework-45-Core",
@@ -67,8 +69,9 @@ class vmm::master (
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18" -PathType Container){exit} else {exit 1}',
     }
+     */
 
-    reboot {'dsc_reboot':
+    reboot {'vmm_dsc_reboot':
       message => 'DSC has requested a reboot',
       when    => pending,
     }
