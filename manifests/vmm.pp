@@ -2,7 +2,7 @@ class vmm::master (
   
 ) {
 
-    file {'tempdir':
+    file {'vmm_tempdir':
       ensure => directory,
       path => 'c:\\temp\\',
     }

@@ -2,7 +2,7 @@ class sql::standalone (
   
 ) {
 
-    file {'tempdir':
+    file {'sql_tempdir':
       ensure => directory,
       path => 'c:\\temp\\',
     }
