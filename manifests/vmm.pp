@@ -17,6 +17,23 @@ class vmm::master (
       unless => 'C:\\Windows\\System32\\cmd.exe -c if exist "C:\\System Center Virtual Machine Manager\\setup.exe" (exit) else (exit 1) ',
     }
 
+    dsc_xscvmmmanagementserversetup { "VMMMS":
+        dsc_ensure => "Present",
+        subscribe   => Exec['extractvmm'],
+        dsc_sourcepath => "C:\\System Center Virtual Machine Manager\\",
+        dsc_setupcredential => {
+          'user'     => 'ad\\Administrator',
+          'password' => Sensitive('Beheer123')
+        },
+        dsc_vmmservice => {
+          'user'     => 'ad\\Administrator',
+          'password' => Sensitive('Beheer123')
+        },
+        dsc_sqlinstancename => 'MSSQLSERVER',
+    }
+
+
+
     reboot {'vmm_dsc_reboot':
       message => 'DSC has requested a reboot',
       when    => pending,
