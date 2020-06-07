@@ -24,6 +24,13 @@ class vmm::master (
       provider          => 'chocolatey',
     }
 
+    package { 'sqlserver-cmdlineutils':
+      ensure   => installed,
+      provider          => 'chocolatey',
+    }
+
+
+
 /*     
     exec { 'installvmm':
       command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/vmmservicedomain "ad.contoso.com"", "/vmmserviceUserName "administrator"", "/vmmserviceuserpassword "Beheer123"", "/SqlDBAdminDomain "ad.contoso.com"", "/SqlDBAdminName "administrator"", "/SqlDBAdminpassword "Beheer123"" -NoNewWindow -Wait',
