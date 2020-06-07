@@ -14,14 +14,14 @@ class sql::standalone (
 
     file { 'downloadsqlinstalleriso':
       ensure => present,
-      subscribe => File['tempdir'],
+      subscribe => File['sql_tempdir'],
       path => 'c:\\temp\\SQLServer2019-x64-ENU.iso',
       source => 'https://dh2euwstodevinfinf01.blob.core.windows.net/temp/iso/SQLServer2019-x64-ENU.iso',
     }
 
     file { 'downloadsqlssmsinstaller':
       ensure => present,
-      subscribe => File['tempdir'],
+      subscribe => File['sql_tempdir'],
       path => 'c:\\temp\\SSMS-Setup-ENU.exe',
       source => 'https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d0a/SSMS-Setup-ENU.exe',
     }
