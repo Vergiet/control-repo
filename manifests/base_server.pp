@@ -1,7 +1,5 @@
 class base::server {
 
-  require site::basic
-
   dsc_dnsserveraddress { 'configurednsaddress':
     dsc_interfacealias => $facts['networking']['primary'],
     dsc_addressfamily => 'IPv4',
