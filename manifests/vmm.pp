@@ -62,7 +62,7 @@ class vmm::master (
     }
 
     exec { 'installssms':
-      command     => 'c:\\temp\\SSMS-Setup-ENU.exe /install /quiet /norestart',
+      command     => 'start-process "c:\temp\SSMS-Setup-ENU.exe" -ArgumentList "/install", "/quiet", "/norestart" -NoNewWindow -Wait',
       subscribe   => File['downloadsqlssmsinstaller'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18" -PathType Container){exit} else {exit 1}',
