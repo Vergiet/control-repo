@@ -12,7 +12,7 @@ class vmm::master (
     }
 
     exec { 'extractvmm':
-      command     => 'c:\\temp\\SCVMM_2019.exe /SP- /silent /suppressmsgboxes',
+      command     => 'start-process "c:\\temp\\SCVMM_2019.exe" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
       subscribe   => File['vmminstaller'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\System Center Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
