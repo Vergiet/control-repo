@@ -55,7 +55,7 @@ class vmm::master (
       subscribe               => [Dsc_windowsfeature['NET-Framework-45-Core'], Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso']],
     }
 
-    dsc_xsqlserverfirewall { 'InstallDefaultInstancefw':
+    dsc_sqlserverfirewall { 'InstallDefaultInstancefw':
         subscribe => Dsc_sqlsetup['InstallDefaultInstance'],
         dsc_sourcepath => 'S:\\',
         dsc_instancename => 'MSSQLSERVER',
