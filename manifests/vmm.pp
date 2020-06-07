@@ -65,7 +65,7 @@ class vmm::master (
       command     => 'c:\\temp\\SSMS-Setup-ENU.exe /install /quiet /norestart',
       subscribe   => File['downloadsqlssmsinstaller'],
       provider => 'powershell',
-      unless => '!(Test-Path -Path "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18" -PathType Container)',
+      unless => 'Test-Path -Path "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18" -PathType Container',
     }
 
 # 
