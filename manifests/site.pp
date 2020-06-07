@@ -28,6 +28,10 @@ node default {
   # This is where you can declare classes for all nodes.
   # Example:
   #   class { 'my_class': }
+
+  if $::kernel == 'windows' {
+    Package { provider => chocolatey, }
+  }
 }
 
 #lookup('classes', {merge => unique}).include
