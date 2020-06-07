@@ -20,9 +20,9 @@ class vmm::master (
       unless => 'C:\\Windows\\System32\\cmd.exe -c if exist "C:\\System Center Virtual Machine Manager\\setup.exe" (exit) else (exit 1) ',
     }
 
-    dsc_windowsfeature { "NET-Framework-Core":
+    dsc_windowsfeature { "NET-Framework-45-Core":
         dsc_ensure => "Present",
-        dsc_name => "NET-Framework-Core",
+        dsc_name => "NET-Framework-45-Core",
     }
 
 
@@ -39,39 +39,14 @@ class vmm::master (
       drive_letter => 'S',
     }
 
- 
-    dsc_sqlsetup {'dsc_sqlsetup':
-      dsc_instancename         => 'MSSQLSERVER',
-      dsc_features             => 'SQLENGINE',
-      dsc_sqlcollation         => 'SQL_Latin1_General_CP1_CI_AS',
-      dsc_sqlsvcaccount        => {
-        'user'     => 'Administrator@ad.contoso.com',
-        'password' => Sensitive('Beheer123'),
-      },
-      dsc_agtsvcaccount        => {
-        'user'     => 'Administrator@ad.contoso.com',
-        'password' => Sensitive('Beheer123'),
-      },
-      dsc_sqlsysadminaccounts  => 'AD\\Domain Admins',
-      dsc_installshareddir     => 'C:\\Program Files\\Microsoft SQL Server',
-      dsc_installsharedwowdir  => 'C:\\Program Files (x86)\\Microsoft SQL Server',
-      dsc_instancedir          => 'C:\\Program Files\\Microsoft SQL Server',
-      dsc_installsqldatadir    => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Data',
-      dsc_sqluserdbdir         => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Data',
-      dsc_sqluserdblogdir      => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Data',
-      dsc_sqltempdbdir         => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Data',
-      dsc_sqltempdblogdir      => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Data',
-      dsc_sqlbackupdir         => 'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\Backup',
-      dsc_sourcepath           => 'S:\\',
-      dsc_updateenabled        => 'False',
-      dsc_forcereboot          => 'False',
-
-      dsc_psdscrunascredential => {
-        'user'     => 'Administrator@ad.contoso.com',
-        'password' => Sensitive('Beheer123'),
-      },
-      subscribe                => Dsc_windowsfeature['NET-Framework-Core'],
+    dsc_sqlsetup { 'InstallDefaultInstance':
+      dsc_instancename        => 'MSSQLSERVER',
+      dsc_features            => 'SQLENGINE',
+      dsc_sourcePath          => 'S:\\',
+      dsc_sqlsysadminaccounts => 'Administrators',
+      subscribe               => [Dsc_windowsfeature['NET-Framework-45-Core'], Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso']],
     }
+
 # 
 /* 
   dsc_xscvmmmanagementserversetup { 'vmminstall':
