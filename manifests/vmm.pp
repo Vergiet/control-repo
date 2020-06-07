@@ -22,6 +22,7 @@ class vmm::master (
         dsc_ensure => "Present",
         subscribe   => Exec['extractvmm'],
         dsc_sourcepath => "C:\\System Center Virtual Machine Manager\\",
+        dsc_sourcefolder => '',
         dsc_setupcredential => {
           'user'     => 'ad\\Administrator',
           'password' => Sensitive('Beheer123'),
