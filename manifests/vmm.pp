@@ -41,7 +41,6 @@ class vmm::master (
       source => 'https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d0a/SSMS-Setup-ENU.exe',
     }
 
-
     mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
       subscribe => File['downloadsqlinstalleriso'],
       drive_letter => 'S',
@@ -62,7 +61,12 @@ class vmm::master (
         dsc_features => 'SQLENGINE',
     }
 
-
+    exec { 'installssms':
+      command     => 'c:\\temp\\SSMS-Setup-ENU.exe /install /quiet /norestart',
+      subscribe   => File['downloadsqlssmsinstaller'],
+      provider => 'powershell',
+      unless => '!(Test-Path -Path "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18" -PathType Container)',
+    }
 
 # 
 /* 
