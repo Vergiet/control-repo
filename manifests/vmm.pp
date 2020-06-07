@@ -23,12 +23,13 @@ class vmm::master (
         dsc_sourcepath => "C:\\System Center Virtual Machine Manager\\",
         dsc_setupcredential => {
           'user'     => 'ad\\Administrator',
-          'password' => Sensitive('Beheer123')
+          'password' => Sensitive('Beheer123'),
         },
         dsc_vmmservice => {
           'user'     => 'ad\\Administrator',
-          'password' => Sensitive('Beheer123')
+          'password' => Sensitive('Beheer123'),
         },
+        dsc_sqlmachinename => $facts['networking']['fqdn'],
         dsc_sqlinstancename => 'MSSQLSERVER',
     }
 
