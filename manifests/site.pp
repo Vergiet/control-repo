@@ -33,6 +33,9 @@ node default {
 #lookup('classes', {merge => unique}).include
 
 node /^vmm\d+$/ {
-  include vmm::master
+  
   include base::server
+  include sql::standalone
+  include vmm::master
+    
 }
