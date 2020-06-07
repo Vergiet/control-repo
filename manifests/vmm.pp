@@ -34,6 +34,14 @@ class vmm::master (
     }
 
 
+    file { 'downloadsqlssmsinstaller':
+      ensure => present,
+      subscribe => File['tempdir'],
+      path => 'c:\\temp\\SSMS-Setup-ENU.exe',
+      source => 'https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d0a/SSMS-Setup-ENU.exe',
+    }
+
+
     mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
       subscribe => File['downloadsqlinstalleriso'],
       drive_letter => 'S',
@@ -41,13 +49,19 @@ class vmm::master (
 
     dsc_sqlsetup { 'InstallDefaultInstance':
       dsc_instancename        => 'MSSQLSERVER',
-      dsc_features            => 'SQLENGINE,Tools',
+      dsc_features            => 'SQLENGINE',
       dsc_sourcepath          => 'S:\\',
       dsc_sqlsysadminaccounts => 'Administrators',
       subscribe               => [Dsc_windowsfeature['NET-Framework-45-Core'], Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso']],
     }
 
-
+    dsc_xsqlserverfirewall { 'InstallDefaultInstancefw':
+    {
+        subscribe => Dsc_sqlsetup['InstallDefaultInstance'],
+        dsc_sourcepath => 'S:\\',
+        dsc_instancename => 'MSSQLSERVER',
+        dsc_features => 'SQLENGINE',
+    }
 
 
 
@@ -75,6 +89,7 @@ http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F
 http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCDPM_2019.exe
 http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCOM_2019.exe
 http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCVMM_2019.exe
+https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d0a/SSMS-Setup-ENU.exe
 
  */
 
