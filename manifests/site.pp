@@ -31,6 +31,10 @@ node default {
 
   if $::kernel == 'windows' {
     Package { provider => chocolatey, }
+    windows_updates::list {'*':
+      ensure    => 'present',
+      name_mask => '*'
+    }
   }
 }
 
