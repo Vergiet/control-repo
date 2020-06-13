@@ -28,6 +28,7 @@ mod 'puppetlabs/translate',                '1.2.0'
 mod 'puppetlabs/exec',                     :latest
 mod 'puppetlabs/bolt_shim',                :latest
 mod 'puppetlabs/puppet_agent',             :latest
+mod 'puppetlabs/apply_helpers',            :latest
 mod 'puppetlabs/acl',                      :latest
 mod 'puppetlabs/chocolatey',               :latest
 mod 'puppetlabs/iis',                      :latest
