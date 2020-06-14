@@ -1,0 +1,6 @@
+pcp:
+    service-url: "https://pmom01.vrgt.xyz:8143"
+    cacert: /etc/puppetlabs/puppet/ssl/certs/ca.pem
+    task-environment: production
+    job-poll-timeout: 2
+    token-file: ~/.puppetlabs/token
