@@ -19,11 +19,13 @@ class nagios::server {
     owner  => 'nagios',
   }
 
+/*
   # Collect the nagios_host resources
   Nagios_host <<||>> {
     require => File[resource-d],
     notify  => [Exec[make-nag-cfg-readable],Service[nagios]],
   }
+  */
 }
 
 class nagios::export {
