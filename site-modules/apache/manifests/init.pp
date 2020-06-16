@@ -1,9 +1,9 @@
-class my_apache (
-  #$updatesys    = $::my_apache::params::updatesys,
-  $apachename   = $::my_apache::params::apachename,
-  $conffile   = $::my_apache::params::conffile,
-  $confsource = $::my_apache::params::confsource,
-) inherits ::my_apache::params {
+class myapache (
+  #$updatesys    = $::myapache::params::updatesys,
+  $apachename   = $::myapache::params::apachename,
+  $conffile   = $::myapache::params::conffile,
+  $confsource = $::myapache::params::confsource,
+) inherits ::myapache::params {
 
   include appache
 
