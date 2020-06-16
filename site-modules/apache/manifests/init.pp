@@ -1,4 +1,4 @@
-class apache (
+class apache::standalone (
   $updatesys    = $::apache::params::updatesys,
   $apachename   = $::apache::params::apachename,
   $conffile   = $::apache::params::conffile,
