@@ -1,4 +1,4 @@
-class my_apache (
+class my_apache::asd (
   #$updatesys    = $::my_apache::params::updatesys,
   $apachename   = $::my_apache::params::apachename,
   $conffile   = $::my_apache::params::conffile,
