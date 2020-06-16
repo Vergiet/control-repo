@@ -8,6 +8,5 @@ hierarchy:
   - name: "Yaml backend"
     data_hash: yaml_data
     paths:
-      - "nodes/nagios02.vrgt.xyz.yml"
       - "nodes/%{trusted.certname}.yaml"
       - "common.yaml"
