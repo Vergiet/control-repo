@@ -5,6 +5,9 @@ class apache (
   $confsource = $::apache::params::confsource,
 ) inherits ::apache::params {
 
+
+  include apache
+
   package { 'apache':
     name    => $apachename,
     ensure  => present,
