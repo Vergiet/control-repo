@@ -38,10 +38,13 @@ node default {
   }
 
   if $osfamily == 'RedHat' {
-      Firewall {
-        before  => Class['my_fw::post'],
-        require => Class['my_fw::pre'],
-      }
+    class { 'firewall': }
+    class { ['my_fw::pre', 'my_fw::post']: }
+    
+    Firewall {
+      before  => Class['my_fw::post'],
+      require => Class['my_fw::pre'],
+    }
   }
 }
 
