@@ -1,0 +1,5 @@
+databases:
+    webdata2:
+     user: 'username'
+     password: 'password'
+     grant: 'ALL'

@@ -1,4 +1,5 @@
 ---
 message: "This node is using common data"
+mysql::server::root_password: 'password'
 
- # --Nothing. Just use the default parameter values.
+  # --Nothing. Just use the default parameter values.
