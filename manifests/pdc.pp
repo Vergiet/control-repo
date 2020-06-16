@@ -1,5 +1,5 @@
 class ad::pdc (
-  String $ntds_dir = 'c:\NTDS',
+  String $ntds_dir = 'c:\\NTDS',
 ){
   if $osfamily == 'windows' {
 

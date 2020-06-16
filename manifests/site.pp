@@ -36,7 +36,14 @@ node default {
       name_mask => '*'
     }
   }
+
+  if $osfamily == 'RedHat' {
+    include yumupdate
+  }
 }
+
+
+
 
 #lookup('classes', {merge => unique}).include
 
