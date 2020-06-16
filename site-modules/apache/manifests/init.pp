@@ -1,9 +1,9 @@
 class apache::standalone (
-  $updatesys    = $::apache::params::updatesys,
-  $apachename   = $::apache::params::apachename,
-  $conffile   = $::apache::params::conffile,
-  $confsource = $::apache::params::confsource,
-) inherits ::apache::params {
+  # $updatesys    = $::apache::standalone::params::updatesys,
+  $apachename   = $::apache::standalone::params::apachename,
+  $conffile   = $::apache::standalone::params::conffile,
+  $confsource = $::apache::standalone::params::confsource,
+) inherits ::apache::standalone::params {
 
   package { 'apache':
     name    => $apachename,
