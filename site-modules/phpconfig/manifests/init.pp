@@ -16,10 +16,12 @@ class phpconfig {
     ensure => present,
   }
 
+/*
   service { 'php-service':
     name    => $phpname,
     ensure  => running,
     enable  => true,
   }
+  */
 
 }
