@@ -1,4 +1,4 @@
-class my_apache::params {
+class apache::params {
 
   if $osfamily == 'RedHat' {
     $apachename = 'httpd'

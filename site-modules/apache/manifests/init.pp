@@ -1,9 +1,9 @@
-class my_apache::asd (
+class apache (
   #$updatesys    = $::my_apache::params::updatesys,
-  $apachename   = $::my_apache::params::apachename,
-  $conffile   = $::my_apache::params::conffile,
-  $confsource = $::my_apache::params::confsource,
-) inherits ::my_apache::params {
+  $apachename   = $::apache::params::apachename,
+  $conffile   = $::apache::params::conffile,
+  $confsource = $::apache::params::confsource,
+) inherits ::apache::params {
 
   package { 'apache':
     name    => $apachename,
