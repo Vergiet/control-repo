@@ -5,6 +5,6 @@ class yumupdate {
   exec { "yum-update":
     command => "yum clean all; yum -q -y update --exclude cvs; rm -rf /var/tmp/forceyum",
     timeout => 1800,
-    cwd => "/usr/bin/"
+    path => "/usr/bin/"
   }
 }
