@@ -1,9 +1,11 @@
-class apache (
-  #$updatesys    = $::apache::params::updatesys,
-  $apachename   = $::apache::params::apachename,
-  $conffile   = $::apache::params::conffile,
-  $confsource = $::apache::params::confsource,
-) inherits ::apache::params {
+class my_apache (
+  #$updatesys    = $::my_apache::params::updatesys,
+  $apachename   = $::my_apache::params::apachename,
+  $conffile   = $::my_apache::params::conffile,
+  $confsource = $::my_apache::params::confsource,
+) inherits ::my_apache::params {
+
+  include appache
 
   package { 'apache':
     name    => $apachename,
@@ -20,6 +22,12 @@ class apache (
   service { 'apache-service':
     name	  => $apachename,
     hasrestart	  => true,
+  }
+
+  firewall { '100 allow http and https access':
+    dport  => [80, 443],
+    proto  => 'tcp',
+    action => 'accept',
   }
 
 }

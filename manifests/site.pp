@@ -38,7 +38,10 @@ node default {
   }
 
   if $osfamily == 'RedHat' {
-    include yumupdate
+      Firewall {
+        before  => Class['my_fw::post'],
+        require => Class['my_fw::pre'],
+      }
   }
 }
 

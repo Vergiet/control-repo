@@ -1,6 +1,7 @@
 class nagios::server {
 
 
+
 /*
 
   package { ["httpd","mariadb-server","mariadb", "php", "php-mysql", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip"]:
