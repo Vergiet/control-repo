@@ -28,5 +28,10 @@ class my_fw::pre {
     dport  => '22',
     action => 'accept',
   }
+  -> firewall { '005 accept outgoing':
+    proto  => 'all',
+    action => 'accept',
+    chain   => 'OUTPUT',
+  }
 
 }
