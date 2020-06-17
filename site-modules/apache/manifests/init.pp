@@ -22,15 +22,10 @@ class apache (
   service { 'apache-service':
     name	  => $apachename,
     hasrestart	  => true,
-  }
-
-  service { 'apache':
-    name => $apachename,
     ensure     => running,
     enable     => true,
     require    => Package['apache'],
   }
-
 
   firewall { '100 allow http and https access':
     dport  => [80, 443],
