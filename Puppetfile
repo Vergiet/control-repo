@@ -45,7 +45,7 @@ mod 'puppetlabs/splunk_hec',               :latest
 mod 'puppetlabs/puppet_metrics_dashboard', :latest
 mod 'puppetlabs/puppet_metrics_collector', :latest
 mod 'puppetlabs/motd',                     :latest
-#mod 'puppetlabs/apache',                   :latest
+mod 'puppetlabs/apache',                   :latest
 mod 'puppetlabs/transition',               :latest
 mod 'puppetlabs/facts',                    '0.6.0'
 mod 'puppetlabs/puppetserver_gem',         :latest
