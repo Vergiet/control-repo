@@ -25,7 +25,7 @@ class apache (
   }
 
   service { 'apache':
-    name => $apachename
+    name => $apachename,
     ensure     => running,
     enable     => true,
     require    => Package['apache'],
