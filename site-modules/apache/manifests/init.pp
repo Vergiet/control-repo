@@ -5,7 +5,6 @@ class apache (
   $confsource = $::apache::params::confsource,
 ) inherits ::apache::params {
 
-
   include apache
 
   package { 'apache':
@@ -25,10 +24,20 @@ class apache (
     hasrestart	  => true,
   }
 
+  service { 'apache':
+    name => $apachename
+    ensure     => running,
+    enable     => true,
+    require    => Package['apache'],
+  }
+
+
   firewall { '100 allow http and https access':
     dport  => [80, 443],
     proto  => 'tcp',
     action => 'accept',
   }
+
+
 
 }
