@@ -64,17 +64,13 @@ fi
 '
 /* source: https://ask.puppet.com/question/32559/how-to-call-upon-puppet-token-that-has-just-been-generated-to-use-to-unpin-nodes/?comment=32571#post-id-32571 */
 
-/*
+
 $tokengen = "#!/bin/bash
 
 token=$(curl -X POST -H 'Content-Type: application/json' --cert $(/usr/local/bin/puppet config print hostcert) --key $(/usr/local/bin/puppet config print hostprivkey) --cacert $(/usr/local/bin/puppet config print localcacert) -d '{\"login\": \"admin\", \"password\": \"password\", \"lifetime\": \"10m\"}' https://$(hostname -f):4433/rbac-api/v1/auth/token)
 mkdir /root/.puppetlabs
 echo \$token | awk -F\\\" '{ print \$4 }' > /root/.puppetlabs/token
 "
-*/
-
-$tokengen = "#!/bin/bash"
-
 
   file { "/etc/sysconfig/network-scripts/ifcfg-eth0" :
     ensure   => present,
@@ -102,12 +98,14 @@ $tokengen = "#!/bin/bash"
   file { "/root/tokengen.sh" :
     ensure   => present,
     content => $tokengen,
-    mode => '0644',
+    mode => '0655',
   }
   exec { 'pmom01.vrgt.xyz':
     command => "/usr/bin/hostnamectl set-hostname PMoM01.vrgt.xyz",
     unless => "/usr/bin/test `/usr/bin/hostname` = 'pmom01.vrgt.xyz'"
   }
+
+  /*
 
   exec { 'puppet agent -t 1':
     command => "/usr/local/bin/puppet agent -t",
@@ -119,9 +117,11 @@ $tokengen = "#!/bin/bash"
     subscribe => Exec['puppet agent -t 1'],
   }
 
+  */
+
   exec { 'tokengen':
     command => "/root/tokengen.sh",
-    subscribe => [Exec['puppet agent -t 2'], File["/root/tokengen.sh"]],
+    subscribe => File["/root/tokengen.sh"],
   }
 
   exec { 'Deploy code':
@@ -156,7 +156,7 @@ $tokengen = "#!/bin/bash"
 
   exec { '/root/startinstall.sh':
     unless => '/root/testpath.sh /opt/puppetlabs/server',
-    subscribe => [Firewall['100 PE required ports'], File['/root/testpath.sh'], File['/root/pe.conf'], File['/etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa'], File['/root/.ssh/id_rsa']],
+    subscribe => [Firewall['100 PE required ports'], File['/root/testpath.sh'], File['/root/pe.conf']],
   }
 
 file { '/etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa':
@@ -165,6 +165,7 @@ source => '/etc/ssh/ssh_host_rsa_key',
 group => 'pe-puppet',
 owner => 'pe-puppet',
 mode => '0600',
+subscribe => Exec['/root/startinstall.sh'],
 
 }
 
@@ -172,6 +173,7 @@ file { '/root/.ssh/id_rsa':
 ensure => present,
 source => '/etc/ssh/ssh_host_rsa_key',
 mode => '0600',
+subscribe => Exec['/root/startinstall.sh'],
 }
 
 
