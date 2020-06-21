@@ -1,11 +1,25 @@
-class apache (
-  #$updatesys    = $::my_apache::params::updatesys,
-  $apachename   = $::apache::params::apachename,
-  $conffile   = $::apache::params::conffile,
-  $confsource = $::apache::params::confsource,
-) inherits ::apache::params {
+class myapache (
+  #$updatesys    = $::myapache::params::updatesys,
+  $apachename   = $::myapache::params::apachename,
+  $conffile   = $::myapache::params::conffile,
+  $confsource = $::myapache::params::confsource,
+) inherits ::myapache::params {
 
   include apache
+
+/*
+  if $osfamily == 'RedHat' {
+     class { 'firewall': } 
+    
+    class { ['my_fw::pre', 'my_fw::post']: }
+    
+    Firewall {
+      before  => Class['my_fw::post'],
+      require => Class['my_fw::pre'],
+    }
+    
+  }
+  */
 
   package { 'apache':
     name    => $apachename,
