@@ -57,7 +57,7 @@ node default {
 
 #lookup('classes', {merge => unique}).include
 
-node '/^vmm\d+$/' {
+node /^vmm\d+$/ {
 
   include temp::folder
   include base::server
