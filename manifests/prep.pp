@@ -1,5 +1,5 @@
 
-
+/*
 $testpath = '#!/bin/bash
 
 if [ -d $1 ]; then
@@ -8,6 +8,7 @@ else
     exit 1
 fi
 '
+*/
 
 file { "/root/testpath.sh" :
   ensure   => present,
