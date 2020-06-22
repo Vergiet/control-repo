@@ -67,7 +67,7 @@ fi
 
 $tokengen = "#!/bin/bash
 
-token=$(curl -X POST -H 'Content-Type: application/json' --cert $(/usr/local/bin/puppet config print hostcert) --key $(/usr/local/bin/puppet config print hostprivkey) --cacert $(/usr/local/bin/puppet config print localcacert) -d '{\"login\": \"admin\", \"password\": \"password\", \"lifetime\": \"10m\"}' https://$(hostname -f):4433/rbac-api/v1/auth/token)
+token=$(curl -X POST -H 'Content-Type: application/json' --cert $(/usr/local/bin/puppet config print hostcert) --key $(/usr/local/bin/puppet config print hostprivkey) --cacert $(/usr/local/bin/puppet config print localcacert) -d '{\"login\": \"admin\", \"password\": \"password\", \"lifetime\": \"5y\"}' https://$(hostname -f):4433/rbac-api/v1/auth/token)
 mkdir /root/.puppetlabs
 echo \$token | awk -F\\\" '{ print \$4 }' > /root/.puppetlabs/token
 "
@@ -146,17 +146,19 @@ echo \$token | awk -F\\\" '{ print \$4 }' > /root/.puppetlabs/token
     unless => '/root/testpath.sh /root/puppet-enterprise-2019.7.0-el-7-x86_64',
     subscribe => [File["/root/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz"], File['/root/testpath.sh']],
   }
-
+/*
   firewall { '100 PE required ports':
     dport  => [22, 443, 4432, 4433, 5432, 8080, 8081, 8140, 8142, 8143, 8170],
     proto  => 'tcp',
     action => 'accept',
     subscribe => Exec["/root/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz"],
   }
+  */
 
+# Firewall['100 PE required ports'], 
   exec { '/root/startinstall.sh':
     unless => '/root/testpath.sh /opt/puppetlabs/server',
-    subscribe => [Firewall['100 PE required ports'], File['/root/testpath.sh'], File['/root/pe.conf']],
+    subscribe => [File['/root/testpath.sh'], File['/root/pe.conf']],
   }
 
 file { '/etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa':
