@@ -38,7 +38,7 @@ DNS3=192.168.1.6
     subscribe => [Exec['nagios.vrgt.xyz']],
   }
 
-  include ::mysql::server
+  #include ::mysql::server
   include ::mysql::client
 
   package { ["httpd", "php", "php-mysql", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip"]:
