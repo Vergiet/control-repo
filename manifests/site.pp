@@ -57,11 +57,15 @@ node default {
 
 #lookup('classes', {merge => unique}).include
 
-node /^vmm\d+$/ {
-  
+node '/^vmm\d+$/' {
+
   include temp::folder
   include base::server
   include sql::standalone
   include vmm::master
-    
+
+}
+
+node 'nagios.vrgt.xyz' {
+  include nagios::server::standalone
 }
