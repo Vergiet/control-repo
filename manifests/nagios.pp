@@ -59,6 +59,12 @@ DNS1=172.26.144.1
     subscribe => Group['nagcmd'],
   }
 
+  user { 'apache':
+    ensure   => present,
+    groups => 'nagcmd',
+    subscribe => Group['nagcmd'],
+  }
+
 
 
 
