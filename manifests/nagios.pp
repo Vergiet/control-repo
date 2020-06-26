@@ -39,7 +39,7 @@ DNS1=172.26.144.1
   #include ::mysql::server
   include ::mysql::client
 
-  package { ["httpd", "php", "php-mysql", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip"]:
+  package { ["nagios", "nagios-plugins", "nagios-plugins-nrpe", "httpd", "php", "php-mysql", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip"]:
     ensure => installed,
   }
 
@@ -47,6 +47,12 @@ DNS1=172.26.144.1
     ensure  => running,
     enable  => true,
   }
+
+  service { 'nrpe':
+    ensure  => running,
+    enable  => true,
+  }
+
 
   group { 'nagcmd':
     ensure   => present,
