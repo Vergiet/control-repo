@@ -48,10 +48,12 @@ DNS1=172.26.144.1
     enable  => true,
   }
 
+/*
   service { 'nrpe':
     ensure  => running,
     enable  => true,
   }
+  */
 
 
   group { 'nagcmd':
@@ -77,7 +79,7 @@ DNS1=172.26.144.1
 
 
   firewall { '100 WEB required ports':
-    dport  => [22, 443, 80],
+    dport  => [22, 443, 80, 5666],
     proto  => 'tcp',
     action => 'accept',
     subscribe => Service['httpd'],
