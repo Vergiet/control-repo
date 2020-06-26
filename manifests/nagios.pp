@@ -48,6 +48,20 @@ DNS1=172.26.144.1
     enable  => true,
   }
 
+  group { 'nagcmd':
+    ensure   => present,
+  }
+
+  user { 'nagios':
+    ensure   => present,
+    password => Sensitive("password"),
+    groups => 'nagcmd',
+    subscribe => Group['nagcmd'],
+  }
+
+
+
+
 
 
   firewall { '100 WEB required ports':
