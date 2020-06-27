@@ -1,5 +1,7 @@
 class nagios::server::standalone {
 
+  require firewall
+  include firewall
   include mysql::client
 
   package { ["nagios", "nagios-plugins", "nagios-plugins-nrpe", "httpd", "php", "php-mysql", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip"]:
