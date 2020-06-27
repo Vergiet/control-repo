@@ -1,0 +1,27 @@
+<%- | 
+  String  $vmname,
+  String  $vmip,
+  String  $pemasterip,
+  String  $pemasterhost,
+| -%>
+
+$hosts = '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+<%= $pemasterip %> <%= $pemasterhost -%>.vrgt.xyz
+127.0.0.1 <%= $vmname -%>.vrgt.xyz
+<%= $vmip %> <%= $vmname -%>.vrgt.xyz
+'
+
+<%  -%>
+file { "/etc/hosts" :
+  ensure   => present,
+  content => $hosts,
+  mode => '0655',
+}
+
+exec { '<%= $vmname -%>.vrgt.xyz':
+  command => "/usr/bin/hostnamectl set-hostname <%= $vmname -%>.vrgt.xyz",
+  unless => "/usr/bin/test `/usr/bin/hostname` = '<%= $vmname -%>.vrgt.xyz'"
+}
+
+
