@@ -53,5 +53,5 @@ file { "/root/installagent.sh" :
 exec { 'bootstrap agent':
   command => "/root/installagent.sh",
   unless => "/root/testfile.sh /usr/local/bin/facter",
-  subscribe => [File["/root/testfile.sh"],File["/etc/hosts"],File["/root/installagent.sh"]],
+  subscribe => [File["/root/testfile.sh"],File["/etc/hosts"],File["/root/installagent.sh"], Exec['<%= $vmname -%>.vrgt.xyz']],
 }
