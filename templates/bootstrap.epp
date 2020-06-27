@@ -33,7 +33,7 @@ else
 fi
 '
 
-$InstallAgent = '#!/bin/sh
+$installagent = '#!/bin/sh
 
 curl -k https://<%= $pemasterhost -%>.vrgt.xyz:8140/packages/current/install.bash | sudo bash
 '
@@ -44,14 +44,14 @@ file { "/root/testfile.sh" :
   mode => '0655',
 }
 
-file { "/root/InstallAgent.sh" :
+file { "/root/installagent.sh" :
   ensure   => present,
-  content => $InstallAgent,
+  content => $installagent,
   mode => '0655',
 }
 
 exec { 'bootstrap agent':
-  command => "/root/InstallAgent.sh",
+  command => "/root/installagent.sh",
   unless => "/root/testfile.sh /usr/local/bin/facter",
-  subscribe => [File["/root/testfile.sh"],File["/etc/hosts"],File["/root/InstallAgent.sh"]],
+  subscribe => [File["/root/testfile.sh"],File["/etc/hosts"],File["/root/installagent.sh"]],
 }
