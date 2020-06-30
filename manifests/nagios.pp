@@ -18,7 +18,7 @@ class nagios::server::standalone {
     ensure  => running,
     enable  => true,
   }
-  */
+*/
 
 
   group { 'nagcmd':

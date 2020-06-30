@@ -12,7 +12,7 @@ $hosts = '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.loca
 <%= $vmip %> <%= $vmname -%>.vrgt.xyz
 '
 
-<%  -%>
+
 file { "/etc/hosts" :
   ensure   => present,
   content => $hosts,

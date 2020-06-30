@@ -1,0 +1,192 @@
+<%- | 
+  String  $vmname,
+  String  $vmip,
+  String  $pemasterip,
+  String  $pemasterhost,
+| -%>
+
+require firewall
+include firewall
+
+/*
+$hosts = '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+<%= $pemasterip %> <%= $pemasterhost -%>.vrgt.xyz
+127.0.0.1 <%= $vmname -%>.vrgt.xyz
+<%= $vmip %> <%= $vmname -%>.vrgt.xyz
+'
+
+
+file { "/etc/hosts" :
+  ensure   => present,
+  content => $hosts,
+  mode => '0655',
+}
+*/
+
+exec { '<%= $vmname -%>.vrgt.xyz':
+  command => "/usr/bin/hostnamectl set-hostname <%= $vmname -%>.vrgt.xyz",
+  unless => "/usr/bin/test `/usr/bin/hostname` = '<%= $vmname -%>.vrgt.xyz'",
+}
+
+
+$testfile = '#!/bin/sh
+if [ -f $1 ]; then
+    exit 0
+else 
+    exit 1
+fi
+'
+
+
+$testpath = '#!/bin/bash
+
+if [ -d $1 ]; then
+    exit 0
+else 
+    exit 1
+fi
+'
+
+$peconf = '"console_admin_password": "password"
+"puppet_enterprise::puppet_master_host": "%{::trusted.certname}"
+"puppet_enterprise::profile::master::code_manager_auto_configure": true
+"puppet_enterprise::profile::master::r10k_remote": "git@github.com:Vergiet/control-repo.git"
+"puppet_enterprise::profile::master::r10k_private_key": "/etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa"
+'
+
+$startinstall = '#!/bin/bash
+
+if [ -d /opt/puppetlabs/server ]; then
+
+    echo "PE already installed"
+else 
+
+    export LANG=en_US.UTF-8
+    export LANGUAGE=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+
+    /root/puppet-enterprise-2019.7.0-el-7-x86_64/puppet-enterprise-installer -c /root/pe.conf 2>&1 > /root/puppet-enterprise-installer.log
+
+fi
+'
+/* source: https://ask.puppet.com/question/32559/how-to-call-upon-puppet-token-that-has-just-been-generated-to-use-to-unpin-nodes/?comment=32571#post-id-32571 */
+
+
+$tokengen = "#!/bin/bash
+
+token=$(curl -X POST -H 'Content-Type: application/json' --cert $(/usr/local/bin/puppet config print hostcert) --key $(/usr/local/bin/puppet config print hostprivkey) --cacert $(/usr/local/bin/puppet config print localcacert) -d '{\"login\": \"admin\", \"password\": \"password\", \"lifetime\": \"5y\"}' https://$(hostname -f):4433/rbac-api/v1/auth/token)
+mkdir /root/.puppetlabs
+echo \$token | awk -F\\\" '{ print \$4 }' > /root/.puppetlabs/token
+"
+
+/*
+
+$installagent = '#!/bin/sh
+
+curl -k https://<%= $pemasterhost -%>.vrgt.xyz:8140/packages/current/install.bash | sudo bash
+'
+*/
+
+file { "/root/testfile.sh" :
+  ensure   => present,
+  content => $testfile,
+  mode => '0655',
+}
+
+/*
+file { "/root/installagent.sh" :
+  ensure   => present,
+  content => $installagent,
+  mode => '0655',
+}
+*/
+
+  file { "/root/testpath.sh" :
+    ensure   => present,
+    content => $testpath,
+    mode => '0655',
+  }
+
+  file { "/root/startinstall.sh" :
+    ensure   => present,
+    content => $startinstall,
+    mode => '0655',
+  }
+
+  file { "/root/pe.conf" :
+    ensure   => present,
+    content => $peconf,
+    mode => '0644',
+  }
+
+  file { "/root/tokengen.sh" :
+    ensure   => present,
+    content => $tokengen,
+    mode => '0655',
+  }
+/*
+exec { 'bootstrap agent':
+  command => "/root/installagent.sh",
+  unless => "/root/testfile.sh /usr/local/bin/facter",
+  subscribe => [File["/root/testfile.sh"],File["/etc/hosts"],File["/root/installagent.sh"], Exec['<%= $vmname -%>.vrgt.xyz']],
+}
+*/
+
+
+exec { 'tokengen':
+  command => "/root/tokengen.sh 2>&1 > /root/tokengen.log",
+  subscribe => [File["/root/tokengen.sh"], Exec['/root/startinstall.sh']],
+}
+
+
+  reboot { 'after':
+    subscribe => [Exec['<%= $vmname -%>.vrgt.xyz']],
+  }
+
+  $peurl = "https://s3.amazonaws.com/pe-builds/released/2019.7.0/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz"
+
+  file { "/root/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz" :
+      ensure   => present,
+      source => $peurl,
+  }
+
+  exec { "/root/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz":
+    command => "tar zxf /root/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz",
+    path => "/usr/bin/",
+    unless => '/root/testpath.sh /root/puppet-enterprise-2019.7.0-el-7-x86_64',
+    subscribe => [File["/root/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz"], File['/root/testpath.sh']],
+  }
+
+  firewall { '100 PE required ports':
+    dport  => [22, 443, 4432, 4433, 5432, 8080, 8081, 8140, 8142, 8143, 8170],
+    proto  => 'tcp',
+    action => 'accept',
+    subscribe => Exec["/root/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz"],
+  }
+
+
+# Firewall['100 PE required ports'], 
+  exec { '/root/startinstall.sh':
+    unless => '/root/testpath.sh /opt/puppetlabs/server',
+    subscribe => [File['/root/testpath.sh'], File['/root/pe.conf'], Firewall['100 PE required ports']],
+    timeout => 1800,
+  }
+
+file { '/etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa':
+ensure => present,
+source => '/etc/ssh/ssh_host_rsa_key',
+group => 'pe-puppet',
+owner => 'pe-puppet',
+mode => '0600',
+subscribe => Exec['/root/startinstall.sh'],
+
+}
+
+file { '/root/.ssh/id_rsa':
+ensure => present,
+source => '/etc/ssh/ssh_host_rsa_key',
+mode => '0600',
+subscribe => Exec['/root/startinstall.sh'],
+}
+
