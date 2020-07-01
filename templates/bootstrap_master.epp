@@ -172,7 +172,7 @@ exec { 'tokengen':
     subscribe => [File['/root/testpath.sh'], File['/root/pe.conf'], Firewall['100 PE required ports']],
     timeout => 1800,
   }
-
+/*
 file { '/etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa':
 ensure => present,
 source => '/etc/ssh/ssh_host_rsa_key',
@@ -182,10 +182,37 @@ mode => '0600',
 subscribe => Exec['/root/startinstall.sh'],
 
 }
+*/
 
+file { '/etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa':
+ensure => present,
+source => '/root/ssh_host_rsa_key',
+group => 'pe-puppet',
+owner => 'pe-puppet',
+mode => '0600',
+subscribe => Exec['/root/startinstall.sh'],
+
+}
+
+/*
 file { '/root/.ssh/id_rsa':
 ensure => present,
 source => '/etc/ssh/ssh_host_rsa_key',
+mode => '0600',
+subscribe => Exec['/root/startinstall.sh'],
+}
+*/
+
+file { '/root/.ssh/id_rsa':
+ensure => present,
+source => '/root/ssh_host_rsa_key',
+mode => '0600',
+subscribe => Exec['/root/startinstall.sh'],
+}
+
+file { '/root/.ssh/id_rsa.pub':
+ensure => present,
+source => '/root/ssh_host_rsa_key.pub',
 mode => '0600',
 subscribe => Exec['/root/startinstall.sh'],
 }
