@@ -159,7 +159,7 @@ file { "/root/testfile.sh" :
     groups => 'nagcmd',
     subscribe => Group['nagcmd'],
   }
-
+/*
   exec { '/root/installnagios.sh':
     unless => '/root/testpath.sh /root/nagios-*',
     subscribe => [File['/root/installnagios.sh'], Firewall['100 WEB required ports']],
@@ -201,7 +201,7 @@ file { "/root/testfile.sh" :
     subscribe => Exec['/root/installnagiosnrpe.sh'],
   }
 
-
+*/
 
   firewall { '100 WEB required ports':
     dport  => [22, 443, 80, 5666],
@@ -215,12 +215,13 @@ file { "/root/testfile.sh" :
     override_options => { 'mysqld' => { 'max_connections' => '1024' } }
   }
 
-
+/*
   service { 'nagios':
     ensure  => running,
     enable  => true,
     subscribe => Exec['/root/installnagios.sh'],
   }
+  */
 
 
 
