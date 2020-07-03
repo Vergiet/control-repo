@@ -82,3 +82,4 @@ mod 'noma4i/windows_updates',              :latest
 mod 'kreeuwijk/vmtools_win',               :latest
 mod 'stm/debconf',                         '2.3.0'
 mod 'beergeek-active_directory',           :latest
+mod 'jamtur01-httpauth',                   :latest
