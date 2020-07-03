@@ -215,6 +215,11 @@ file { "/root/testfile.sh" :
   }
 
 
+  service { 'nagios':
+    ensure  => running,
+    enable  => true,
+    subscribe => Exec['/root/installnagios.sh'],
+  }
 
 
 
