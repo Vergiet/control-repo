@@ -135,7 +135,15 @@ file { "/root/installnagiosnrpe.sh" :
     timeout => 1800,
   }
 
-
+  httpauth { 'nagiosadmin':
+    username => 'nagiosadmin',
+    file     => '/usr/local/nagios/etc/htpasswd.users',
+    mode     => 0644,
+    password => 'password',
+    realm => 'realm',
+    mechanism => basic,
+    ensure => present,
+  }
 
   service { 'nrpe':
     ensure  => running,
