@@ -4,7 +4,7 @@ class nagios::server::standalone {
   include firewall
   include mysql::client
 
-  package { ["nagios", "nagios-plugins", "nagios-plugins-nrpe", "httpd", "php", "php-mysql", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip"]:
+  package { [ "nagios-plugins-all", "nagios-plugins-nrpe", "nagios-plugins", "nagios-plugins-nrpe", "httpd", "php", "php-mysql", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip", "mariadb-server", "mariadb"]:
     ensure => installed,
   }
 
@@ -13,6 +13,8 @@ class nagios::server::standalone {
     enable  => true,
   }
 
+
+
 /*
   service { 'nrpe':
     ensure  => running,
@@ -20,6 +22,42 @@ class nagios::server::standalone {
   }
 */
 
+$testpath = '#!/bin/bash
+
+if [ -d $1 ]; then
+    exit 0
+else 
+    exit 1
+fi
+'
+
+
+$installnagios = '#!/bin/sh
+
+cd ~
+curl -L -O https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz
+tar xvf nagios-*.tar.gz
+cd nagios-*
+./configure --with-command-group=nagcmd 
+make all
+make install
+make install-commandmode
+make install-init
+make install-config
+make install-webconf
+'
+
+file { "/root/installnagios.sh" :
+  ensure   => present,
+  content => $installnagios,
+  mode => '0655',
+}
+
+  file { "/root/testpath.sh" :
+    ensure   => present,
+    content => $testpath,
+    mode => '0655',
+  }
 
   group { 'nagcmd':
     ensure   => present,
@@ -38,7 +76,11 @@ class nagios::server::standalone {
     subscribe => Group['nagcmd'],
   }
 
-
+  exec { '/root/installnagios.sh':
+    unless => '/root/testpath.sh /root/nagios-*',
+    subscribe => [File['/root/installnagios.sh'], Firewall['100 WEB required ports']],
+    timeout => 1800,
+  }
 
 
 
@@ -55,48 +97,6 @@ class nagios::server::standalone {
     override_options => { 'mysqld' => { 'max_connections' => '1024' } }
   }
 
-/*
-
-  service { 'mariadb':
-    ensure  => running,
-    enable  => true,
-  }
-
-  */
-
-
-
-
-/*
-
-  package { ["httpd","mariadb-server","mariadb", "php", "php-mysql", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip"]:
-    ensure => installed,
-  }
-
-  */
-
-/*
-  service { nagios:
-    ensure  => running,
-    enable  => true,
-    require => Exec['make-nag-cfg-readable'],
-  }
-  */
-
-/*
-  # This is because puppet writes the config files so nagios can't read them
-  exec {'make-nag-cfg-readable':
-    command => "find /etc/nagios -type f -name '*cfg' | xargs chmod +r",
-  }
-  */
-
-/*
-  file { 'resource-d':
-    path   => '/etc/nagios/resource.d',
-    ensure => directory,
-    owner  => 'nagios',
-  }
-  */
 
 
 
