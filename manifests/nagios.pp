@@ -187,7 +187,7 @@ file { "/root/testfile.sh" :
   httpauth { 'nagiosadmin':
     username => 'nagiosadmin',
     file     => '/usr/local/nagios/etc/htpasswd.users',
-    mode     => 0644,
+    mode     => '0644',
     password => 'password',
     realm => 'realm',
     mechanism => basic,
