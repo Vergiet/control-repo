@@ -31,6 +31,14 @@ else
 fi
 '
 
+$testfile = '#!/bin/sh
+if [ -f $1 ]; then
+    exit 0
+else 
+    exit 1
+fi
+'
+
 
 $installnagios = '#!/bin/sh
 
@@ -90,6 +98,16 @@ cp -r clients server LICENSE* CHANGES* /usr/local/nrdp
 chown -R nagios:nagios /usr/local/nrdp 
 '
 
+
+
+$installnagioscheckncpa = '#!/bin/sh
+
+cd /usr/local/nagios/libexec
+wget -O https://raw.githubusercontent.com/NagiosEnterprises/ncpa/master/client/check_ncpa.py
+chown -R nagios:nagios check_ncpa.py
+chmod 755 check_ncpa.py
+'
+
 file { "/root/installnagios.sh" :
   ensure   => present,
   content => $installnagios,
@@ -114,11 +132,23 @@ file { "/root/installnagiosnrdp.sh" :
   mode => '0655',
 }
 
+file { "/root/installnagioscheckncpa.sh" :
+  ensure   => present,
+  content => $installnagioscheckncpa,
+  mode => '0655',
+}
+
   file { "/root/testpath.sh" :
     ensure   => present,
     content => $testpath,
     mode => '0655',
   }
+
+file { "/root/testfile.sh" :
+  ensure   => present,
+  content => $testfile,
+  mode => '0655',
+}
 
   group { 'nagcmd':
     ensure   => present,
@@ -158,6 +188,12 @@ file { "/root/installnagiosnrdp.sh" :
   exec { '/root/installnagiosnrdp.sh':
     unless => '/root/testpath.sh /tmp/nrdp*',
     subscribe => [File['/root/installnagiosnrdp.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosnrpe.sh']],
+    timeout => 1800,
+  }
+
+  exec { '/root/installnagioscheckncpa.sh':
+    unless => '/root/testfile.sh /usr/local/nagios/libexec/check_ncpa.py',
+    subscribe => [File['/root/installnagioscheckncpa.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosnrdp.sh']],
     timeout => 1800,
   }
 
