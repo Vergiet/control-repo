@@ -60,6 +60,22 @@ make
 make install
 '
 
+
+$installnagiosnrpe = '#!/bin/sh
+
+cd ~
+curl -L -O https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.0.2/nrpe-4.0.2.tar.gz
+#https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.0.3/nrpe-4.0.3.tar.gz
+tar xvf nrpe-*.tar.gz
+cd nrpe-*
+./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+
+make all
+make install
+make install-config
+make install-init
+'
+
 file { "/root/installnagios.sh" :
   ensure   => present,
   content => $installnagios,
@@ -69,6 +85,12 @@ file { "/root/installnagios.sh" :
 file { "/root/installnagiosplugins.sh" :
   ensure   => present,
   content => $installnagiosplugins,
+  mode => '0655',
+}
+
+file { "/root/installnagiosnrpe.sh" :
+  ensure   => present,
+  content => $installnagiosnrpe,
   mode => '0655',
 }
 
@@ -105,6 +127,20 @@ file { "/root/installnagiosplugins.sh" :
     unless => '/root/testpath.sh /root/nagios-plugins-*',
     subscribe => [File['/root/installnagiosplugins.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagios.sh']],
     timeout => 1800,
+  }
+
+  exec { '/root/installnagiosnrpe.sh':
+    unless => '/root/testpath.sh /root/nrpe-*',
+    subscribe => [File['/root/installnagiosnrpe.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosplugins.sh']],
+    timeout => 1800,
+  }
+
+
+
+  service { 'nrpe':
+    ensure  => running,
+    enable  => true,
+    subscribe => Exec['/root/installnagiosnrpe.sh'],
   }
 
 
