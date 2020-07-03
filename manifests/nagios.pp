@@ -76,6 +76,20 @@ make install-config
 make install-init
 '
 
+
+
+$installnagiosnrdp = '#!/bin/sh
+
+cd /tmp
+wget -O nrdp.tar.gz https://github.com/NagiosEnterprises/nrdp/archive/2.0.3.tar.gz
+tar xzf nrdp.tar.gz
+
+cd /tmp/nrdp*
+mkdir -p /usr/local/nrdp
+cp -r clients server LICENSE* CHANGES* /usr/local/nrdp
+chown -R nagios:nagios /usr/local/nrdp 
+'
+
 file { "/root/installnagios.sh" :
   ensure   => present,
   content => $installnagios,
@@ -91,6 +105,12 @@ file { "/root/installnagiosplugins.sh" :
 file { "/root/installnagiosnrpe.sh" :
   ensure   => present,
   content => $installnagiosnrpe,
+  mode => '0655',
+}
+
+file { "/root/installnagiosnrdp.sh" :
+  ensure   => present,
+  content => $installnagiosnrdp,
   mode => '0655',
 }
 
@@ -132,6 +152,12 @@ file { "/root/installnagiosnrpe.sh" :
   exec { '/root/installnagiosnrpe.sh':
     unless => '/root/testpath.sh /root/nrpe-*',
     subscribe => [File['/root/installnagiosnrpe.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosplugins.sh']],
+    timeout => 1800,
+  }
+
+  exec { '/root/installnagiosnrdp.sh':
+    unless => '/root/testpath.sh /tmp/nrdp*',
+    subscribe => [File['/root/installnagiosnrdp.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosnrpe.sh']],
     timeout => 1800,
   }
 
