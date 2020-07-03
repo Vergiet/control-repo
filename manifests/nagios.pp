@@ -192,6 +192,7 @@ file { "/root/testfile.sh" :
     realm => 'realm',
     mechanism => basic,
     ensure => present,
+    subscribe => Exec['/root/installnagios.sh'],
   }
 
   service { 'nrpe':
