@@ -103,7 +103,7 @@ chown -R nagios:nagios /usr/local/nrdp
 $installnagioscheckncpa = '#!/bin/sh
 
 cd /usr/local/nagios/libexec
-wget -O https://raw.githubusercontent.com/NagiosEnterprises/ncpa/master/client/check_ncpa.py
+wget https://raw.githubusercontent.com/NagiosEnterprises/ncpa/master/client/check_ncpa.py
 chown -R nagios:nagios check_ncpa.py
 chmod 755 check_ncpa.py
 '
