@@ -106,11 +106,13 @@ file { "/root/installnagios.sh" :
   mode => '0655',
 }
 
+/*
 file { "/usr/local/nagios/libexec/check_ncpa.py" :
   ensure   => present,
   source => 'https://raw.githubusercontent.com/NagiosEnterprises/ncpa/master/client/check_ncpa.py',
   mode => '0755',
 }
+*/
 
 
 file { "/root/installnagiosplugins.sh" :
