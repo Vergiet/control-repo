@@ -45,11 +45,30 @@ make install-commandmode
 make install-init
 make install-config
 make install-webconf
+make install-exfoliation
+'
+
+
+$installnagiosplugins = '#!/bin/sh
+
+cd ~
+curl -L -O http://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+tar xvf nagios-plugins-*.tar.gz
+cd nagios-plugins-*
+./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl
+make
+make install
 '
 
 file { "/root/installnagios.sh" :
   ensure   => present,
   content => $installnagios,
+  mode => '0655',
+}
+
+file { "/root/installnagiosplugins.sh" :
+  ensure   => present,
+  content => $installnagiosplugins,
   mode => '0655',
 }
 
@@ -82,6 +101,11 @@ file { "/root/installnagios.sh" :
     timeout => 1800,
   }
 
+  exec { '/root/installnagiosplugins.sh':
+    unless => '/root/testpath.sh /root/nagios-plugins-*',
+    subscribe => [File['/root/installnagiosplugins.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagios.sh']],
+    timeout => 1800,
+  }
 
 
 
