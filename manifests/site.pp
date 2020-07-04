@@ -66,6 +66,6 @@ node /^vmm\d+$/ {
 
 }
 
-node /^nagios.*/ {
+node 'nagios.mshome.net' {
   include nagios::server::standalone
 }
