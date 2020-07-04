@@ -1,32 +1,13 @@
 <%- | 
-  String  $vmname,
-  String  $vmip,
-  String  $pemasterip,
-  String  $pemasterhost,
+  String  $hostname,
 | -%>
 
 require firewall
 include firewall
 
-/*
-$hosts = '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-<%= $pemasterip %> <%= $pemasterhost -%>.vrgt.xyz
-127.0.0.1 <%= $vmname -%>.vrgt.xyz
-<%= $vmip %> <%= $vmname -%>.vrgt.xyz
-'
-
-
-file { "/etc/hosts" :
-  ensure   => present,
-  content => $hosts,
-  mode => '0655',
-}
-*/
-
-exec { '<%= $vmname -%>.vrgt.xyz':
-  command => "/usr/bin/hostnamectl set-hostname <%= $vmname -%>.vrgt.xyz",
-  unless => "/usr/bin/test `/usr/bin/hostname` = '<%= $vmname -%>.vrgt.xyz'",
+exec { '<%= $hostname -%>':
+  command => "/usr/bin/hostnamectl set-hostname <%= $hostname -%>",
+  unless => "/usr/bin/test `/usr/bin/hostname` = '<%= $hostname -%>'",
 }
 
 
@@ -80,27 +61,13 @@ mkdir /root/.puppetlabs
 echo \$token | awk -F\\\" '{ print \$4 }' > /root/.puppetlabs/token
 "
 
-/*
 
-$installagent = '#!/bin/sh
-
-curl -k https://<%= $pemasterhost -%>.vrgt.xyz:8140/packages/current/install.bash | sudo bash
-'
-*/
 
 file { "/root/testfile.sh" :
   ensure   => present,
   content => $testfile,
   mode => '0655',
 }
-
-/*
-file { "/root/installagent.sh" :
-  ensure   => present,
-  content => $installagent,
-  mode => '0655',
-}
-*/
 
   file { "/root/testpath.sh" :
     ensure   => present,
@@ -125,14 +92,6 @@ file { "/root/installagent.sh" :
     content => $tokengen,
     mode => '0655',
   }
-/*
-exec { 'bootstrap agent':
-  command => "/root/installagent.sh",
-  unless => "/root/testfile.sh /usr/local/bin/facter",
-  subscribe => [File["/root/testfile.sh"],File["/etc/hosts"],File["/root/installagent.sh"], Exec['<%= $vmname -%>.vrgt.xyz']],
-}
-*/
-
 
 exec { 'tokengen':
   command => "/root/tokengen.sh 2>&1 > /root/tokengen.log",
@@ -141,7 +100,7 @@ exec { 'tokengen':
 
 
   reboot { 'after':
-    subscribe => [Exec['<%= $vmname -%>.vrgt.xyz']],
+    subscribe => [Exec['<%= $hostname -%>']],
   }
 
   $peurl = "https://s3.amazonaws.com/pe-builds/released/2019.7.0/puppet-enterprise-2019.7.0-el-7-x86_64.tar.gz"

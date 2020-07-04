@@ -66,6 +66,6 @@ node /^vmm\d+$/ {
 
 }
 
-node 'nagios.vrgt.xyz' {
+node /^nagios.*/ {
   include nagios::server::standalone
 }

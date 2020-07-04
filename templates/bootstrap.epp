@@ -1,27 +1,11 @@
 <%- | 
-  String  $vmname,
-  String  $vmip,
-  String  $pemasterip,
+  String  $hostname,
   String  $pemasterhost,
 | -%>
 
-$hosts = '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-<%= $pemasterip %> <%= $pemasterhost -%>.vrgt.xyz
-127.0.0.1 <%= $vmname -%>.vrgt.xyz
-<%= $vmip %> <%= $vmname -%>.vrgt.xyz
-'
-
-
-file { "/etc/hosts" :
-  ensure   => present,
-  content => $hosts,
-  mode => '0655',
-}
-
-exec { '<%= $vmname -%>.vrgt.xyz':
-  command => "/usr/bin/hostnamectl set-hostname <%= $vmname -%>.vrgt.xyz",
-  unless => "/usr/bin/test `/usr/bin/hostname` = '<%= $vmname -%>.vrgt.xyz'",
+exec { '<%= $hostname -%>':
+  command => "/usr/bin/hostnamectl set-hostname <%= $hostname -%>",
+  unless => "/usr/bin/test `/usr/bin/hostname` = '<%= $hostname -%>'",
 }
 
 
@@ -35,7 +19,7 @@ fi
 
 $installagent = '#!/bin/sh
 
-curl -k https://<%= $pemasterhost -%>.vrgt.xyz:8140/packages/current/install.bash | sudo bash
+curl -k https://<%= $pemasterhost -%>:8140/packages/current/install.bash | sudo bash
 '
 
 file { "/root/testfile.sh" :
@@ -53,5 +37,5 @@ file { "/root/installagent.sh" :
 exec { 'bootstrap agent':
   command => "/root/installagent.sh",
   unless => "/root/testfile.sh /usr/local/bin/facter",
-  subscribe => [File["/root/testfile.sh"],File["/etc/hosts"],File["/root/installagent.sh"], Exec['<%= $vmname -%>.vrgt.xyz']],
+  subscribe => [File["/root/testfile.sh"],File["/root/installagent.sh"], Exec['<%= $hostname -%>']],
 }
