@@ -305,6 +305,7 @@ file { "/root/testfile.sh" :
   Nagios_host <<||>> {
     require => File['servers'],
     #notify  => [Exec[make-nag-cfg-readable],Service['nagios']],
+    notify  => Service['nagios'],
   }
 
 }
