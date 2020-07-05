@@ -31,6 +31,13 @@ class nagios::server::standalone {
     ensure => directory,
     owner  => 'nagios',
   }
+  
+  file { 'servers':
+    path   => '/usr/local/nagios/etc/objects/servers',
+    ensure => directory,
+    owner  => 'nagios',
+    group => 'nagios',
+  }
 
 
 /*
