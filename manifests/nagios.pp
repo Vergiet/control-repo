@@ -179,6 +179,7 @@ file { "/root/testfile.sh" :
     unless => '/root/testpath.sh /root/nagios-*',
     subscribe => [File['/root/installnagios.sh'], Firewall['100 WEB required ports']],
     timeout => 1800,
+    notify => Service['httpd'],
   }
 
   /*
