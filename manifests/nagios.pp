@@ -301,7 +301,7 @@ file { "/root/testfile.sh" :
 
     # Collect the nagios_host resources
   Nagios_host <<||>> {
-    require => File[resource-d],
+    require => File['servers'],
     notify  => [Exec[make-nag-cfg-readable],Service['nagios']],
   }
 
