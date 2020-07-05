@@ -245,7 +245,7 @@ class nagios::server {
   package { ["nagios"]:
     ensure => installed,
   }
-  service { nagios:
+  service { 'nagios2':
     ensure  => running,
     enable  => true,
     require => Exec['make-nag-cfg-readable'],
@@ -266,7 +266,7 @@ class nagios::server {
   # Collect the nagios_host resources
   Nagios_host <<||>> {
     require => File[resource-d],
-    notify  => [Exec[make-nag-cfg-readable],Service[nagios]],
+    notify  => [Exec[make-nag-cfg-readable],Service['nagios2']],
   }
 }
 
