@@ -58,14 +58,15 @@ usermod -a -G nagios apache
 make install
 make install-daemoninit
 make install-commandmode
-
 make install-config
 make install-webconf
 
 '
+/* 
 make install-init
 
 make install-exfoliation
+*/
 
 $installnagiosplugins = '#!/bin/sh
 
@@ -230,17 +231,6 @@ file { "/root/testfile.sh" :
     root_password    => 'password',
     override_options => { 'mysqld' => { 'max_connections' => '1024' } }
   }
-
-/*
-  service { 'nagios':
-    ensure  => running,
-    enable  => true,
-    subscribe => Exec['/root/installnagios.sh'],
-  }
-  */
-
-
-
 
 }
 
