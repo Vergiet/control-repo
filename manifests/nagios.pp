@@ -22,7 +22,7 @@ class nagios::server::standalone {
 
   # This is because puppet writes the config files so nagios can't read them
   exec {'make-nag-cfg-readable':
-    command => "find /usr/local/nagios/etc/servers -type f -name '*cfg' | xargs chmod +r",
+    command => "find /usr/local/nagios/etc/objects/servers -type f -name '*cfg' | xargs chmod +r",
     path => ['/usr/bin', '/usr/sbin',],
   }
 
@@ -307,7 +307,7 @@ class nagios::export {
     address       => $::ipaddress,
     check_command => 'check-host-alive!3000.0,80%!5000.0,100%!10',
     hostgroups    => 'all-servers',
-    target        => "/usr/local/nagios/etc/servers/host_${::fqdn}.cfg"
+    target        => "/usr/local/nagios/etc/objects/servers/host_${::fqdn}.cfg"
   }
 }
 
