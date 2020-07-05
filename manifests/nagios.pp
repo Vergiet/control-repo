@@ -17,14 +17,16 @@ class nagios::server::standalone {
     ensure  => running,
     enable  => true,
     subscribe => Exec['/root/installnagios.sh'],
-    require => Exec['make-nag-cfg-readable'],
+    #require => Exec['make-nag-cfg-readable'],
   }
 
   # This is because puppet writes the config files so nagios can't read them
+  /*
   exec {'make-nag-cfg-readable':
     command => "find /usr/local/nagios/etc/objects/servers -type f -name '*cfg' | xargs chmod +r",
     path => ['/usr/bin', '/usr/sbin',],
   }
+  */
 
   file { 'resource-d':
     path   => '/etc/nagios/resource.d',
@@ -302,7 +304,7 @@ file { "/root/testfile.sh" :
     # Collect the nagios_host resources
   Nagios_host <<||>> {
     require => File['servers'],
-    notify  => [Exec[make-nag-cfg-readable],Service['nagios']],
+    #notify  => [Exec[make-nag-cfg-readable],Service['nagios']],
   }
 
 }
