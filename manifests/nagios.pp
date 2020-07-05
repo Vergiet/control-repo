@@ -13,6 +13,11 @@ class nagios::server::standalone {
     enable  => true,
   }
 
+  service { 'nagios':
+    ensure  => running,
+    enable  => true,
+    subscribe => Exec['/root/installnagios.sh'],
+  }
 
 
 /*
@@ -46,16 +51,21 @@ cd ~
 curl -L -O https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz
 tar xvf nagios-*.tar.gz
 cd nagios-*
-./configure --with-command-group=nagcmd 
+./configure
 make all
+make install-groups-users
+usermod -a -G nagios apache
 make install
+make install-daemoninit
 make install-commandmode
-make install-init
+
 make install-config
 make install-webconf
-make install-exfoliation
-'
 
+'
+make install-init
+
+make install-exfoliation
 
 $installnagiosplugins = '#!/bin/sh
 
@@ -145,6 +155,7 @@ file { "/root/testfile.sh" :
   mode => '0655',
 }
 
+/*
   group { 'nagcmd':
     ensure   => present,
   }
@@ -161,12 +172,15 @@ file { "/root/testfile.sh" :
     groups => 'nagcmd',
     subscribe => Group['nagcmd'],
   }
-/*
+  */
+
   exec { '/root/installnagios.sh':
     unless => '/root/testpath.sh /root/nagios-*',
     subscribe => [File['/root/installnagios.sh'], Firewall['100 WEB required ports']],
     timeout => 1800,
   }
+
+  /*
 
   exec { '/root/installnagiosplugins.sh':
     unless => '/root/testpath.sh /root/nagios-plugins-*',
