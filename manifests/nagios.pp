@@ -17,6 +17,19 @@ class nagios::server::standalone {
     ensure  => running,
     enable  => true,
     subscribe => Exec['/root/installnagios.sh'],
+    require => Exec['make-nag-cfg-readable'],
+  }
+
+  # This is because puppet writes the config files so nagios can't read them
+  exec {'make-nag-cfg-readable':
+    command => "find /usr/local/nagios/etc -type f -name '*cfg' | xargs chmod +r",
+    path => ['/usr/bin', '/usr/sbin',],
+  }
+
+  file { 'resource-d':
+    path   => '/etc/nagios/resource.d',
+    ensure => directory,
+    owner  => 'nagios',
   }
 
 
@@ -238,38 +251,14 @@ file { "/root/testfile.sh" :
     override_options => { 'mysqld' => { 'max_connections' => '1024' } }
   }
 
-}
-
-
-class nagios::server {
-  package { ["nagios"]:
-    ensure => installed,
-  }
-  service { 'nagios2':
-    name => 'nagios',
-    ensure  => running,
-    enable  => true,
-    require => Exec['make-nag-cfg-readable'],
-  }
-
-  # This is because puppet writes the config files so nagios can't read them
-  exec {'make-nag-cfg-readable':
-    command => "find /etc/nagios -type f -name '*cfg' | xargs chmod +r",
-    path => ['/usr/bin', '/usr/sbin',],
-  }
-
-  file { 'resource-d':
-    path   => '/etc/nagios/resource.d',
-    ensure => directory,
-    owner  => 'nagios',
-  }
-
-  # Collect the nagios_host resources
+    # Collect the nagios_host resources
   Nagios_host <<||>> {
     require => File[resource-d],
-    notify  => [Exec[make-nag-cfg-readable],Service['nagios2']],
+    notify  => [Exec[make-nag-cfg-readable],Service['nagios']],
   }
+
 }
+
 
 /*
 class nagios::export {

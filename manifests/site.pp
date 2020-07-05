@@ -68,7 +68,7 @@ node /^vmm\d+$/ {
 
 node /^nagios\..*/ {
   include nagios::server::standalone
-  include nagios::server
+  #include nagios::server
   #include nagios::export
 }
 
