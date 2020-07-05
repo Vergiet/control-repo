@@ -110,6 +110,12 @@ chown -R nagios:nagios /usr/local/nrdp
 '
 
 
+file { "/etc/httpd/conf.d/nrdp.conf" :
+  ensure   => present,
+  source => "/tmp/nrdp*/nrdp.conf",
+  mode => '0655',
+  require => Exec['/root/installnagiosnrdp.sh'],
+}
 
 file { "/root/installnagios.sh" :
   ensure   => present,
@@ -204,6 +210,7 @@ file { "/root/testfile.sh" :
     unless => '/root/testpath.sh /tmp/nrdp*',
     subscribe => [File['/root/installnagiosnrdp.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosnrpe.sh']],
     timeout => 1800,
+    notify => Service['httpd'],
   }
 
   service { 'nrpe':
