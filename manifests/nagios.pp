@@ -123,10 +123,36 @@ chown -R nagios:nagios /usr/local/nrdp
 cp nrdp.conf /etc/httpd/conf.d/nrdp.conf
 '
 
+
+
+$services = '
+define service{
+  hostgroup_name            all-servers
+  use                       generic-service
+  service_description       /var freespace
+  check_command             check_nrpe!check_var
+}
+
+define service{
+    hostgroup_name           all-servers
+    use                      generic-service
+    service_description      / freespace
+    check_command            check_nrpe!check_slash
+}
+'
+
 file { "/root/installnagios.sh" :
   ensure   => present,
   content => $installnagios,
   mode => '0655',
+}
+
+file { "/usr/local/nagios/etc/objects/services.cfg" :
+  ensure   => present,
+  content => $services,
+  owner => 'nagios',
+  group => 'nagios',
+  mode => '0664',
 }
 
 
