@@ -107,15 +107,8 @@ cd /tmp/nrdp*
 mkdir -p /usr/local/nrdp
 cp -r clients server LICENSE* CHANGES* /usr/local/nrdp
 chown -R nagios:nagios /usr/local/nrdp 
+cp nrdp.conf /etc/httpd/conf.d/nrdp.conf
 '
-
-
-file { "/etc/httpd/conf.d/nrdp.conf" :
-  ensure   => present,
-  source => "/tmp/nrdp*/nrdp.conf",
-  mode => '0655',
-  require => Exec['/root/installnagiosnrdp.sh'],
-}
 
 file { "/root/installnagios.sh" :
   ensure   => present,
