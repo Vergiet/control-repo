@@ -201,6 +201,15 @@ file { "/root/testfile.sh" :
     timeout => 1800,
   }
 
+  service { 'nrpe':
+    ensure  => running,
+    enable  => true,
+    subscribe => Exec['/root/installnagiosnrpe.sh'],
+  }
+
+*/
+
+
   httpauth { 'nagiosadmin':
     username => 'nagiosadmin',
     file     => '/usr/local/nagios/etc/htpasswd.users',
@@ -211,14 +220,6 @@ file { "/root/testfile.sh" :
     ensure => present,
     subscribe => Exec['/root/installnagios.sh'],
   }
-
-  service { 'nrpe':
-    ensure  => running,
-    enable  => true,
-    subscribe => Exec['/root/installnagiosnrpe.sh'],
-  }
-
-*/
 
   firewall { '100 WEB required ports':
     dport  => [22, 443, 80, 5666],
