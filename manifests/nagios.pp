@@ -87,11 +87,13 @@ curl -L -O https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.0.
 #https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.0.3/nrpe-4.0.3.tar.gz
 tar xvf nrpe-*.tar.gz
 cd nrpe-*
-./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+./configure
 
 make all
+make install-groups-users
 make install
 make install-config
+make install-inetd
 make install-init
 '
 
@@ -202,14 +204,14 @@ file { "/root/testfile.sh" :
     subscribe => [File['/root/installnagiosnrdp.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosnrpe.sh']],
     timeout => 1800,
   }
-
+*/
   service { 'nrpe':
     ensure  => running,
     enable  => true,
     subscribe => Exec['/root/installnagiosnrpe.sh'],
   }
 
-*/
+
 
 
   httpauth { 'nagiosadmin':
