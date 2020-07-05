@@ -95,8 +95,6 @@ make install-config
 make install-init
 '
 
-
-
 $installnagiosnrdp = '#!/bin/sh
 
 cd /tmp
@@ -226,7 +224,6 @@ file { "/root/testfile.sh" :
     dport  => [22, 443, 80, 5666],
     proto  => 'tcp',
     action => 'accept',
-    subscribe => Service['httpd'],
   }
 
   class { 'mysql::server':
