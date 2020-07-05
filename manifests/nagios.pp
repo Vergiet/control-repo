@@ -260,7 +260,7 @@ file { "/root/testfile.sh" :
 }
 
 
-/*
+
 class nagios::export {
   @@nagios_host { $::fqdn:
     address       => $::ipaddress,
@@ -269,4 +269,4 @@ class nagios::export {
     target        => "/etc/nagios/resource.d/host_${::fqdn}.cfg"
   }
 }
-*/
+
