@@ -246,6 +246,7 @@ class nagios::server {
     ensure => installed,
   }
   service { 'nagios2':
+    name => 'nagios',
     ensure  => running,
     enable  => true,
     require => Exec['make-nag-cfg-readable'],
