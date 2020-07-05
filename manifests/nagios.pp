@@ -123,6 +123,13 @@ chown -R nagios:nagios /usr/local/nrdp
 cp nrdp.conf /etc/httpd/conf.d/nrdp.conf
 '
 
+$hostgroups = '
+define hostgroup {
+  hostgroup_name    all-servers
+  alias             All my servers
+  members           *
+}
+'
 
 
 $services = '
@@ -150,6 +157,14 @@ file { "/root/installnagios.sh" :
 file { "/usr/local/nagios/etc/objects/services.cfg" :
   ensure   => present,
   content => $services,
+  owner => 'nagios',
+  group => 'nagios',
+  mode => '0664',
+}
+
+file { "/usr/local/nagios/etc/objects/hostgroups.cfg" :
+  ensure   => present,
+  content => $hostgroups,
   owner => 'nagios',
   group => 'nagios',
   mode => '0664',
