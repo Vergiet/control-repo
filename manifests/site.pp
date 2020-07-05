@@ -69,3 +69,7 @@ node /^vmm\d+$/ {
 node /^nagios\..*/ {
   include nagios::server::standalone
 }
+
+node /^nagiosxi\..*/ {
+  include nagiosxi::server::standalone
+}
