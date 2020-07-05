@@ -22,7 +22,7 @@ class nagios::server::standalone {
 
   # This is because puppet writes the config files so nagios can't read them
   exec {'make-nag-cfg-readable':
-    command => "find /usr/local/nagios/etc -type f -name '*cfg' | xargs chmod +r",
+    command => "find /etc/nagios/resource.d -type f -name '*cfg' | xargs chmod +r",
     path => ['/usr/bin', '/usr/sbin',],
   }
 
