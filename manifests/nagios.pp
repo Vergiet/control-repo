@@ -4,7 +4,7 @@ class nagios::server::standalone {
   include firewall
   include mysql::client
 
-  package { [ "nagios-plugins-all", "nagios-plugins", "nagios-plugins-nrpe", "httpd", "php", "php-mysql", "wget", "perl", "postfix", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip"]:
+  package { [ "nagios-plugins-all", "nagios-plugins", "nagios-plugins-nrpe", "httpd", "php", "php-mysql", "wget", "perl", "postfix", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip", "gettext", "automake", "autoconf", "net-snmp-utils", "epel-release", "perl-Net-SNMP"]:
     ensure => installed,
   }
 
@@ -74,7 +74,7 @@ cd ~
 curl -L -O http://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
 tar xvf nagios-plugins-*.tar.gz
 cd nagios-plugins-*
-./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl
+./configure
 make
 make install
 '
@@ -180,13 +180,16 @@ file { "/root/testfile.sh" :
     notify => Service['httpd'],
   }
 
-  /*
+  
 
   exec { '/root/installnagiosplugins.sh':
     unless => '/root/testpath.sh /root/nagios-plugins-*',
     subscribe => [File['/root/installnagiosplugins.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagios.sh']],
     timeout => 1800,
+    notify => Service['nagios'],
   }
+
+  /*
 
   exec { '/root/installnagiosnrpe.sh':
     unless => '/root/testpath.sh /root/nrpe-*',
