@@ -198,14 +198,14 @@ file { "/root/testfile.sh" :
     subscribe => [File['/root/installnagiosnrpe.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosplugins.sh']],
     timeout => 1800,
   }
-  /*
+  
 
   exec { '/root/installnagiosnrdp.sh':
     unless => '/root/testpath.sh /tmp/nrdp*',
     subscribe => [File['/root/installnagiosnrdp.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosnrpe.sh']],
     timeout => 1800,
   }
-*/
+
   service { 'nrpe':
     ensure  => running,
     enable  => true,
