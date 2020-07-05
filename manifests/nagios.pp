@@ -242,7 +242,7 @@ file { "/root/testfile.sh" :
 
 
 class nagios::server {
-  package { ["nagios","nagios-plugins","nagios-plugins-nrpe"]:
+  package { ["nagios"]:
     ensure => installed,
   }
   service { nagios:
