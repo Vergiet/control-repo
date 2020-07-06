@@ -314,7 +314,7 @@ file { "/root/testfile.sh" :
 
 class nagios::export {
   @@nagios_host { $::fqdn:
-    use           => 'linux-host',
+    use           => 'linux-server',
     address       => $::ipaddress,
     #check_command => 'check-host-alive!3000.0,80%!5000.0,100%!10',
     check_command => 'check-host-alive',
