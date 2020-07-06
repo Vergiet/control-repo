@@ -319,7 +319,11 @@ class nagios::export {
     #check_command => 'check-host-alive!3000.0,80%!5000.0,100%!10',
     check_command => 'check-host-alive',
     #hostgroups    => 'linux-servers',
-    target        => "/usr/local/nagios/etc/objects/servers/host_${::fqdn}.cfg"
+    target        => "/usr/local/nagios/etc/objects/servers/host_${::fqdn}.cfg",
+    max_check_attempts => '5',
+    check_period => '24x7',
+    notification_interval => '30',
+    notification_period => '24x7',
   }
 }
 
