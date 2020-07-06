@@ -314,11 +314,11 @@ file { "/root/testfile.sh" :
 
 class nagios::export {
   @@nagios_host { $::fqdn:
-    use           => 'generic-host',
+    use           => 'linux-host',
     address       => $::ipaddress,
     #check_command => 'check-host-alive!3000.0,80%!5000.0,100%!10',
     check_command => 'check-host-alive',
-    hostgroups    => 'linux-servers',
+    #hostgroups    => 'linux-servers',
     target        => "/usr/local/nagios/etc/objects/servers/host_${::fqdn}.cfg"
   }
 }
