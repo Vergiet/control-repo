@@ -14,7 +14,7 @@ define nagios::resource(
   # figure out where to write the file
   # replace spaces with an underscore and convert 
   # everything to lowercase
-  $target = inline_template("${nagios::params::resource_dir}/${type}_<%= name -%>.cfg")
+  $target = inline_template("${nagios::params::resource_dir}/${type}_${name}.cfg")
 
   case $bexport {
     true, false: {}
