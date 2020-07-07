@@ -1,0 +1,13 @@
+class nagios::collect_resources {
+
+  include nagios::params
+
+  Nagios_host <<||>> {
+    require => $nagios::params::resource_dir,
+    notify => Service[$nagios::params::service],
+  }
+
+  File <<| tag == nagios_host |>> {
+    notify => Service[$nagios::params::service],
+  }
+}

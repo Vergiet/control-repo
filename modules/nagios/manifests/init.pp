@@ -1,24 +1,24 @@
-
 # This class will be used by the nagios server
 class nagios {
 
-  service { nagios:
+  include nagios::params
+  require nagios::expire_resources
+  include nagios::purge_resources
+
+  service { $nagios::params::service:
     ensure => running,
     enable => true,
   }
 
-  # Be sure to include this directory in your nagios.cfg 
-  # with the cfg_dir directive
-
-  file { resource-d:
-    path => '/etc/nagios/resource.d',
+  # nagios.cfg needs this specified via the cfg_dir directive
+  file { $nagios::params::resource_dir:
     ensure => directory,
-    owner => 'nagios',
+    owner => $nagios::params::user,
   }
 
-  # Collect the nagios_host resources
-  Nagios_host <<||>> {
-    require => File[resource-d],
-    notify => Service[nagios],
+  # Local Nagios resources
+  nagios::resource { [ 'Nagios Servers', 'Puppet Servers', 'Other' ]:
+    type => hostgroup,
+    export => false;
   }
 }
