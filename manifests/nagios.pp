@@ -331,7 +331,6 @@ file { "/root/testfile.sh" :
     type => hostgroup,
     export => false;
   }
-  
 
 }
 
