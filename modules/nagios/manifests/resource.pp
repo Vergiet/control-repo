@@ -14,13 +14,11 @@ define nagios::resource(
   # figure out where to write the file
   # replace spaces with an underscore and convert 
   # everything to lowercase
-  $target = inline_template("${nagios::params::resource_dir}
-↪/${type}_<%=name.gsub(/\\s+/, '_').downcase %>.cfg")
+  $target = inline_template("${nagios::params::resource_dir}/${type}_<%=name.gsub(/\\s+/, '_').downcase %>.cfg")
 
   case $bexport {
     true, false: {}
-    default: { fail("The export parameter must be 
-↪set to true or false.") }
+    default: { fail("The export parameter must be set to true or false.") }
   }
 
   case $type {
