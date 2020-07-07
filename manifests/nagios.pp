@@ -28,12 +28,13 @@ class nagios::server::standalone {
     path => ['/usr/bin', '/usr/sbin',],
   }
   
-
+/*
   file { 'resource-d':
     path   => '/etc/nagios/resource.d',
     ensure => directory,
     owner  => 'nagios',
   }
+  */
   
   file { 'servers':
     path   => '/usr/local/nagios/etc/objects/servers',
