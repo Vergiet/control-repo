@@ -3,7 +3,7 @@ class nagios::collect_resources {
   include nagios::params
 
   Nagios_host <<||>> {
-    require => $nagios::params::resource_dir,
+    require => File[$nagios::params::resource_dir],
     notify => Service[$nagios::params::service],
   }
 
