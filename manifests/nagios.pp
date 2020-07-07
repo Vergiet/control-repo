@@ -308,7 +308,7 @@ file { "/root/testfile.sh" :
     #notify  => Service['nagios'],
   }
 
-  nagios_command
+  include nagios::export
 
 }
 
