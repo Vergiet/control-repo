@@ -1,0 +1,24 @@
+
+# This class will be used by the nagios server
+class nagios {
+
+  service { nagios:
+    ensure => running,
+    enable => true,
+  }
+
+  # Be sure to include this directory in your nagios.cfg 
+  # with the cfg_dir directive
+
+  file { resource-d:
+    path => '/etc/nagios/resource.d',
+    ensure => directory,
+    owner => 'nagios',
+  }
+
+  # Collect the nagios_host resources
+  Nagios_host <<||>> {
+    require => File[resource-d],
+    notify => Service[nagios],
+  }
+}
