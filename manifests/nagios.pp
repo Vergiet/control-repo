@@ -12,13 +12,14 @@ class nagios::server::standalone {
     ensure  => running,
     enable  => true,
   }
-
+/*
   service { 'nagios':
     ensure  => running,
     enable  => true,
     subscribe => Exec['/root/installnagios.sh'],
     #require => Exec['make-nag-cfg-readable'],
   }
+  */
 
   # This is because puppet writes the config files so nagios can't read them
   
@@ -301,13 +302,35 @@ file { "/root/testfile.sh" :
     override_options => { 'mysqld' => { 'max_connections' => '1024' } }
   }
 
+/*
     # Collect the nagios_host resources
   Nagios_host <<||>> {
     require => File['servers'],
     notify  => [Exec[make-nag-cfg-readable],Service['nagios']],
     #notify  => Service['nagios'],
   }
+  */
 
+  include nagios::params
+  require nagios::expire_resources
+  include nagios::purge_resources
+
+  service { $nagios::params::service:
+    ensure => running,
+    enable => true,
+  }
+
+  # nagios.cfg needs this specified via the cfg_dir directive
+  file { $nagios::params::resource_dir:
+    ensure => directory,
+    owner => $nagios::params::user,
+  }
+
+  # Local Nagios resources
+  nagios::resource { [ 'Nagios Servers', 'Puppet Servers', 'Other' ]:
+    type => hostgroup,
+    export => false;
+  }
   
 
 }
