@@ -1,5 +1,5 @@
 define nagios::resource(
-  $export,
+  $bexport,
   $type,
   $host_use = 'generic-host',
   $ensure = 'present',
@@ -17,7 +17,7 @@ define nagios::resource(
   $target = inline_template("${nagios::params::resource_dir}
 ↪/${type}_<%=name.gsub(/\\s+/, '_').downcase %>.cfg")
 
-  case $export {
+  case $bexport {
     true, false: {}
     default: { fail("The export parameter must be 
 ↪set to true or false.") }
@@ -32,14 +32,14 @@ define nagios::resource(
         address => $address,
         hostgroups => $hostgroups,
         target => $target,
-        export => $export,
+        bexport => $bexport,
       }
     }
     hostgroup: {
       nagios::resource::hostgroup { $name:
         ensure => $ensure,
         target => $target,
-        export => $export,
+        bexport => $bexport,
       }
     }
     default: {
@@ -51,7 +51,7 @@ define nagios::resource(
   # the nagios type above
   nagios::resource::file { $target:
     ensure => $ensure,
-    export => $export,
+    bexport => $bexport,
     resource_tag => "nagios_${type}",
     requires => "Nagios_${type}[${name}]",
   }

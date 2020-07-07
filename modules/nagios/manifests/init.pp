@@ -19,6 +19,6 @@ class nagios {
   # Local Nagios resources
   nagios::resource { [ 'Nagios Servers', 'Puppet Servers', 'Other' ]:
     type => hostgroup,
-    export => false;
+    bexport => false;
   }
 }
