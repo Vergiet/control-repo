@@ -37,12 +37,14 @@ class nagios::server::standalone {
   }
   */
 
+  /*
   file { 'servers':
     path   => '/usr/local/nagios/etc/objects/servers',
     ensure => directory,
     owner  => 'nagios',
     group => 'nagios',
   }
+  */
 
 
 $testpath = '#!/bin/bash
