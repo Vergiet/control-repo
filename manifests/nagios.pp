@@ -157,7 +157,8 @@ define service{
   }
 
   file { "/usr/local/nagios/etc/objects/services.cfg" :
-    ensure   => present,
+    #ensure   => present,
+    ensure   => absent,
     content => $services,
     owner => 'nagios',
     group => 'nagios',
@@ -165,7 +166,8 @@ define service{
   }
 
   file { "/usr/local/nagios/etc/objects/hostgroups.cfg" :
-    ensure   => present,
+    #ensure   => present,
+    ensure   => absent,
     content => $hostgroups,
     owner => 'nagios',
     group => 'nagios',
