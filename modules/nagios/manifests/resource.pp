@@ -6,7 +6,7 @@ define nagios::resource(
   $owner = 'nagios',
   $address = '',
   $hostgroups = '',
-  $check_command = ''
+  $check_command = '',
   $max_check_attempts = '5',
   $check_period = '24x7',
   $notification_interval = '30',

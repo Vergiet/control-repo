@@ -5,7 +5,7 @@ define nagios::resource::host(
   $target,
   $check_command,
   $use,
-  $ensure = 'present'
+  $ensure = 'present',
   $max_check_attempts = '5',
   $check_period = '24x7',
   $notification_interval = '30',
