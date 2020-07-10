@@ -13,6 +13,7 @@ define nagios::resource::file(
       ensure => $ensure,
       tag => $resource_tag,
       owner => $nagios::params::user,
+      group => $nagios::params::user,
       require => $requires,
     }
   } else {
@@ -21,6 +22,7 @@ define nagios::resource::file(
       ensure => $ensure,
       tag => $resource_tag,
       owner => $nagios::params::user,
+      group => $nagios::params::user,
       require => $requires,
     }
   }

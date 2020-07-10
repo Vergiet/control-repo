@@ -14,4 +14,9 @@ class nagios::export {
     notification_interval => '30',
     notification_period => '24x7',
   }
+
+
+
+
+
 }
