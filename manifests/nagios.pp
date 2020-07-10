@@ -12,7 +12,8 @@ class nagios::server::standalone {
     ensure  => running,
     enable  => true,
   }
-/*
+
+  /*
   service { 'nagios':
     ensure  => running,
     enable  => true,
@@ -22,20 +23,20 @@ class nagios::server::standalone {
   */
 
   # This is because puppet writes the config files so nagios can't read them
-  
+
   exec {'make-nag-cfg-readable':
     command => "find /usr/local/nagios/etc/objects/servers -type f -name '*cfg' | xargs chmod +r",
     path => ['/usr/bin', '/usr/sbin',],
   }
-  
-/*
+
+  /*
   file { 'resource-d':
     path   => '/etc/nagios/resource.d',
     ensure => directory,
     owner  => 'nagios',
   }
   */
-  
+
   file { 'servers':
     path   => '/usr/local/nagios/etc/objects/servers',
     ensure => directory,
@@ -43,13 +44,6 @@ class nagios::server::standalone {
     group => 'nagios',
   }
 
-
-/*
-  service { 'nrpe':
-    ensure  => running,
-    enable  => true,
-  }
-*/
 
 $testpath = '#!/bin/bash
 
@@ -86,11 +80,6 @@ make install-config
 make install-webconf
 
 '
-/* 
-make install-init
-
-make install-exfoliation
-*/
 
 $installnagiosplugins = '#!/bin/sh
 
@@ -159,55 +148,53 @@ define service{
 }
 '
 
-file { "/root/installnagios.sh" :
-  ensure   => present,
-  content => $installnagios,
-  mode => '0655',
-}
+  file { "/root/installnagios.sh" :
+    ensure   => present,
+    content => $installnagios,
+    mode => '0655',
+  }
 
-file { "/usr/local/nagios/etc/objects/services.cfg" :
-  ensure   => present,
-  content => $services,
-  owner => 'nagios',
-  group => 'nagios',
-  mode => '0664',
-}
+  file { "/usr/local/nagios/etc/objects/services.cfg" :
+    ensure   => present,
+    content => $services,
+    owner => 'nagios',
+    group => 'nagios',
+    mode => '0664',
+  }
 
-file { "/usr/local/nagios/etc/objects/hostgroups.cfg" :
-  ensure   => present,
-  content => $hostgroups,
-  owner => 'nagios',
-  group => 'nagios',
-  mode => '0664',
-}
-
-
-file { "/usr/local/nagios/libexec/check_ncpa.py" :
-  ensure   => present,
-  source => 'https://raw.githubusercontent.com/NagiosEnterprises/ncpa/master/client/check_ncpa.py',
-  mode => '0755',
-  require => Exec['/root/installnagios.sh'],
-}
+  file { "/usr/local/nagios/etc/objects/hostgroups.cfg" :
+    ensure   => present,
+    content => $hostgroups,
+    owner => 'nagios',
+    group => 'nagios',
+    mode => '0664',
+  }
 
 
+  file { "/usr/local/nagios/libexec/check_ncpa.py" :
+    ensure   => present,
+    source => 'https://raw.githubusercontent.com/NagiosEnterprises/ncpa/master/client/check_ncpa.py',
+    mode => '0755',
+    require => Exec['/root/installnagios.sh'],
+  }
 
-file { "/root/installnagiosplugins.sh" :
-  ensure   => present,
-  content => $installnagiosplugins,
-  mode => '0655',
-}
+  file { "/root/installnagiosplugins.sh" :
+    ensure   => present,
+    content => $installnagiosplugins,
+    mode => '0655',
+  }
 
-file { "/root/installnagiosnrpe.sh" :
-  ensure   => present,
-  content => $installnagiosnrpe,
-  mode => '0655',
-}
+  file { "/root/installnagiosnrpe.sh" :
+    ensure   => present,
+    content => $installnagiosnrpe,
+    mode => '0655',
+  }
 
-file { "/root/installnagiosnrdp.sh" :
-  ensure   => present,
-  content => $installnagiosnrdp,
-  mode => '0655',
-}
+  file { "/root/installnagiosnrdp.sh" :
+    ensure   => present,
+    content => $installnagiosnrdp,
+    mode => '0655',
+  }
 
   file { "/root/testpath.sh" :
     ensure   => present,
@@ -215,30 +202,11 @@ file { "/root/installnagiosnrdp.sh" :
     mode => '0655',
   }
 
-file { "/root/testfile.sh" :
-  ensure   => present,
-  content => $testfile,
-  mode => '0655',
-}
-
-/*
-  group { 'nagcmd':
+  file { "/root/testfile.sh" :
     ensure   => present,
+    content => $testfile,
+    mode => '0655',
   }
-
-  user { 'nagios':
-    ensure   => present,
-    password => Sensitive("password"),
-    groups => 'nagcmd',
-    subscribe => Group['nagcmd'],
-  }
-
-  user { 'apache':
-    ensure   => present,
-    groups => 'nagcmd',
-    subscribe => Group['nagcmd'],
-  }
-  */
 
   exec { '/root/installnagios.sh':
     unless => '/root/testpath.sh /root/nagios-*',
@@ -247,8 +215,6 @@ file { "/root/testfile.sh" :
     notify => [Service['httpd'], File['servers']],
   }
 
-  
-
   exec { '/root/installnagiosplugins.sh':
     unless => '/root/testpath.sh /root/nagios-plugins-*',
     subscribe => [File['/root/installnagiosplugins.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagios.sh']],
@@ -256,14 +222,11 @@ file { "/root/testfile.sh" :
     notify => Service['nagios'],
   }
 
-  
-
   exec { '/root/installnagiosnrpe.sh':
     unless => '/root/testpath.sh /root/nrpe-*',
     subscribe => [File['/root/installnagiosnrpe.sh'], Firewall['100 WEB required ports'], Exec['/root/installnagiosplugins.sh']],
     timeout => 1800,
   }
-  
 
   exec { '/root/installnagiosnrdp.sh':
     unless => '/root/testpath.sh /tmp/nrdp*',
@@ -277,9 +240,6 @@ file { "/root/testfile.sh" :
     enable  => true,
     subscribe => Exec['/root/installnagiosnrpe.sh'],
   }
-
-
-
 
   httpauth { 'nagiosadmin':
     username => 'nagiosadmin',
@@ -303,15 +263,6 @@ file { "/root/testfile.sh" :
     override_options => { 'mysqld' => { 'max_connections' => '1024' } }
   }
 
-/*
-    # Collect the nagios_host resources
-  Nagios_host <<||>> {
-    require => File['servers'],
-    notify  => [Exec[make-nag-cfg-readable],Service['nagios']],
-    #notify  => Service['nagios'],
-  }
-  */
-
   include nagios::params
   require nagios::expire_resources
   include nagios::purge_resources
@@ -325,10 +276,11 @@ file { "/root/testfile.sh" :
   file { $nagios::params::resource_dir:
     ensure => directory,
     owner => $nagios::params::user,
+    group => $nagios::params::user,
   }
 
   # Local Nagios resources
-  nagios::resource { [ 'Nagios Servers', 'Puppet Servers', 'Other' ]:
+  nagios::resource { 'all-servers':
     type => hostgroup,
     bexport => false;
   }
