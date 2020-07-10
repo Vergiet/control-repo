@@ -7,7 +7,7 @@ class nagios::export {
     address => $::ipaddress,
     #hostgroups => inline_template("<%= has_variable?('my_nagios_hostgroups') ? $my_nagios_hostgroups : 'Other' %>"),
     hostgroups => 'all-servers',
-    check_command => 'check_host_alive',
+    check_command => 'check-host-alive',
     bexport => true,
     max_check_attempts => '5',
     check_period => '24x7',
