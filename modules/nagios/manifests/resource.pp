@@ -7,6 +7,10 @@ define nagios::resource(
   $address = '',
   $hostgroups = '',
   $check_command = ''
+  $max_check_attempts = '5',
+  $check_period = '24x7',
+  $notification_interval = '30',
+  $notification_period = '24x7',
 ) {
 
   include nagios::params
@@ -31,6 +35,10 @@ define nagios::resource(
         hostgroups => $hostgroups,
         target => $target,
         bexport => $bexport,
+        max_check_attempts => $max_check_attempts,
+        check_period => $check_period,
+        notification_interval => $notification_interval,
+        notification_period => $notification_period,
       }
     }
     hostgroup: {
