@@ -1,7 +1,7 @@
 # All agents (including the nagios server) will use this
 class nagios::export {
 
-  nagios::resource { $::hostname:
+  nagios::resource { $::fqdn:
     type => 'host',
     #address => inline_template("<%= has_variable?('my_nagios_interface') ? eval('ipaddress_' + my_nagios_interface) : ipaddress %>"),
     address => $::ipaddress,
@@ -9,5 +9,9 @@ class nagios::export {
     hostgroups => 'all-servers',
     check_command => 'check_host_alive',
     bexport => true,
+    max_check_attempts => '5',
+    check_period => '24x7',
+    notification_interval => '30',
+    notification_period => '24x7',
   }
 }
