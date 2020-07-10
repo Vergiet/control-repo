@@ -214,7 +214,8 @@ define service{
     unless => '/root/testpath.sh /root/nagios-*',
     subscribe => [File['/root/installnagios.sh'], Firewall['100 WEB required ports']],
     timeout => 1800,
-    notify => [Service['httpd'], File['servers']],
+    #notify => [Service['httpd'], File['servers']],
+    notify => Service['httpd'],
   }
 
   exec { '/root/installnagiosplugins.sh':
