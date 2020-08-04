@@ -1,4 +1,5 @@
 # This class will be used by the nagios server
+# https://www.linuxjournal.com/content/puppet-and-nagios-roadmap-advanced-configuration
 class nagios {
 
   include nagios::params
@@ -17,7 +18,7 @@ class nagios {
   }
 
   # Local Nagios resources
-  nagios::resource { [ 'Nagios Servers', 'Puppet Servers', 'Other' ]:
+  nagios::resource { [ 'all-servers' ]:
     type => hostgroup,
     bexport => false;
   }
