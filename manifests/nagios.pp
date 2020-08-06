@@ -820,107 +820,96 @@ define service {
   }
 
 
-
-}
-
-
+  # This defines a timeperiod that is normal workhours for
+  # those of us monitoring networks and such in the U.S.
 
 
+  nagios_timeperiod { 'workhours':
+    ensure => present,
+    alias => 'Normal Work Hours',
+    monday => '09:00-17:00',
+    tuesday => '09:00-17:00',
+    wednesday => '09:00-17:00',
+    thursday => '09:00-17:00',
+    friday => '09:00-17:00',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
 
+  }
+
+
+  # This defines the *perfect* check and notification
+  # timeperiod
+
+  nagios_timeperiod { 'none':
+    ensure => present,
+    alias => 'No Time Is A Good Time',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+
+  }
+
+
+
+  # Some U.S. holidays
+  # Note: The timeranges for each holiday are meant to *exclude* the holidays from being
+  # treated as a valid time for notifications, etc.  You probably don't want your pager
+  # going off on New Year's.  Although your employer might... :-)
+
+  # january 1 ; New Years
+  # monday -1 may ; Memorial Day (last Monday in May)
+  # july 4 ; Independence Day
+  # monday 1 september ; Labor Day (first Monday in September)
+  # thursday 4 november ; Thanksgiving (4th Thursday in November)
+  # december 25 ; Christmas
 
 /*
 
+  nagios_timeperiod { 'us-holidays':
+    ensure => present,
+    january 1 => '00:00-00:00',     ; New Years
+    monday -1 may => '00:00-00:00',     ; Memorial Day (last Monday in May)
+    july 4 => '00:00-00:00',     ; Independence Day
+    monday 1 september => '00:00-00:00',     ; Labor Day (first Monday in September)
+    thursday 4 november => '00:00-00:00',     ; Thanksgiving (4th Thursday in November)
+    december 25 => '00:00-00:00',     ; Christmas
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
 
-
-define timeperiod {
-
-    name                    24x7
-    timeperiod_name         24x7
-    alias                   24 Hours A Day, 7 Days A Week
-
-    sunday                  00:00-24:00
-    monday                  00:00-24:00
-    tuesday                 00:00-24:00
-    wednesday               00:00-24:00
-    thursday                00:00-24:00
-    friday                  00:00-24:00
-    saturday                00:00-24:00
-}
-
-
-
-# This defines a timeperiod that is normal workhours for
-# those of us monitoring networks and such in the U.S.
-
-define timeperiod {
-
-    name                    workhours
-    timeperiod_name         workhours
-    alias                   Normal Work Hours
-
-    monday                  09:00-17:00
-    tuesday                 09:00-17:00
-    wednesday               09:00-17:00
-    thursday                09:00-17:00
-    friday                  09:00-17:00
-}
-
-
-
-# This defines the *perfect* check and notification
-# timeperiod
-
-define timeperiod {
-
-    name                    none
-    timeperiod_name         none
-    alias                   No Time Is A Good Time
-}
-
-
-
-# Some U.S. holidays
-# Note: The timeranges for each holiday are meant to *exclude* the holidays from being
-# treated as a valid time for notifications, etc.  You probably don't want your pager
-# going off on New Year's.  Although your employer might... :-)
-
-define timeperiod {
-
-    name                    us-holidays
-    timeperiod_name         us-holidays
-    alias                   U.S. Holidays
-
-    january 1               00:00-00:00     ; New Years
-    monday -1 may           00:00-00:00     ; Memorial Day (last Monday in May)
-    july 4                  00:00-00:00     ; Independence Day
-    monday 1 september      00:00-00:00     ; Labor Day (first Monday in September)
-    thursday 4 november     00:00-00:00     ; Thanksgiving (4th Thursday in November)
-    december 25             00:00-00:00     ; Christmas
-}
-
-
-
-# This defines a modified "24x7" timeperiod that covers every day of the
-# year, except for U.S. holidays (defined in the timeperiod above).
-
-define timeperiod {
-
-    name                    24x7_sans_holidays
-    timeperiod_name         24x7_sans_holidays
-    alias                   24x7 Sans Holidays
-
-    use                     us-holidays     ; Get holiday exceptions from other timeperiod
-
-    sunday                  00:00-24:00
-    monday                  00:00-24:00
-    tuesday                 00:00-24:00
-    wednesday               00:00-24:00
-    thursday                00:00-24:00
-    friday                  00:00-24:00
-    saturday                00:00-24:00
-}
+  }
 
 */
+
+  # This defines a modified "24x7" timeperiod that covers every day of the
+  # year, except for U.S. holidays (defined in the timeperiod above).
+
+  # Get holiday exceptions from other timeperiod
+
+  nagios_timeperiod { '24x7_sans_holidays':
+    ensure => present,
+    alias => '24x7_sans_holidays',
+    sunday => '00:00-24:00',
+    monday => '00:00-24:00',
+    tuesday => '00:00-24:00',
+    wednesday => '00:00-24:00',
+    thursday => '00:00-24:00',
+    friday => '00:00-24:00',
+    saturday => '00:00-24:00',
+    use => 'us-holidays',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+
+  }
+
+
+
+}
+
+
 
 
 
