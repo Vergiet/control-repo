@@ -898,7 +898,7 @@ define service {
     thursday => '00:00-24:00',
     friday => '00:00-24:00',
     saturday => '00:00-24:00',
-    use => 'us-holidays',
+    #use => 'us-holidays',
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
