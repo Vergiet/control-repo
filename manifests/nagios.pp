@@ -290,6 +290,15 @@ define service{
     bexport => false;
   }
 
+
+  nagios_command {'check_nrpe':
+    ensure => present,
+    command_line => '$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$',
+    mode => 777,
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
 }
 
 
