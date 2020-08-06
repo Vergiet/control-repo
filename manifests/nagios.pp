@@ -2981,7 +2981,7 @@ allow_empty_hostgroup_assignment=0
 
 
 
-  nagios_service { 'CPU Usage':
+  nagios_service { 'CPU Usage dc01':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -2991,7 +2991,7 @@ allow_empty_hostgroup_assignment=0
 
   }
 
-  nagios_service { 'Disk Usage':
+  nagios_service { 'Disk Usage dc01':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -3001,7 +3001,7 @@ allow_empty_hostgroup_assignment=0
 
   }
 
-  nagios_service { 'Swap Usage':
+  nagios_service { 'Swap Usage dc01':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -3011,7 +3011,7 @@ allow_empty_hostgroup_assignment=0
 
   }
 
-  nagios_service { 'Memory Usage':
+  nagios_service { 'Memory Usage dc01':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -3021,7 +3021,7 @@ allow_empty_hostgroup_assignment=0
 
   }
 
-  nagios_service { 'Process Count':
+  nagios_service { 'Process Count dc01':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
