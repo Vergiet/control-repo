@@ -3002,6 +3002,8 @@ allow_empty_hostgroup_assignment=0
 
   }
 
+  /*
+
   nagios_service { 'Swap Usage':
     ensure => absent,
     mode => '0777',
@@ -3011,6 +3013,8 @@ allow_empty_hostgroup_assignment=0
     use => 'passive_service',
 
   }
+
+  */
 
   nagios_service { 'Memory Usage':
     ensure => present,
