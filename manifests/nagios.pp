@@ -151,6 +151,208 @@ define service{
 }
 '
 
+$templates = '
+
+
+###############################################################################
+# TEMPLATES.CFG - SAMPLE OBJECT TEMPLATES
+#
+#
+# NOTES: This config file provides you with some example object definition
+#        templates that are referred by other host, service, contact, etc.
+#        definitions in other config files.
+#
+#        You dont need to keep these definitions in a separate file from your
+#        other object definitions.  This has been done just to make things
+#        easier to understand.
+#
+###############################################################################
+
+
+
+###############################################################################
+#
+# CONTACT TEMPLATES
+#
+###############################################################################
+
+# Generic contact definition template
+# This is NOT a real contact, just a template!
+
+define contact {
+
+    name                            generic-contact         ; The name of this contact template
+    service_notification_period     24x7                    ; service notifications can be sent anytime
+    host_notification_period        24x7                    ; host notifications can be sent anytime
+    service_notification_options    w,u,c,r,f,s             ; send notifications for all service states, flapping events, and scheduled downtime events
+    host_notification_options       d,u,r,f,s               ; send notifications for all host states, flapping events, and scheduled downtime events
+    service_notification_commands   notify-service-by-email ; send service notifications via email
+    host_notification_commands      notify-host-by-email    ; send host notifications via email
+    register                        0                       ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL CONTACT, JUST A TEMPLATE!
+}
+
+###############################################################################
+#
+# HOST TEMPLATES
+#
+###############################################################################
+
+# Generic host definition template
+# This is NOT a real host, just a template!
+
+define host {
+
+    name                            generic-host            ; The name of this host template
+    notifications_enabled           1                       ; Host notifications are enabled
+    event_handler_enabled           1                       ; Host event handler is enabled
+    flap_detection_enabled          1                       ; Flap detection is enabled
+    process_perf_data               1                       ; Process performance data
+    retain_status_information       1                       ; Retain status information across program restarts
+    retain_nonstatus_information    1                       ; Retain non-status information across program restarts
+    notification_period             24x7                    ; Send host notifications at any time
+    register                        0                       ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!
+}
+
+
+
+# Linux host definition template
+# This is NOT a real host, just a template!
+
+define host {
+
+    name                            linux-server            ; The name of this host template
+    use                             generic-host            ; This template inherits other values from the generic-host template
+    check_period                    24x7                    ; By default, Linux hosts are checked round the clock
+    check_interval                  5                       ; Actively check the host every 5 minutes
+    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
+    max_check_attempts              10                      ; Check each Linux host 10 times (max)
+    check_command                   check-host-alive        ; Default command to check Linux hosts
+    notification_period             workhours               ; Linux admins hate to be woken up, so we only notify during the day
+                                                            ; Note that the notification_period variable is being overridden from
+                                                            ; the value that is inherited from the generic-host template!
+    notification_interval           120                     ; Resend notifications every 2 hours
+    notification_options            d,u,r                   ; Only send notifications for specific host states
+    contact_groups                  admins                  ; Notifications get sent to the admins by default
+    register                        0                       ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!
+}
+
+
+
+
+# Windows host definition template
+# This is NOT a real host, just a template!
+
+define host {
+
+    name                            windows-server          ; The name of this host template
+    use                             generic-host            ; Inherit default values from the generic-host template
+    check_period                    24x7                    ; By default, Windows servers are monitored round the clock
+    check_interval                  5                       ; Actively check the server every 5 minutes
+    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
+    max_check_attempts              10                      ; Check each server 10 times (max)
+    check_command                   check-host-alive        ; Default command to check if servers are "alive"
+    notification_period             24x7                    ; Send notification out at any time - day or night
+    notification_interval           30                      ; Resend notifications every 30 minutes
+    notification_options            d,r                     ; Only send notifications for specific host states
+    contact_groups                  admins                  ; Notifications get sent to the admins by default
+    hostgroups                      windows-servers         ; Host groups that Windows servers should be a member of
+    register                        0                       ; DONT REGISTER THIS - ITS JUST A TEMPLATE
+}
+
+
+
+# We define a generic printer template that can
+# be used for most printers we monitor
+
+define host {
+
+    name                            generic-printer         ; The name of this host template
+    use                             generic-host            ; Inherit default values from the generic-host template
+    check_period                    24x7                    ; By default, printers are monitored round the clock
+    check_interval                  5                       ; Actively check the printer every 5 minutes
+    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
+    max_check_attempts              10                      ; Check each printer 10 times (max)
+    check_command                   check-host-alive        ; Default command to check if printers are "alive"
+    notification_period             workhours               ; Printers are only used during the workday
+    notification_interval           30                      ; Resend notifications every 30 minutes
+    notification_options            d,r                     ; Only send notifications for specific host states
+    contact_groups                  admins                  ; Notifications get sent to the admins by default
+    register                        0                       ; DONT REGISTER THIS - ITS JUST A TEMPLATE
+}
+
+
+
+# Define a template for switches that we can reuse
+define host {
+
+    name                            generic-switch          ; The name of this host template
+    use                             generic-host            ; Inherit default values from the generic-host template
+    check_period                    24x7                    ; By default, switches are monitored round the clock
+    check_interval                  5                       ; Switches are checked every 5 minutes
+    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
+    max_check_attempts              10                      ; Check each switch 10 times (max)
+    check_command                   check-host-alive        ; Default command to check if routers are "alive"
+    notification_period             24x7                    ; Send notifications at any time
+    notification_interval           30                      ; Resend notifications every 30 minutes
+    notification_options            d,r                     ; Only send notifications for specific host states
+    contact_groups                  admins                  ; Notifications get sent to the admins by default
+    register                        0                       ; DONT REGISTER THIS - ITS JUST A TEMPLATE
+}
+
+
+
+###############################################################################
+#
+# SERVICE TEMPLATES
+#
+###############################################################################
+
+# Generic service definition template
+# This is NOT a real service, just a template!
+
+define service {
+
+    name                            generic-service         ; The name of this service template
+    active_checks_enabled           1                       ; Active service checks are enabled
+    passive_checks_enabled          1                       ; Passive service checks are enabled/accepted
+    parallelize_check               1                       ; Active service checks should be parallelized (disabling this can lead to major performance problems)
+    obsess_over_service             1                       ; We should obsess over this service (if necessary)
+    check_freshness                 0                       ; Default is to NOT check service freshness
+    notifications_enabled           1                       ; Service notifications are enabled
+    event_handler_enabled           1                       ; Service event handler is enabled
+    flap_detection_enabled          1                       ; Flap detection is enabled
+    process_perf_data               1                       ; Process performance data
+    retain_status_information       1                       ; Retain status information across program restarts
+    retain_nonstatus_information    1                       ; Retain non-status information across program restarts
+    is_volatile                     0                       ; The service is not volatile
+    check_period                    24x7                    ; The service can be checked at any time of the day
+    max_check_attempts              3                       ; Re-check the service up to 3 times in order to determine its final (hard) state
+    check_interval                  10                      ; Check the service every 10 minutes under normal conditions
+    retry_interval                  2                       ; Re-check the service every two minutes until a hard state can be determined
+    contact_groups                  admins                  ; Notifications get sent out to everyone in the admins group
+    notification_options            w,u,c,r                 ; Send notifications about warning, unknown, critical, and recovery events
+    notification_interval           60                      ; Re-notify about service problems every hour
+    notification_period             24x7                    ; Notifications can be sent out at any time
+    register                        0                       ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!
+}
+
+
+
+# Local service definition template
+# This is NOT a real service, just a template!
+
+define service {
+
+    name                            local-service           ; The name of this service template
+    use                             generic-service         ; Inherit default values from the generic-service definition
+    max_check_attempts              4                       ; Re-check the service up to 4 times in order to determine its final (hard) state
+    check_interval                  5                       ; Check the service every 5 minutes under normal conditions
+    retry_interval                  1                       ; Re-check the service every minute until a hard state can be determined
+    register                        0                       ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!
+}
+
+'
+
   file { "/root/installnagios.sh" :
     ensure   => present,
     content => $installnagios,
@@ -161,6 +363,15 @@ define service{
     #ensure   => present,
     ensure   => absent,
     content => $services,
+    owner => 'nagios',
+    group => 'nagios',
+    mode => '0664',
+  }
+
+  file { "/etc/nagios/templates.cfg" :
+    ensure   => present,
+    #ensure   => absent,
+    content => $templates,
     owner => 'nagios',
     group => 'nagios',
     mode => '0664',
@@ -496,16 +707,16 @@ define service{
     owner => $nagios::params::user,
   }
 
-################################################################################
-#
-# SAMPLE PERFORMANCE DATA COMMANDS
-#
-# These are sample performance data commands that can be used to send performance
-# data output to two text files (one for hosts, another for services).  If you
-# plan on simply writing performance data out to a file, consider using the
-# host_perfdata_file and service_perfdata_file options in the main config file.
-#
-################################################################################
+  ################################################################################
+  #
+  # SAMPLE PERFORMANCE DATA COMMANDS
+  #
+  # These are sample performance data commands that can be used to send performance
+  # data output to two text files (one for hosts, another for services).  If you
+  # plan on simply writing performance data out to a file, consider using the
+  # host_perfdata_file and service_perfdata_file options in the main config file.
+  #
+  ################################################################################
 
   nagios_command {'process-host-perfdata':
     ensure => present,
@@ -524,20 +735,20 @@ define service{
     owner => $nagios::params::user,
   }
 
-#/etc/nagios/resource.d/hostgroup_all-servers.cfg
-#/etc/nagios/resource.d/host_nagios.mshome.net.cfg
+  #/etc/nagios/resource.d/hostgroup_all-servers.cfg
+  #/etc/nagios/resource.d/host_nagios.mshome.net.cfg
 
-#ls -la /usr/local/nagios/etc/objects/
+  #ls -la /usr/local/nagios/etc/objects/
 
-###############################################################################
-#
-# CONTACTS
-#
-###############################################################################
+  ###############################################################################
+  #
+  # CONTACTS
+  #
+  ###############################################################################
 
-# Just one contact defined by default - the Nagios admin (that's you)
-# This contact definition inherits a lot of default values from the
-# 'generic-contact' template which is defined elsewhere.
+  # Just one contact defined by default - the Nagios admin (that's you)
+  # This contact definition inherits a lot of default values from the
+  # 'generic-contact' template which is defined elsewhere.
 
   nagios_contact { 'nagiosadmin':
     ensure => present,
@@ -549,14 +760,14 @@ define service{
     owner => $nagios::params::user,
   }
 
-###############################################################################
-#
-# CONTACT GROUPS
-#
-###############################################################################
+  ###############################################################################
+  #
+  # CONTACT GROUPS
+  #
+  ###############################################################################
 
-# We only have one contact in this simple configuration file, so there is
-# no need to create more than one contact group.
+  # We only have one contact in this simple configuration file, so there is
+  # no need to create more than one contact group.
 
   nagios_contactgroup { 'admins':
     ensure => present,
@@ -576,205 +787,6 @@ define service{
 
 
 /*
-
-
-###############################################################################
-# TEMPLATES.CFG - SAMPLE OBJECT TEMPLATES
-#
-#
-# NOTES: This config file provides you with some example object definition
-#        templates that are referred by other host, service, contact, etc.
-#        definitions in other config files.
-#
-#        You don't need to keep these definitions in a separate file from your
-#        other object definitions.  This has been done just to make things
-#        easier to understand.
-#
-###############################################################################
-
-
-
-###############################################################################
-#
-# CONTACT TEMPLATES
-#
-###############################################################################
-
-# Generic contact definition template
-# This is NOT a real contact, just a template!
-
-define contact {
-
-    name                            generic-contact         ; The name of this contact template
-    service_notification_period     24x7                    ; service notifications can be sent anytime
-    host_notification_period        24x7                    ; host notifications can be sent anytime
-    service_notification_options    w,u,c,r,f,s             ; send notifications for all service states, flapping events, and scheduled downtime events
-    host_notification_options       d,u,r,f,s               ; send notifications for all host states, flapping events, and scheduled downtime events
-    service_notification_commands   notify-service-by-email ; send service notifications via email
-    host_notification_commands      notify-host-by-email    ; send host notifications via email
-    register                        0                       ; DON'T REGISTER THIS DEFINITION - ITS NOT A REAL CONTACT, JUST A TEMPLATE!
-}
-
-###############################################################################
-#
-# HOST TEMPLATES
-#
-###############################################################################
-
-# Generic host definition template
-# This is NOT a real host, just a template!
-
-define host {
-
-    name                            generic-host            ; The name of this host template
-    notifications_enabled           1                       ; Host notifications are enabled
-    event_handler_enabled           1                       ; Host event handler is enabled
-    flap_detection_enabled          1                       ; Flap detection is enabled
-    process_perf_data               1                       ; Process performance data
-    retain_status_information       1                       ; Retain status information across program restarts
-    retain_nonstatus_information    1                       ; Retain non-status information across program restarts
-    notification_period             24x7                    ; Send host notifications at any time
-    register                        0                       ; DON'T REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!
-}
-
-
-
-# Linux host definition template
-# This is NOT a real host, just a template!
-
-define host {
-
-    name                            linux-server            ; The name of this host template
-    use                             generic-host            ; This template inherits other values from the generic-host template
-    check_period                    24x7                    ; By default, Linux hosts are checked round the clock
-    check_interval                  5                       ; Actively check the host every 5 minutes
-    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
-    max_check_attempts              10                      ; Check each Linux host 10 times (max)
-    check_command                   check-host-alive        ; Default command to check Linux hosts
-    notification_period             workhours               ; Linux admins hate to be woken up, so we only notify during the day
-                                                            ; Note that the notification_period variable is being overridden from
-                                                            ; the value that is inherited from the generic-host template!
-    notification_interval           120                     ; Resend notifications every 2 hours
-    notification_options            d,u,r                   ; Only send notifications for specific host states
-    contact_groups                  admins                  ; Notifications get sent to the admins by default
-    register                        0                       ; DON'T REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!
-}
-
-
-
-
-# Windows host definition template
-# This is NOT a real host, just a template!
-
-define host {
-
-    name                            windows-server          ; The name of this host template
-    use                             generic-host            ; Inherit default values from the generic-host template
-    check_period                    24x7                    ; By default, Windows servers are monitored round the clock
-    check_interval                  5                       ; Actively check the server every 5 minutes
-    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
-    max_check_attempts              10                      ; Check each server 10 times (max)
-    check_command                   check-host-alive        ; Default command to check if servers are "alive"
-    notification_period             24x7                    ; Send notification out at any time - day or night
-    notification_interval           30                      ; Resend notifications every 30 minutes
-    notification_options            d,r                     ; Only send notifications for specific host states
-    contact_groups                  admins                  ; Notifications get sent to the admins by default
-    hostgroups                      windows-servers         ; Host groups that Windows servers should be a member of
-    register                        0                       ; DON'T REGISTER THIS - ITS JUST A TEMPLATE
-}
-
-
-
-# We define a generic printer template that can
-# be used for most printers we monitor
-
-define host {
-
-    name                            generic-printer         ; The name of this host template
-    use                             generic-host            ; Inherit default values from the generic-host template
-    check_period                    24x7                    ; By default, printers are monitored round the clock
-    check_interval                  5                       ; Actively check the printer every 5 minutes
-    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
-    max_check_attempts              10                      ; Check each printer 10 times (max)
-    check_command                   check-host-alive        ; Default command to check if printers are "alive"
-    notification_period             workhours               ; Printers are only used during the workday
-    notification_interval           30                      ; Resend notifications every 30 minutes
-    notification_options            d,r                     ; Only send notifications for specific host states
-    contact_groups                  admins                  ; Notifications get sent to the admins by default
-    register                        0                       ; DON'T REGISTER THIS - ITS JUST A TEMPLATE
-}
-
-
-
-# Define a template for switches that we can reuse
-define host {
-
-    name                            generic-switch          ; The name of this host template
-    use                             generic-host            ; Inherit default values from the generic-host template
-    check_period                    24x7                    ; By default, switches are monitored round the clock
-    check_interval                  5                       ; Switches are checked every 5 minutes
-    retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
-    max_check_attempts              10                      ; Check each switch 10 times (max)
-    check_command                   check-host-alive        ; Default command to check if routers are "alive"
-    notification_period             24x7                    ; Send notifications at any time
-    notification_interval           30                      ; Resend notifications every 30 minutes
-    notification_options            d,r                     ; Only send notifications for specific host states
-    contact_groups                  admins                  ; Notifications get sent to the admins by default
-    register                        0                       ; DON'T REGISTER THIS - ITS JUST A TEMPLATE
-}
-
-
-
-###############################################################################
-#
-# SERVICE TEMPLATES
-#
-###############################################################################
-
-# Generic service definition template
-# This is NOT a real service, just a template!
-
-define service {
-
-    name                            generic-service         ; The 'name' of this service template
-    active_checks_enabled           1                       ; Active service checks are enabled
-    passive_checks_enabled          1                       ; Passive service checks are enabled/accepted
-    parallelize_check               1                       ; Active service checks should be parallelized (disabling this can lead to major performance problems)
-    obsess_over_service             1                       ; We should obsess over this service (if necessary)
-    check_freshness                 0                       ; Default is to NOT check service 'freshness'
-    notifications_enabled           1                       ; Service notifications are enabled
-    event_handler_enabled           1                       ; Service event handler is enabled
-    flap_detection_enabled          1                       ; Flap detection is enabled
-    process_perf_data               1                       ; Process performance data
-    retain_status_information       1                       ; Retain status information across program restarts
-    retain_nonstatus_information    1                       ; Retain non-status information across program restarts
-    is_volatile                     0                       ; The service is not volatile
-    check_period                    24x7                    ; The service can be checked at any time of the day
-    max_check_attempts              3                       ; Re-check the service up to 3 times in order to determine its final (hard) state
-    check_interval                  10                      ; Check the service every 10 minutes under normal conditions
-    retry_interval                  2                       ; Re-check the service every two minutes until a hard state can be determined
-    contact_groups                  admins                  ; Notifications get sent out to everyone in the 'admins' group
-    notification_options            w,u,c,r                 ; Send notifications about warning, unknown, critical, and recovery events
-    notification_interval           60                      ; Re-notify about service problems every hour
-    notification_period             24x7                    ; Notifications can be sent out at any time
-    register                        0                       ; DON'T REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!
-}
-
-
-
-# Local service definition template
-# This is NOT a real service, just a template!
-
-define service {
-
-    name                            local-service           ; The name of this service template
-    use                             generic-service         ; Inherit default values from the generic-service definition
-    max_check_attempts              4                       ; Re-check the service up to 4 times in order to determine its final (hard) state
-    check_interval                  5                       ; Check the service every 5 minutes under normal conditions
-    retry_interval                  1                       ; Re-check the service every minute until a hard state can be determined
-    register                        0                       ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!
-}
-
 
 
 */
