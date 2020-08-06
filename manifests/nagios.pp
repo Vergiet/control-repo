@@ -1485,7 +1485,7 @@ date_format=us
 # be used in host names, service descriptions, or names of other
 # object types.
 
-illegal_object_name_chars=`~!$%^&*|\'\"<>?,()=
+illegal_object_name_chars=`~!$%^&*|\'"<>?,()=
 
 
 
@@ -1506,7 +1506,7 @@ illegal_object_name_chars=`~!$%^&*|\'\"<>?,()=
 #       $SERVICEACKAUTHOR$
 #       $SERVICEACKCOMMENT$
 
-illegal_macro_output_chars=`~$&|\'\"<>
+illegal_macro_output_chars=`~$&|\'"<>
 
 
 
@@ -1521,8 +1521,8 @@ use_regexp_matching=0
 
 
 
-# \"TRUE\" REGULAR EXPRESSION MATCHING
-# This option controls whether or not \"true\" regular expression
+# "TRUE" REGULAR EXPRESSION MATCHING
+# This option controls whether or not "true" regular expression
 # matching takes place in the object config files.  This option
 # only has an effect if regular expression matching is enabled
 # (see above).  If this option is DISABLED, regular expression
