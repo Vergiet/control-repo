@@ -2965,6 +2965,7 @@ allow_empty_hostgroup_assignment=0
     notification_interval => '60',
     notification_period => '24x7',
     notification_options => 'w,u,c,r',
+    service_description => 'passive_service',
 
   }
 
