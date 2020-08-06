@@ -3036,6 +3036,7 @@ allow_empty_hostgroup_assignment=0
     owner => $nagios::params::user,
     host_name => 'dc01',
     use => 'passive_service',
+    name => 'Process Count',
     service_description => 'Process Count',
 
   }
