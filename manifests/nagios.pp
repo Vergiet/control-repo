@@ -2351,8 +2351,9 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
-    alias => 'Linux Servers ',
+    alias => 'Linux Servers',
     members => 'localhost',
+    notify => Service['nagios'],
   }
 
 
