@@ -151,6 +151,43 @@ define service{
     check_command            check_nrpe!check_slash
 }
 '
+$winncpapassivechecksconfigexample = '
+#
+#	Basic example of Passive checks being defined
+#
+
+#[passive checks]
+
+#%HOSTNAME%|__HOST__ = system/agent_version
+#%HOSTNAME%|Disk Usage = disk/logical/C:|/used_percent --warning 80 --critical 90 --units Gi
+#%HOSTNAME%|CPU Usage = cpu/percent --warning 60 --critical 80 --aggregate avg
+#%HOSTNAME%|Swap Usage = memory/swap --warning 60 --critical 80 --units Gi
+#%HOSTNAME%|Memory Usage = memory/virtual --warning 80 --critical 90 --units Gi
+#%HOSTNAME%|Process Count = processes --warning 300 --critical 400
+
+'
+
+
+$winncpapassivechecksconfig = '
+
+#
+# AUTO GENERATED NRDP CONFIG FROM WINDOWS INSTALLER
+#
+
+[passive checks]
+
+# Host check  - This is to stop "pending check" status in Nagios
+%HOSTNAME%|__HOST__ = system/agent_version
+
+# Service checks
+%HOSTNAME%|CPU Usage = cpu/percent --warning 80 --critical 90 --aggregate avg
+%HOSTNAME%|Disk Usage = disk/logical/C:|/used_percent --warning 80 --critical 90 --units Gi
+%HOSTNAME%|Swap Usage = memory/swap --warning 60 --critical 80 --units Gi
+%HOSTNAME%|Memory Usage = memory/virtual --warning 80 --critical 90 --units Gi
+%HOSTNAME%|Process Count = processes --warning 300 --critical 400
+
+'
+
 
 $winncpaconfig = '
 
@@ -2862,6 +2899,137 @@ allow_empty_hostgroup_assignment=0
 
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  # NCPA config DC01
+
+  nagios_command {'check_dummy':
+    ensure => present,
+    command_line => '$USER1$/check_dummy $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+  nagios_host { 'passive_host':
+    ensure => present,
+    use => 'generic-host',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    active_checks_enabled => '0',
+    passive_checks_enabled => '1',
+    flap_detection_enabled => '0',
+    register => '0',
+    check_period => '24x7',
+    max_check_attempts => '1',
+    check_interval => '5',
+    retry_interval => '1',
+    check_freshness => '0',
+    contact_groups => 'admins',
+    check_command => 'check_dummy!0',
+    notification_interval => '60',
+    notification_period => '24x7',
+    notification_options => 'd,u,r',
+  }
+
+
+  nagios_service { 'passive_service':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'generic-service',
+    active_checks_enabled => '0',
+    passive_checks_enabled => '1',
+    flap_detection_enabled => '0',
+    register => '0',
+    check_period => '24x7',
+    max_check_attempts => '1',
+    check_interval => '5',
+    retry_interval => '1',
+    check_freshness => '0',
+    contact_groups => 'admins',
+    check_command => 'check_dummy!0',
+    notification_interval => '60',
+    notification_period => '24x7',
+    notification_options => 'w,u,c,r',
+
+  }
+
+
+
+
+  nagios_host { 'dc01':
+    ensure => present,
+    use => 'passive_host',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+
+  nagios_service { 'CPU Usage':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    host_name => 'dc01',
+    use => 'passive_service',
+
+  }
+
+  nagios_service { 'Disk Usage':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    host_name => 'dc01',
+    use => 'passive_service',
+
+  }
+
+  nagios_service { 'Swap Usage':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    host_name => 'dc01',
+    use => 'passive_service',
+
+  }
+
+  nagios_service { 'Memory Usage':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    host_name => 'dc01',
+    use => 'passive_service',
+
+  }
+
+  nagios_service { 'Process Count':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    host_name => 'dc01',
+    use => 'passive_service',
+
+  }
 
 }
 
