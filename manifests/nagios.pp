@@ -1743,10 +1743,22 @@ allow_empty_hostgroup_assignment=0
 
 '
 
+
+
+
   file { "/root/installnagios.sh" :
     ensure   => present,
     content => $installnagios,
     mode => '0655',
+  }
+
+  file { "/var/www/html/index.html" :
+    ensure   => present,
+    #ensure   => absent,
+    content => '',
+    #owner => 'nagios',
+    #group => 'nagios',
+    mode => '0755',
   }
 
   file { "/usr/local/nagios/etc/objects/services.cfg" :
