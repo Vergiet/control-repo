@@ -2500,7 +2500,7 @@ allow_empty_hostgroup_assignment=0
   # Disable notifications for this service by default, as not all users may have HTTP enabled.
 
   nagios_service { 'HTTP':
-    ensure => absent,
+    ensure => present,
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
