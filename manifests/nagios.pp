@@ -23,11 +23,12 @@ class nagios::server::standalone {
   */
 
   # This is because puppet writes the config files so nagios can't read them
-
+/*
   exec {'make-nag-cfg-readable':
     command => "find /usr/local/nagios/etc/objects/servers -type f -name '*cfg' | xargs chmod +r",
     path => ['/usr/bin', '/usr/sbin',],
   }
+  */
 
   /*
   file { 'resource-d':
@@ -1908,6 +1909,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
   nagios_command {'notify-host-by-email':
