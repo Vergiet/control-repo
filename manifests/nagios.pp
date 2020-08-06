@@ -523,6 +523,50 @@ define service{
     owner => $nagios::params::user,
   }
 
+#/etc/nagios/resource.d/hostgroup_all-servers.cfg
+#/etc/nagios/resource.d/host_nagios.mshome.net.cfg
+
+#ls -la /usr/local/nagios/etc/objects/
+
+###############################################################################
+#
+# CONTACTS
+#
+###############################################################################
+
+# Just one contact defined by default - the Nagios admin (that's you)
+# This contact definition inherits a lot of default values from the
+# 'generic-contact' template which is defined elsewhere.
+
+  nagios_contact { 'nagiosadmin':
+    ensure => present,
+    use => 'generic-contact',
+    alias => 'Nagios Admin',
+    email => 'nagios@localhost'
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+###############################################################################
+#
+# CONTACT GROUPS
+#
+###############################################################################
+
+# We only have one contact in this simple configuration file, so there is
+# no need to create more than one contact group.
+
+  nagios_contactgroup { 'admins':
+    ensure => present,
+    alias => 'Nagios Administrators',
+    members => 'nagiosadmin'
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
 
 
 }
