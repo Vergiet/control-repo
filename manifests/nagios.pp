@@ -542,7 +542,7 @@ define service{
     ensure => present,
     use => 'generic-contact',
     alias => 'Nagios Admin',
-    email => 'nagios@localhost'
+    email => 'nagios@localhost',
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
@@ -570,6 +570,17 @@ define service{
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
