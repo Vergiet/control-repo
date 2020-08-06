@@ -292,7 +292,7 @@ define service{
     bexport => false;
   }
 
-
+/*
   nagios_command {'check_nrpe':
     ensure => present,
     command_line => '$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$',
@@ -300,6 +300,7 @@ define service{
     group => $nagios::params::user,
     owner => $nagios::params::user,
   }
+  */
 
   nagios_command {'notify-host-by-email':
     ensure => present,
