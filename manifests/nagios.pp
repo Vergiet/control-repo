@@ -560,7 +560,7 @@ define service{
   nagios_contactgroup { 'admins':
     ensure => present,
     alias => 'Nagios Administrators',
-    members => 'nagiosadmin'
+    members => 'nagiosadmin',
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
