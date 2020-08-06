@@ -299,6 +299,250 @@ define service{
     owner => $nagios::params::user,
   }
 
+  nagios_command {'notify-host-by-email':
+    ensure => present,
+    command_line => '/usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n" | /usr/bin/mail -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **" $CONTACTEMAIL$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+  nagios_command {'notify-service-by-email':
+    ensure => present,
+    command_line => '/usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nAdditional Info:\n\n$SERVICEOUTPUT$\n" | /usr/bin/mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check-host-alive':
+    ensure => present,
+    command_line => '$USER1$/check_ping -H $HOSTADDRESS$ -w 3000.0,80% -c 5000.0,100% -p 5',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_local_disk':
+    ensure => present,
+    command_line => '$USER1$/check_disk -w $ARG1$ -c $ARG2$ -p $ARG3$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_local_load':
+    ensure => present,
+    command_line => '$USER1$/check_load -w $ARG1$ -c $ARG2$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_local_procs':
+    ensure => present,
+    command_line => '$USER1$/check_procs -w $ARG1$ -c $ARG2$ -s $ARG3$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_local_users':
+    ensure => present,
+    command_line => '$USER1$/check_users -w $ARG1$ -c $ARG2$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_local_swap':
+    ensure => present,
+    command_line => '$USER1$/check_swap -w $ARG1$ -c $ARG2$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_local_mrtgtraf':
+    ensure => present,
+    command_line => '$USER1$/check_mrtgtraf -F $ARG1$ -a $ARG2$ -w $ARG3$ -c $ARG4$ -e $ARG5$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_ftp':
+    ensure => present,
+    command_line => '$USER1$/check_ftp -H $HOSTADDRESS$ $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_hpjd':
+    ensure => present,
+    command_line => '$USER1$/check_hpjd -H $HOSTADDRESS$ $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_snmp':
+    ensure => present,
+    command_line => '$USER1$/check_snmp -H $HOSTADDRESS$ $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_http':
+    ensure => present,
+    command_line => '$USER1$/check_http -I $HOSTADDRESS$ $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_ssh':
+    ensure => present,
+    command_line => '$USER1$/check_ssh $ARG1$ $HOSTADDRESS$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_dhcp':
+    ensure => present,
+    command_line => '$USER1$/check_dhcp $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_ping':
+    ensure => present,
+    command_line => '$USER1$/check_ping -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -p 5',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_pop':
+    ensure => present,
+    command_line => '$USER1$/check_pop -H $HOSTADDRESS$ $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_imap':
+    ensure => present,
+    command_line => '$USER1$/check_imap -H $HOSTADDRESS$ $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_smtp':
+    ensure => present,
+    command_line => '$USER1$/check_smtp -H $HOSTADDRESS$ $ARG1$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_tcp':
+    ensure => present,
+    command_line => '$USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$ $ARG2$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_udp':
+    ensure => present,
+    command_line => '$USER1$/check_udp -H $HOSTADDRESS$ -p $ARG1$ $ARG2$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'check_nt':
+    ensure => present,
+    command_line => '$USER1$/check_nt -H $HOSTADDRESS$ -p 12489 -v $ARG1$ $ARG2$',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+################################################################################
+#
+# SAMPLE PERFORMANCE DATA COMMANDS
+#
+# These are sample performance data commands that can be used to send performance
+# data output to two text files (one for hosts, another for services).  If you
+# plan on simply writing performance data out to a file, consider using the
+# host_perfdata_file and service_perfdata_file options in the main config file.
+#
+################################################################################
+
+  nagios_command {'process-host-perfdata':
+    ensure => present,
+    command_line => '/usr/bin/printf "%b" "$LASTHOSTCHECK$\t$HOSTNAME$\t$HOSTSTATE$\t$HOSTATTEMPT$\t$HOSTSTATETYPE$\t$HOSTEXECUTIONTIME$\t$HOSTOUTPUT$\t$HOSTPERFDATA$\n" >> /usr/local/nagios/var/host-perfdata.out',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+  nagios_command {'process-service-perfdata':
+    ensure => present,
+    command_line => '/usr/bin/printf "%b" "$LASTSERVICECHECK$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICESTATE$\t$SERVICEATTEMPT$\t$SERVICESTATETYPE$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$\n" >> /usr/local/nagios/var/service-perfdata.out',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+
+
+}
+
+
+
+
+
+define command {
+
+    command_name    
+    command_line    
+}
+
+
+
+define command {
+
+    command_name    
+    command_line    
 }
 
 
