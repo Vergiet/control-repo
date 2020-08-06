@@ -2989,6 +2989,7 @@ allow_empty_hostgroup_assignment=0
     owner => $nagios::params::user,
     host_name => 'dc01',
     use => 'passive_service',
+    service_description => 'CPU Usage',
 
   }
 
@@ -2999,6 +3000,7 @@ allow_empty_hostgroup_assignment=0
     owner => $nagios::params::user,
     host_name => 'dc01',
     use => 'passive_service',
+    service_description => 'Disk Usage',
 
   }
 
@@ -3023,6 +3025,7 @@ allow_empty_hostgroup_assignment=0
     owner => $nagios::params::user,
     host_name => 'dc01',
     use => 'passive_service',
+    service_description => 'Memory Usage',
 
   }
 
@@ -3033,6 +3036,7 @@ allow_empty_hostgroup_assignment=0
     owner => $nagios::params::user,
     host_name => 'dc01',
     use => 'passive_service',
+    service_description => 'Process Count',
 
   }
 
