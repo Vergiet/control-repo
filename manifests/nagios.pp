@@ -804,6 +804,7 @@ define service {
   # notifications, etc.  The classic "24x7" support nightmare. :-)
 
   nagios_timeperiod { '24x7':
+    ensure => present,
     alias => '24 Hours A Day, 7 Days A Week',
     sunday => '00:00-24:00',
     monday => '00:00-24:00',
@@ -812,6 +813,9 @@ define service {
     thursday => '00:00-24:00',
     friday => '00:00-24:00',
     saturday => '00:00-24:00',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
 
   }
 
