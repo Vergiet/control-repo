@@ -529,23 +529,6 @@ define service{
 
 
 
-
-
-define command {
-
-    command_name    
-    command_line    
-}
-
-
-
-define command {
-
-    command_name    
-    command_line    
-}
-
-
 /*
 class nagios::export {
   @@nagios_host { $::fqdn:
