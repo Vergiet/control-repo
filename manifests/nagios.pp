@@ -474,7 +474,7 @@ plugin_path = plugins/
 #
 # Since windows NCPA is 32-bit, if you need to use 64-bit powershell, try the following for
 # the powershell plugin definition:
-# .ps1 = c:\windows\sysnative\windowspowershell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -File $plugin_name $plugin_args
+# .ps1 = c:\\windows\\sysnative\\windowspowershell\\v1.0\\powershell.exe -ExecutionPolicy Unrestricted -File $plugin_name $plugin_args
 #
 
 # Linux / Mac OS X
