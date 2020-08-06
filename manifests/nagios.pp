@@ -906,13 +906,221 @@ define service {
   }
 
 
+  ###############################################################################
+  # LOCALHOST.CFG - SAMPLE OBJECT CONFIG FILE FOR MONITORING THIS MACHINE
+  #
+  #
+  # NOTE: This config file is intended to serve as an *extremely* simple
+  #       example of how you can create configuration entries to monitor
+  #       the local (Linux) machine.
+  #
+  ###############################################################################
+
+
+
+  ###############################################################################
+  #
+  # HOST DEFINITION
+  #
+  ###############################################################################
+
+  # Define a host for the local machine
+
+
+  nagios_host { 'localhost':
+    ensure => present,
+    alias => 'localhost',
+    use => 'linux-server',
+    address => '127.0.0.1',
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+  }
+
+  ###############################################################################
+  #
+  # HOST GROUP DEFINITION
+  #
+  ###############################################################################
+
+  # Define an optional hostgroup for Linux machines
+
+  nagios_hostgroup { 'linux-servers':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    alias => 'Linux Servers ',
+    members => 'localhost',
+  }
+
+
+
+  ###############################################################################
+  #
+  # SERVICE DEFINITIONS
+  #
+  ###############################################################################
+
+  # Define a service to "ping" the local machine
+
+  nagios_service { 'local ping':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => 'PING',
+    check_command => 'check_ping!100.0,20%!500.0,60%',
+
+  }
+
+
+  # Define a service to check the disk space of the root partition
+  # on the local machine.  Warning if < 20% free, critical if
+  # < 10% free space on partition.
+
+/*
+  nagios_service { '':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => '',
+    check_command => '',
+
+  }
+  */
+
+  nagios_service { 'local / free space':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => 'Root Partition',
+    check_command => 'check_local_disk!20%!10%!/',
+
+  }
+
+
+  # Define a service to check the number of currently logged in
+  # users on the local machine.  Warning if > 20 users, critical
+  # if > 50 users.
+
+  nagios_service { 'Current Users':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => 'Current Users',
+    check_command => 'check_local_users!20!50',
+
+  }
+
+
+
+  # Define a service to check the number of currently running procs
+  # on the local machine.  Warning if > 250 processes, critical if
+  # > 400 processes.
+
+
+
+  nagios_service { 'Total Processes':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => 'Total Processes',
+    check_command => 'check_local_procs!250!400!RSZDT',
+
+  }
+
+
+  # Define a service to check the load on the local machine.
+
+  nagios_service { 'Current Load':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => 'Current Load',
+    check_command => 'check_local_load!5.0,4.0,3.0!10.0,6.0,4.0',
+
+  }
+
+  # Define a service to check the swap usage the local machine.
+  # Critical if less than 10% of swap is free, warning if less than 20% is free
+
+  nagios_service { 'Swap Usage':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => 'Swap Usage',
+    check_command => 'check_local_swap!20%!10%',
+
+  }
+
+
+
+  # Define a service to check SSH on the local machine.
+  # Disable notifications for this service by default, as not all users may have SSH enabled.
+
+
+  nagios_service { 'SSH':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => 'SSH',
+    check_command => 'check_ssh',
+    notifications_enabled => '0',
+
+  }
+
+
+  # Define a service to check HTTP on the local machine.
+  # Disable notifications for this service by default, as not all users may have HTTP enabled.
+
+  nagios_service { 'HTTP':
+    ensure => present,
+    mode => '0777',
+    group => $nagios::params::user,
+    owner => $nagios::params::user,
+    use => 'local-service',
+    host_name => 'localhost',
+    service_description => 'HTTP',
+    check_command => 'check_http',
+    notifications_enabled => '0',
+
+  }
+
 
 }
 
 
 
 
+/*
 
+
+
+*/
 
 
 
