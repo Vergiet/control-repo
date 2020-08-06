@@ -570,6 +570,15 @@ define service{
 
 
 
+
+
+}
+
+
+
+/*
+
+
 ###############################################################################
 # TEMPLATES.CFG - SAMPLE OBJECT TEMPLATES
 #
@@ -606,15 +615,6 @@ define contact {
     host_notification_commands      notify-host-by-email    ; send host notifications via email
     register                        0                       ; DON'T REGISTER THIS DEFINITION - ITS NOT A REAL CONTACT, JUST A TEMPLATE!
 }
-
-
-
-
-}
-
-
-
-
 
 ###############################################################################
 #
@@ -778,7 +778,7 @@ define service {
 
 
 
-
+*/
 
 
 
