@@ -2600,7 +2600,7 @@ allow_empty_hostgroup_assignment=0
 
 
   nagios_host { 'dc01.mshome.net':
-    ensure => present,
+    ensure => absent,
     use => 'passive_host',
     mode => '0777',
     group => $nagios::params::user,

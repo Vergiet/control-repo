@@ -19,7 +19,7 @@ class ad::pdc (
 
     dsc_xaddomain   { 'firstdc':
       subscribe                         => Dsc_windowsfeature['addsinstall'],
-      dsc_domainname                    => 'ad.contoso.com',
+      dsc_domainname                    => 'ad.mshome.net',
       dsc_domainadministratorcredential => {
         'user'     => 'pagent',
         'password' => Sensitive('Test12341234')
