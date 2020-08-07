@@ -68,8 +68,8 @@ node /^vmm\d+$/ {
 
 node 'dc01' {
 
+  include site::basic
   include nagios::ncpa
-  include base::server
 }
 
 node /^nagios\..*/ {
