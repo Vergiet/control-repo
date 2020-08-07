@@ -48,7 +48,7 @@ Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -Serve
     provider => 'powershell',
   }
 
-  /*
+  
 
   dsc_computer { 'joindomain':
     dsc_name => $facts['networking']['hostname'],
@@ -58,9 +58,10 @@ Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -Serve
         'password' => Sensitive('Beheer123')
       },
     dsc_joinou => 'CN=Computers,DC=mshome,DC=net',
+    require => Exec['ensurednsadres'],
   }
 
-  */
+  
 
   reboot {'dsc_reboot':
     message => 'DSC has requested a reboot',
