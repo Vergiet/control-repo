@@ -66,7 +66,7 @@ node /^vmm\d+$/ {
 
 }
 
-node 'dc01' {
+node 'dc01.mshome.net' {
 
   include site::basic
   include nagios::ncpa
