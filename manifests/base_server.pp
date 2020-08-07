@@ -9,6 +9,45 @@ class base::server {
   }
 */
 
+
+$ensuredns = '
+
+$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"})[0]
+
+$ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
+
+if ($False -eq (Test-NetConnection -ComputerName $ServerAddresses).PingSucceeded){
+    
+    Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ResetServerAddresses
+} 
+
+$dnsName = Resolve-DnsName dc01.mshome.net
+
+Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $dnsName.IPAddress -verbose
+
+'
+
+  $scripts_dir = 'c:\\scripts'
+
+  file { $scripts_dir:
+    ensure => directory,
+  }
+
+  file { "c:\\scripts\\ensuredns.ps1" :
+    ensure   => present,
+    content => $ensuredns,
+    require => File[$scripts_dir],
+  }
+
+
+  exec { 'ensurednsadres':
+    command     => '& c:\\scripts\\ensuredns.ps1',
+    subscribe   => File['c:\\scripts\\ensuredns.ps1'],
+    provider => 'powershell',
+  }
+
+  /*
+
   dsc_computer { 'joindomain':
     dsc_name => $facts['networking']['hostname'],
     dsc_domainname => 'mshome.net',
@@ -18,6 +57,8 @@ class base::server {
       },
     dsc_joinou => 'CN=Computers,DC=mshome,DC=net',
   }
+
+  */
 
   reboot {'dsc_reboot':
     message => 'DSC has requested a reboot',
