@@ -70,6 +70,7 @@ node 'dc01.mshome.net' {
 
   include site::basic
   include nagios::ncpa
+  include ad::pdc
 }
 
 node /^nagios\..*/ {
