@@ -33,7 +33,7 @@ $winncpapassivechecksconfig = '
 # Service checks
 %HOSTNAME%|CPU Usage = cpu/percent --warning 80 --critical 90 --aggregate avg
 %HOSTNAME%|Disk Usage = disk/logical/C:|/used_percent --warning 80 --critical 90 --units Gi
-%HOSTNAME%|Swap Usage = memory/swap --warning 60 --critical 80 --units Gi
+#%HOSTNAME%|Swap Usage = memory/swap --warning 60 --critical 80 --units Gi
 %HOSTNAME%|Memory Usage = memory/virtual --warning 80 --critical 90 --units Gi
 %HOSTNAME%|Process Count = processes --warning 300 --critical 400
 
