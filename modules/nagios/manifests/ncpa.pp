@@ -388,7 +388,7 @@ plugin_path = plugins/
   file { "c:\\downloads\\tools\\ncpa.exe" :
     ensure   => present,
     source => 'https://assets.nagios.com/downloads/ncpa/ncpa-2.2.2.exe',
-    require => file[$downloads_dir],
+    require => File[$downloads_dir],
   }
 
   exec { 'installncpa':
