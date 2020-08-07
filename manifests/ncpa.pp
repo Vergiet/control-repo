@@ -377,12 +377,17 @@ plugin_path = plugins/
 
 '
 
-
-
-  $downloads_dir = 'c:\\downloads\\tools'
+  $downloads_dir = 'c:\\downloads'
 
   file { $downloads_dir:
     ensure => directory,
+  }
+
+  $tools_dir = 'c:\\downloads\\tools'
+
+  file { $tools_dir:
+    ensure => directory,
+    require => File[$downloads_dir],
   }
 
   file { "c:\\downloads\\tools\\ncpa.exe" :
