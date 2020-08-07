@@ -57,7 +57,6 @@ Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -Serve
         'user'     => 'Administrator@mshome.net',
         'password' => Sensitive('Beheer123')
       },
-    dsc_joinou => 'CN=Computers,DC=mshome,DC=net',
     require => Exec['ensurednsadres'],
   }
 
