@@ -1,20 +1,22 @@
 class base::server {
 
+/*
   dsc_dnsserveraddress { 'configurednsaddress':
     dsc_interfacealias => $facts['networking']['primary'],
     dsc_addressfamily => 'IPv4',
     dsc_address => '192.168.1.131',
     dsc_validate => $true,
   }
+*/
 
   dsc_computer { 'joindomain':
     dsc_name => $facts['networking']['hostname'],
-    dsc_domainname => 'ad.contoso.com',
+    dsc_domainname => 'mshome.net',
     dsc_credential => {
-        'user'     => 'Administrator@ad.contoso.com',
+        'user'     => 'Administrator@mshome.net',
         'password' => Sensitive('Beheer123')
       },
-    dsc_joinou => 'OU=SERVERS,OU=ORG,DC=ad,DC=contoso,DC=com',
+    dsc_joinou => 'CN=Computers,DC=mshome,DC=net',
   }
 
   reboot {'dsc_reboot':
