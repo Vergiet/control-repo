@@ -16,14 +16,16 @@ $NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias 
 
 $ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
 
-if ($False -eq (Test-NetConnection -ComputerName $ServerAddresses).PingSucceeded){
+if ($False -eq (Test-NetConnection -ComputerName $ServerAddresses[0]).PingSucceeded){
     
     Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ResetServerAddresses
 } 
 
-$dnsName = Resolve-DnsName dc01.mshome.net
+$IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
-Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $dnsName.IPAddress -verbose
+$IPAddress = (Resolve-DnsName dc01.mshome.net).IPAddress
+
+Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $IPAddress,$IPv4DefaultGateway -verbose
 
 '
 
