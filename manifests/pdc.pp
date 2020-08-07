@@ -30,7 +30,7 @@ class ad::pdc (
       },
       dsc_databasepath                  => $ntds_dir,
       dsc_logpath                       => $ntds_dir,
-      require => Exec['ensurednsadres'],
+      
     }
 
   $scripts_dir = 'c:\\scripts'
@@ -66,10 +66,11 @@ if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData -
   }
 
 
-  exec { 'ensurednsadres':
+  exec { 'ensurepmom01':
     command     => '& c:\\scripts\\ensurepmom01.ps1',
     subscribe   => File['c:\\scripts\\ensurepmom01.ps1'],
     provider => 'powershell',
+    require => Dsc_xaddomain['firstdc'],
   }
 
     reboot {'dsc_reboot':
