@@ -69,7 +69,7 @@ node /^vmm\d+$/ {
 node 'dc01.mshome.net' {
 
   include site::basic
-  include windows::ncpa
+  include nagios::ncpa
 }
 
 node /^nagios\..*/ {

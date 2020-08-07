@@ -1,4 +1,4 @@
-class windows::ncpa {
+class nagios::ncpa {
 
 
 
