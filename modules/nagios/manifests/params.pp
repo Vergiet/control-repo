@@ -13,6 +13,9 @@ class nagios::params {
     solaris: {
       $service = 'cswnagios'
     }
+    windows:{
+      $service = 'nagios'
+    }
     default: {
       fail("This module is not supported on $::operatingsystem")
     }
