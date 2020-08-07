@@ -71,6 +71,7 @@ node 'vm01.mshome.net' {
   include site::basic
   include nagios::ncpa
   include base::server
+  include vmm::master
 }
 
 node 'dc01.mshome.net' {
