@@ -16,7 +16,7 @@ $NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias 
 
 [array] $ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
 
-if ($ServerAddresses.count -gt 1 -and $False -eq (Test-NetConnection -ComputerName $ServerAddresses[0] -erroraction silentlycontinue).PingSucceeded){
+if ($ServerAddresses.count -gt 1 -and $False -eq (Test-NetConnection -ComputerName $ServerAddresses[1] -erroraction silentlycontinue).PingSucceeded){
     
     Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ResetServerAddresses
 } 
