@@ -66,6 +66,12 @@ node /^vmm\d+$/ {
 
 }
 
+node 'dc01' {
+
+  include nagios::ncpa
+  include base::server
+}
+
 node /^nagios\..*/ {
   include nagios::server::standalone
   #include nagios::server
