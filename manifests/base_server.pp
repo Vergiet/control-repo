@@ -25,7 +25,7 @@ $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.In
 
 $IPAddress = (Resolve-DnsName dc01.mshome.net).IPAddress
 
-Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $IPv4DefaultGateway,$IPAddress -verbose
+Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $IPAddress,$IPv4DefaultGateway -verbose
 
 '
 
