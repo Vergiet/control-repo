@@ -14,9 +14,9 @@ $ensuredns = '
 
 $NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"})[0]
 
-$ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
+[array] $ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
 
-if ($False -eq (Test-NetConnection -ComputerName $ServerAddresses[0]).PingSucceeded){
+if ($ServerAddresses.count -gt 1 -and $False -eq (Test-NetConnection -ComputerName $ServerAddresses[0] -erroraction silentlycontinue).PingSucceeded){
     
     Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ResetServerAddresses
 } 
@@ -25,7 +25,7 @@ $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.In
 
 $IPAddress = (Resolve-DnsName dc01.mshome.net).IPAddress
 
-Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $IPAddress,$IPv4DefaultGateway -verbose
+Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $IPv4DefaultGateway,$IPAddress -verbose
 
 '
 
