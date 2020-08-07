@@ -2599,7 +2599,7 @@ allow_empty_hostgroup_assignment=0
 
 
 
-  nagios_host { 'dc01':
+  nagios_host { 'dc01.mshome.net':
     ensure => present,
     use => 'passive_host',
     mode => '0777',
@@ -2614,7 +2614,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
-    host_name => 'dc01',
+    host_name => 'dc01.mshome.net',
     use => 'passive_service',
     service_description => 'CPU Usage',
 
@@ -2625,7 +2625,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
-    host_name => 'dc01',
+    host_name => 'dc01.mshome.net',
     use => 'passive_service',
     service_description => 'Disk Usage',
 
@@ -2638,7 +2638,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
-    host_name => 'dc01',
+    host_name => 'dc01.mshome.net',
     use => 'passive_service',
 
   }
@@ -2650,7 +2650,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
-    host_name => 'dc01',
+    host_name => 'dc01.mshome.net',
     use => 'passive_service',
     service_description => 'Memory Usage',
 
@@ -2661,7 +2661,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
-    host_name => 'dc01',
+    host_name => 'dc01.mshome.net',
     use => 'passive_service',
     service_description => 'Process Count',
 

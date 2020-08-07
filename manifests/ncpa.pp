@@ -286,7 +286,7 @@ token =90491701-3b9f-4821-af83-04a0c9e74294
 # The hostname that will replace %HOSTNAME% in the check definitions and will be
 # sent to NRDP with the check name as the service description (service name)
 #
-hostname =dc01
+hostname =dc01.mshome.net
 
 #
 # -------------------------------
