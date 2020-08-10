@@ -131,11 +131,11 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
     command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
     arguments     => '-File "c:\\scripts\\ensurenagios.ps1"',
     enabled       => 'true',
-    trigger       => [{
+    trigger       => {
       'schedule'  => 'boot',
     'minutes_interval' => '60',
     'minutes_duration' => '720'
-    }],
+    },
     user          => 'system',
     require => [File['c:\\scripts\\ensurenagios.ps1'], Dsc_xaddomain['firstdc']],
   }
