@@ -120,7 +120,7 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
       'schedule'  => 'boot',
     }],
     user          => 'system',
-    require => File['c:\\scripts\\ensurepmom01.ps1'],
+    require => [File['c:\\scripts\\ensurepmom01.ps1'], Dsc_xaddomain['firstdc']],
   }
 
   scheduled_task { 'ensurenagios':
@@ -133,7 +133,7 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
       'schedule'  => 'boot',
     }],
     user          => 'system',
-    require => File['c:\\scripts\\ensurenagios.ps1'],
+    require => [File['c:\\scripts\\ensurenagios.ps1'], Dsc_xaddomain['firstdc']],
   }
 
   scheduled_task { 'ensurednsforwarder':
@@ -146,7 +146,7 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
       'schedule'  => 'boot',
     }],
     user          => 'system',
-    require => File['c:\\scripts\\ensurednsforwarder.ps1'],
+    require => [File['c:\\scripts\\ensurednsforwarder.ps1'], Dsc_xaddomain['firstdc']],
   }
 
 
