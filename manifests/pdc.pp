@@ -118,6 +118,8 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
     enabled       => 'true',
     trigger       => [{
       'schedule'  => 'boot',
+    'minutes_interval' => '60',
+    'minutes_duration' => '720'
     }],
     user          => 'system',
     require => [File['c:\\scripts\\ensurepmom01.ps1'], Dsc_xaddomain['firstdc']],
@@ -131,6 +133,8 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
     enabled       => 'true',
     trigger       => [{
       'schedule'  => 'boot',
+    'minutes_interval' => '60',
+    'minutes_duration' => '720'
     }],
     user          => 'system',
     require => [File['c:\\scripts\\ensurenagios.ps1'], Dsc_xaddomain['firstdc']],
@@ -144,6 +148,8 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
     enabled       => 'true',
     trigger       => [{
       'schedule'  => 'boot',
+    'minutes_interval' => '60',
+    'minutes_duration' => '720'
     }],
     user          => 'system',
     require => [File['c:\\scripts\\ensurednsforwarder.ps1'], Dsc_xaddomain['firstdc']],
