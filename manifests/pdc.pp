@@ -51,6 +51,8 @@ if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData -
 
     if ($null -ne $DnsServerResourceRecord){
         Remove-DnsServerResourceRecord -ZoneName mshome.net -Name pmom01 -RRType "A" -Confirm:$False -force
+
+        restart-computer
     }
 
     Add-DnsServerResourceRecordA -Name pmom01 -ZoneName mshome.net -IPv4Address $IPAddress
@@ -72,6 +74,8 @@ if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData -
 
     if ($null -ne $DnsServerResourceRecord){
         Remove-DnsServerResourceRecord -ZoneName mshome.net -Name nagios -RRType "A" -Confirm:$False -force
+
+        restart-computer
     }
 
     Add-DnsServerResourceRecordA -Name nagios -ZoneName mshome.net -IPv4Address $IPAddress
