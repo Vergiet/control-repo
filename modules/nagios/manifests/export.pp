@@ -16,7 +16,13 @@ class nagios::export {
   }
 
 
-
+  nagios::resource { $::fqdn:
+    type => 'service',
+    bexport => true,
+    use => 'passive_service',
+    service_description => 'CPU Usage',
+    active_checks_enabled => '0'
+  }
 
 
 }

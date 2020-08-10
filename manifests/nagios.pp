@@ -2608,7 +2608,7 @@ allow_empty_hostgroup_assignment=0
   }
 
 
-
+/*
   nagios_service { 'CPU Usage':
     ensure => present,
     mode => '0777',
@@ -2619,6 +2619,7 @@ allow_empty_hostgroup_assignment=0
     service_description => 'CPU Usage',
 
   }
+  */
 
   nagios_service { 'Disk Usage':
     ensure => present,
