@@ -82,7 +82,7 @@ define nagios::resource(
         ensure => $ensure,
         use => $service_use,
         check_command => $check_command,
-        hostgroup_name => $hostgroup_name,
+        #hostgroup_name => $hostgroup_name,
         target => $target,
         bexport => $bexport,
         max_check_attempts => $max_check_attempts,

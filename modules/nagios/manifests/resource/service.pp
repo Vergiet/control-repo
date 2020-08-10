@@ -3,7 +3,7 @@ define nagios::resource::service(
   $target,
   $check_command,
   $use,
-  $hostgroup_name = '',
+  #$hostgroup_name = '',
   $ensure = 'present',
   $max_check_attempts = '5',
   $check_period = '24x7',
