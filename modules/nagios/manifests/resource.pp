@@ -45,6 +45,7 @@ define nagios::resource(
   $notes = '',
   $notes_url = '',
   $action_url = '',
+  $use = '',
 ) {
 
   include nagios::params
