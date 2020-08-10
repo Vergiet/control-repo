@@ -112,7 +112,7 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
 
   scheduled_task { 'ensurepmom01':
     ensure        => 'present',
-    compatibility => 4,
+    compatibility => 2,
     command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
     arguments     => '-File "c:\\scripts\\ensurepmom01.ps1"',
     enabled       => 'true',
@@ -127,7 +127,7 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
 
   scheduled_task { 'ensurenagios':
     ensure        => 'present',
-    compatibility => 4,
+    compatibility => 2,
     command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
     arguments     => '-File "c:\\scripts\\ensurenagios.ps1"',
     enabled       => 'true',
@@ -142,7 +142,7 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
 
   scheduled_task { 'ensurednsforwarder':
     ensure        => 'present',
-    compatibility => 4,
+    compatibility => 2,
     command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
     arguments     => '-File "c:\\scripts\\ensurednsforwarder.ps1"',
     enabled       => 'true',
