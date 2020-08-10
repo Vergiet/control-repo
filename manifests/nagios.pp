@@ -2598,7 +2598,7 @@ allow_empty_hostgroup_assignment=0
 
 
 
-
+/*
   nagios_host { 'dc01.mshome.net':
     ensure => absent,
     use => 'passive_host',
@@ -2606,6 +2606,7 @@ allow_empty_hostgroup_assignment=0
     group => $nagios::params::user,
     owner => $nagios::params::user,
   }
+  */
 
 
 /*
@@ -2620,6 +2621,7 @@ allow_empty_hostgroup_assignment=0
 
   }
   */
+/*
 
   nagios_service { 'Disk Usage':
     ensure => present,
@@ -2631,6 +2633,7 @@ allow_empty_hostgroup_assignment=0
     service_description => 'Disk Usage',
 
   }
+  */
 
   /*
 
@@ -2645,7 +2648,7 @@ allow_empty_hostgroup_assignment=0
   }
 
   */
-
+/*
   nagios_service { 'Memory Usage':
     ensure => present,
     mode => '0777',
@@ -2656,7 +2659,8 @@ allow_empty_hostgroup_assignment=0
     service_description => 'Memory Usage',
 
   }
-
+  */
+/*
   nagios_service { 'Process Count':
     ensure => present,
     mode => '0777',
@@ -2667,6 +2671,7 @@ allow_empty_hostgroup_assignment=0
     service_description => 'Process Count',
 
   }
+  */
 
 }
 
