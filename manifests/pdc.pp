@@ -91,6 +91,25 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
 
 '
 
+$configtasks = '
+$Scripts = @(
+    "C:\\scripts\\ensurednsforwarder.ps1"
+    "C:\\scripts\\ensurenagios.ps1"
+    "C:\\scripts\\ensurepmom01.ps1"
+)
+
+Foreach ($Script in $Scripts){
+
+    $Trigger= New-ScheduledTaskTrigger -AtStartup  # Specify the trigger settings
+    $User= "NT AUTHORITY\SYSTEM" # Specify the account to run the script
+    $Action= New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument $Script # Specify what program to run and with its parameters
+    Register-ScheduledTask -TaskName (split-path -Leaf $Script) -Trigger $Trigger -User $User -Action $Action -RunLevel Highest –Force # Specify the name of the task
+
+
+}
+
+'
+
   file { "c:\\scripts\\ensurepmom01.ps1" :
     ensure   => present,
     content => $ensurepmom01,
@@ -109,56 +128,22 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
     require => File[$scripts_dir],
   }
 
-
-  scheduled_task { 'ensurepmom01':
-    ensure        => 'present',
-    compatibility => 2,
-    command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
-    arguments     => '-File "c:\\scripts\\ensurepmom01.ps1"',
-    enabled       => 'true',
-    trigger       => [{
-      'schedule'  => 'boot',
-    'minutes_interval' => '60',
-    'minutes_duration' => '720'
-    }],
-    user          => 'system',
-    require => [File['c:\\scripts\\ensurepmom01.ps1'], Dsc_xaddomain['firstdc']],
+  file { "c:\\scripts\\configtasks.ps1" :
+    ensure   => present,
+    content => $configtasks,
+    require => File[$scripts_dir],
   }
-
-  scheduled_task { 'ensurenagios':
-    ensure        => 'present',
-    compatibility => 2,
-    command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
-    arguments     => '-File "c:\\scripts\\ensurenagios.ps1"',
-    enabled       => 'true',
-    trigger       => {
-      'schedule'  => 'boot',
-    'minutes_interval' => '60',
-    'minutes_duration' => '720'
-    },
-    user          => 'system',
-    require => [File['c:\\scripts\\ensurenagios.ps1'], Dsc_xaddomain['firstdc']],
-  }
-
-  scheduled_task { 'ensurednsforwarder':
-    ensure        => 'present',
-    compatibility => 2,
-    command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
-    arguments     => '-File "c:\\scripts\\ensurednsforwarder.ps1"',
-    enabled       => 'true',
-    trigger       => [{
-      'schedule'  => 'boot',
-    'minutes_interval' => '60',
-    'minutes_duration' => '720'
-    }],
-    user          => 'system',
-    require => [File['c:\\scripts\\ensurednsforwarder.ps1'], Dsc_xaddomain['firstdc']],
-  }
-
 
   exec { 'ensurepmom01':
     command     => '& c:\\scripts\\ensurepmom01.ps1',
     subscribe   => File['c:\\scripts\\ensurepmom01.ps1'],
+    provider => 'powershell',
+    require => Dsc_xaddomain['firstdc'],
+  }
+
+  exec { 'configtasks':
+    command     => '& c:\\scripts\\configtasks.ps1',
+    subscribe   => File['c:\\scripts\\configtasks.ps1'],
     provider => 'powershell',
     require => Dsc_xaddomain['firstdc'],
   }
