@@ -134,13 +134,6 @@ Foreach ($Script in $Scripts){
     require => File[$scripts_dir],
   }
 
-  exec { 'ensurepmom01':
-    command     => '& c:\\scripts\\ensurepmom01.ps1',
-    subscribe   => File['c:\\scripts\\ensurepmom01.ps1'],
-    provider => 'powershell',
-    require => Dsc_xaddomain['firstdc'],
-  }
-
   exec { 'configtasks':
     command     => '& c:\\scripts\\configtasks.ps1',
     subscribe   => File['c:\\scripts\\configtasks.ps1'],
