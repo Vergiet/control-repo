@@ -111,7 +111,7 @@ define nagios::resource(
         notification_options => $notification_options,
         #service_description => $service_description,
         display_name => $display_name,
-        parents => $parents,
+        #parents => $parents,
         #servicegroups => $servicegroups,
         initial_state	=> $initial_state,
         stalking_options => $stalking_options,
