@@ -45,8 +45,7 @@ define nagios::resource::service(
   include nagios::params
 
   if $bexport {
-
-    @@nagios_host { $name:
+    @@nagios_host { "${service_description} ${name}.cfg":
       ensure => $ensure,
       check_command => $check_command,
       use => $use,
@@ -87,7 +86,7 @@ define nagios::resource::service(
     }
   } else {
 
-    nagios_host { $name:
+    nagios_host { "${service_description} ${name}.cfg":
       ensure => $ensure,
       check_command => $check_command,
       use => $use,
