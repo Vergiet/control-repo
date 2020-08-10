@@ -1,10 +1,9 @@
 define nagios::resource::service(
-  $address,
-  $hostgroups,
   $bexport,
   $target,
   $check_command,
   $use,
+  $hostgroup_name = '',
   $ensure = 'present',
   $max_check_attempts = '5',
   $check_period = '24x7',
