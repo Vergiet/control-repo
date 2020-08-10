@@ -280,7 +280,7 @@ pidfile = var/run/ncpa_passive.pid
 # token = NRDP server token used to send NRDP results
 #
 parent =http://nagios.mshome.net/nrdp/
-token =90491701-3b9f-4821-af83-04a0c9e74294
+token =d19e2543-5c32-4c04-b193-552547f919a3
 
 #
 # The hostname that will replace %HOSTNAME% in the check definitions and will be
