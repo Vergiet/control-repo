@@ -3,6 +3,9 @@ class nagios::server::standalone {
   require firewall
   include firewall
   include mysql::client
+  include nagios::params
+  require nagios::expire_resources
+  include nagios::purge_resources
 
   package { [ "nagios-plugins-all", "nagios-plugins", "nagios-plugins-nrpe", "httpd", "php", "php-mysql", "wget", "perl", "postfix", "php-fpm", "gcc", "glibc" ,"glibc-common", "gd", "gd-devel", "make", "net-snmp", "openssl-devel", "xinetd", "unzip", "gettext", "automake", "autoconf", "net-snmp-utils", "epel-release", "perl-Net-SNMP"]:
     ensure => installed,
@@ -1894,9 +1897,7 @@ allow_empty_hostgroup_assignment=0
     override_options => { 'mysqld' => { 'max_connections' => '1024' } }
   }
 
-  include nagios::params
-  require nagios::expire_resources
-  include nagios::purge_resources
+
 
   service { $nagios::params::service:
     ensure => running,
