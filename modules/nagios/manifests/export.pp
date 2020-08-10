@@ -20,7 +20,7 @@ class nagios::export {
     type => 'service',
     bexport => true,
     service_use => 'passive_service',
-    service_description => $cpuservicename,
+    #service_description => $cpuservicename,
     active_checks_enabled => '0'
   }
 
