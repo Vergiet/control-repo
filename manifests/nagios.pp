@@ -2359,6 +2359,7 @@ allow_empty_hostgroup_assignment=0
 
   # Define an optional hostgroup for Linux machines
 
+/*
   nagios_hostgroup { 'linux-servers':
     ensure => present,
     mode => '0777',
@@ -2369,7 +2370,7 @@ allow_empty_hostgroup_assignment=0
     notify => Service['nagios'],
   }
 
-
+*/
 
   ###############################################################################
   #
@@ -2427,7 +2428,7 @@ allow_empty_hostgroup_assignment=0
   # users on the local machine.  Warning if > 20 users, critical
   # if > 50 users.
 
-  nagios_service { 'Current Users':
+  nagios_service { 'local Current Users':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -2447,7 +2448,7 @@ allow_empty_hostgroup_assignment=0
 
 
 
-  nagios_service { 'Total Processes':
+  nagios_service { 'local Total Processes':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -2462,7 +2463,7 @@ allow_empty_hostgroup_assignment=0
 
   # Define a service to check the load on the local machine.
 
-  nagios_service { 'Current Load':
+  nagios_service { 'local Current Load':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -2477,7 +2478,7 @@ allow_empty_hostgroup_assignment=0
   # Define a service to check the swap usage the local machine.
   # Critical if less than 10% of swap is free, warning if less than 20% is free
 
-  nagios_service { 'Swap Usage':
+  nagios_service { 'local Swap Usage':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -2495,7 +2496,7 @@ allow_empty_hostgroup_assignment=0
   # Disable notifications for this service by default, as not all users may have SSH enabled.
 
 
-  nagios_service { 'SSH':
+  nagios_service { 'local SSH':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
@@ -2512,7 +2513,7 @@ allow_empty_hostgroup_assignment=0
   # Define a service to check HTTP on the local machine.
   # Disable notifications for this service by default, as not all users may have HTTP enabled.
 
-  nagios_service { 'HTTP':
+  nagios_service { 'local HTTP':
     ensure => present,
     mode => '0777',
     group => $nagios::params::user,
