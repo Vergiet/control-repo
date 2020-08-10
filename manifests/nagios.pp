@@ -1914,14 +1914,12 @@ allow_empty_hostgroup_assignment=0
     group => $nagios::params::user,
   }
 
-/*
 
   # Local Nagios resources
   nagios::resource { 'all-servers':
     type => hostgroup,
     bexport => false;
   }
-  */
 
   nagios_command {'check_nrpe':
     ensure => present,
