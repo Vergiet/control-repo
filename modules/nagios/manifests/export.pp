@@ -15,12 +15,12 @@ class nagios::export {
     notification_period => '24x7',
   }
 
-
-  nagios::resource { $::fqdn:
+  $cpuservicename = inline_template("CPU Usage - ${::fqdn}")
+  nagios::resource { $cpuservicename:
     type => 'service',
     bexport => true,
     use => 'passive_service',
-    service_description => 'CPU Usage',
+    service_description => $cpuservicename,
     active_checks_enabled => '0'
   }
 
