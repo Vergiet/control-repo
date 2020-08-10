@@ -128,6 +128,7 @@ cp -r clients server LICENSE* CHANGES* /usr/local/nrdp
 chown -R nagios:nagios /usr/local/nrdp 
 cp nrdp.conf /etc/httpd/conf.d/nrdp.conf
 '
+
 /*
 $hostgroups = '
 define hostgroup {
@@ -1765,6 +1766,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0755',
   }
 
+/*
   file { "/usr/local/nagios/etc/objects/services.cfg" :
     #ensure   => present,
     ensure   => absent,
@@ -1773,6 +1775,7 @@ allow_empty_hostgroup_assignment=0
     group => 'nagios',
     mode => '0664',
   }
+  */
 
   file { "/etc/nagios/templates.cfg" :
     ensure   => present,
@@ -1911,11 +1914,14 @@ allow_empty_hostgroup_assignment=0
     group => $nagios::params::user,
   }
 
+/*
+
   # Local Nagios resources
   nagios::resource { 'all-servers':
     type => hostgroup,
     bexport => false;
   }
+  */
 
   nagios_command {'check_nrpe':
     ensure => present,
