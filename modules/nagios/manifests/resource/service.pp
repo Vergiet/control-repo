@@ -38,13 +38,12 @@ define nagios::resource::service(
   $notes,
   $notes_url,
   $action_url,
-
 ) {
 
   include nagios::params
 
   if $bexport {
-    @@nagios_host { "${service_description} ${name}.cfg":
+    @@nagios_host {$name:
       ensure => $ensure,
       check_command => $check_command,
       use => $use,
@@ -85,7 +84,7 @@ define nagios::resource::service(
     }
   } else {
 
-    nagios_host { "${service_description} ${name}.cfg":
+    nagios_host { $name:
       ensure => $ensure,
       check_command => $check_command,
       use => $use,
