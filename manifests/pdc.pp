@@ -30,7 +30,7 @@ class ad::pdc (
       },
       dsc_databasepath                  => $ntds_dir,
       dsc_logpath                       => $ntds_dir,
-      
+
     }
 
   $scripts_dir = 'c:\\scripts'
@@ -59,10 +59,94 @@ if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData -
 
 '
 
+$ensurenagios = '
+
+$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"})[0]
+$IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
+
+$IPAddress = (Resolve-DnsName -name nagios.mshome.net -Server $IPv4DefaultGateway).IPAddress
+
+$DnsServerResourceRecord = Get-DnsServerResourceRecord -Name nagios -ZoneName mshome.net -ErrorAction SilentlyContinue
+
+if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData -ne $IPAddress){
+
+    if ($null -ne $DnsServerResourceRecord){
+        Remove-DnsServerResourceRecord -ZoneName mshome.net -Name nagios -RRType "A" -Confirm:$False -force
+    }
+
+    Add-DnsServerResourceRecordA -Name nagios -ZoneName mshome.net -IPv4Address $IPAddress
+
+}
+
+'
+
+$ensurednsforwarder = '
+$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"})[0]
+$IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
+
+if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString){
+    
+    Set-DnsServerForwarder -IPAddress $IPv4DefaultGateway
+}
+
+'
+
   file { "c:\\scripts\\ensurepmom01.ps1" :
     ensure   => present,
     content => $ensurepmom01,
     require => File[$scripts_dir],
+  }
+
+  file { "c:\\scripts\\ensurenagios.ps1" :
+    ensure   => present,
+    content => $ensurenagios,
+    require => File[$scripts_dir],
+  }
+
+  file { "c:\\scripts\\ensurednsforwarder.ps1" :
+    ensure   => present,
+    content => $ensurednsforwarder,
+    require => File[$scripts_dir],
+  }
+
+
+  scheduled_task { 'ensurepmom01':
+    ensure        => 'present',
+    compatibility => 4,
+    command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    arguments     => '-File "c:\\scripts\\ensurepmom01.ps1"',
+    enabled       => 'true',
+    trigger       => [{
+      'schedule'  => 'boot',
+    }],
+    user          => 'system',
+    require => File['c:\\scripts\\ensurepmom01.ps1'],
+  }
+
+  scheduled_task { 'ensurenagios':
+    ensure        => 'present',
+    compatibility => 4,
+    command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    arguments     => '-File "c:\\scripts\\ensurenagios.ps1"',
+    enabled       => 'true',
+    trigger       => [{
+      'schedule'  => 'boot',
+    }],
+    user          => 'system',
+    require => File['c:\\scripts\\ensurenagios.ps1'],
+  }
+
+  scheduled_task { 'ensurednsforwarder':
+    ensure        => 'present',
+    compatibility => 4,
+    command       => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    arguments     => '-File "c:\\scripts\\ensurednsforwarder.ps1"',
+    enabled       => 'true',
+    trigger       => [{
+      'schedule'  => 'boot',
+    }],
+    user          => 'system',
+    require => File['c:\\scripts\\ensurednsforwarder.ps1'],
   }
 
 
