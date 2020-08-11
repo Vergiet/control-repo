@@ -95,8 +95,8 @@ $target_path_template = @("END")
         notification_period => $notification_period,
       }
     }
-    service: {
-      nagios::resource::service { $name:
+    passiveservice: {
+      nagios::resource::passiveservice { $name:
         host_name => $host_name,
         ensure => $ensure,
         use => $service_use,
