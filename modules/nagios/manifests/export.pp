@@ -30,7 +30,7 @@ class nagios::export {
         check_command => 'check_dummy!0',
       }
     }
-
+/*
     linux: {
       nagios::resource { $load_service_name:
         type => 'service',
@@ -43,6 +43,7 @@ class nagios::export {
         check_command => 'check_local_load!5.0,4.0,3.0!10.0,6.0,4.0',
       }
     }
+*/
   }
 
 }
