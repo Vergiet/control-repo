@@ -70,7 +70,7 @@ $target_path_template = @("END")
 
   #$target = inline_template("${nagios::params::resource_dir}/${type}_${name}.cfg")
   #$target = "${nagios::params::resource_dir}/${type}_${name}.cfg".downcase
-  $target = regsubst("${nagios::params::resource_dir}/${type}_${name}.cfg",'/\\s+/', '_').downcase
+  $target = regsubst("${nagios::params::resource_dir}/${type}_${name}.cfg",'\\s+', '_').downcase
   
   #$target = inline_template("${nagios::params::resource_dir}/${type}_${::fqdn}.cfg")
   #$target = inline_template("${nagios::params::resource_dir}/${type}_<%=name.gsub(/\\s+/, '_').downcase %>.cfg")
