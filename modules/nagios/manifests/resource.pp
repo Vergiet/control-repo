@@ -23,7 +23,7 @@ define nagios::resource(
   $event_handler_enabled = '0',
   $event_handler = '',
   $flap_detection_enabled = '1',
-  $flap_detection_options = 'o,d,u',
+  $flap_detection_options = 'o',
   $low_flap_threshold = '0',
   $high_flap_threshold = '0',
   $process_perf_data = '1',
