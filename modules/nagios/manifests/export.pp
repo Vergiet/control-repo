@@ -24,6 +24,7 @@ class nagios::export {
     #service_description => $cpuservicename,
     active_checks_enabled => '0',
     host_name => $::fqdn,
+    flap_detection_options => 'o',
   }
 
 
