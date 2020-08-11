@@ -139,8 +139,8 @@ $target_path_template = @("END")
         action_url => $action_url,
       }
     }
-    passive_service: {
-      nagios::resource::passive_service { $name:
+    passiveservice: {
+      nagios::resource::passiveservice { $name:
         host_name => $host_name,
         ensure => $ensure,
         use => $service_use,
