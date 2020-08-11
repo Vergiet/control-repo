@@ -15,18 +15,32 @@ class nagios::export {
     notification_period => '24x7',
   }
 
-  $cpuservicename = inline_template("CPU Usage ${::fqdn}")
+  $cpu_service_name = inline_template("CPU Usage ${::fqdn}")
+  $load_service_name = inline_template("Current Load ${::fqdn}")
   case $::kernel {
     windows: {
-      nagios::resource { $cpuservicename:
+      nagios::resource { $cpu_service_name:
         type => 'service',
         bexport => true,
         service_use => 'passive_service',
-        service_description => $cpuservicename,
+        service_description => $cpu_service_name,
         active_checks_enabled => '0',
         host_name => $::fqdn,
         flap_detection_options => 'o',
         check_command => 'check_dummy!0',
+      }
+    }
+
+    linux: {
+      nagios::resource { $load_service_name:
+        type => 'service',
+        bexport => true,
+        service_description => $load_service_name,
+        service_use => 'local-service',
+        active_checks_enabled => '0',
+        host_name => $::fqdn,
+        flap_detection_options => 'o',
+        check_command => 'check_local_load!5.0,4.0,3.0!10.0,6.0,4.0',
       }
     }
   }
