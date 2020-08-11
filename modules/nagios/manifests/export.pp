@@ -29,6 +29,14 @@ class nagios::export {
         flap_detection_options => 'o',
         check_command => 'check_dummy!0',
       }
+
+    file { regsubst("C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\service_${cpu_service_name}.cfg",'\\s+', '_', 'G').downcase:
+      ensure => 'present',
+      #owner => $nagios::params::user,
+      #group => $nagios::params::user,
+      content => "%HOSTNAME%|${cpu_service_name} = cpu/percent --warning 80 --critical 90 --aggregate avg",
+      #notify => Service[$nagios::params::service],
+    }
     }
 
     linux: {

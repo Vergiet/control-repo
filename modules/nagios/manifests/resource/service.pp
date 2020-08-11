@@ -128,4 +128,7 @@ define nagios::resource::service(
       action_url => $action_url,
     }
   }
+
+
+
 }
