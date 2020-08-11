@@ -16,7 +16,7 @@ class nagios::export {
   }
 
   $cpuservicename = inline_template("CPU Usage ${::fqdn}")
-  case $type {
+  case $::kernel {
     windows: {
       nagios::resource { $cpuservicename:
         type => 'service',
