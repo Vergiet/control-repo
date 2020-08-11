@@ -16,18 +16,18 @@ class nagios::export {
   }
 
 
-  $cpuservicename = inline_template("CPU Usage ${::fqdn}")
-  nagios::resource { $cpuservicename:
-    type => 'service',
-    bexport => true,
-    service_use => 'passive_service',
-    service_description => $cpuservicename,
-    active_checks_enabled => '0',
-    host_name => $::fqdn,
-    flap_detection_options => 'o',
-    check_command => 'check_dummy!0',
+  if $::kernel == 'windows' {
+    $cpuservicename = inline_template("CPU Usage ${::fqdn}")
+    nagios::resource { $cpuservicename:
+      type => 'service',
+      bexport => true,
+      service_use => 'passive_service',
+      service_description => $cpuservicename,
+      active_checks_enabled => '0',
+      host_name => $::fqdn,
+      flap_detection_options => 'o',
+      check_command => 'check_dummy!0',
+    }
   }
-
-
 
 }
