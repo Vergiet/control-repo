@@ -147,7 +147,7 @@ $target_path_template = @("END")
       }
     }
     default: {
-      fail("Unknown type passed to this define: $type")
+      fail("Unknown type passed to this define: ${type}")
     }
   }
 
