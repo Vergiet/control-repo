@@ -16,7 +16,7 @@ define nagios::resource::service(
   $check_freshness,
   $notifications_enabled,
   $event_handler_enabled,
-  $event_handler,
+  #$event_handler,
   $flap_detection_enabled,
   $flap_detection_options,
   $low_flap_threshold,
