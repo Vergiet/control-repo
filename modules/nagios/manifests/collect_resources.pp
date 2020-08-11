@@ -20,7 +20,9 @@ class nagios::collect_resources {
     notify => Service[$nagios::params::service],
   }
 
+/*
   File <<| tag == nagios_passive_service |>> {
     notify => Service[$nagios::params::service],
   }
+*/
 }
