@@ -69,7 +69,7 @@ $target_path_template = @("END")
   #$target = inline_epp($target_path_template, {'resource_dir' => $nagios::params::resource_dir, 'type' => $type, 'name' => $name})
 
   #$target = inline_template("${nagios::params::resource_dir}/${type}_${name}.cfg")
-  $target = "${nagios::params::resource_dir}/${type}_${name}.cfg".downcase()
+  $target = downcase("${nagios::params::resource_dir}/${type}_${name}.cfg")
   #$target = inline_template("${nagios::params::resource_dir}/${type}_${::fqdn}.cfg")
   #$target = inline_template("${nagios::params::resource_dir}/${type}_<%=name.gsub(/\\s+/, '_').downcase %>.cfg")
 
