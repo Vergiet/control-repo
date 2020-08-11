@@ -25,17 +25,17 @@ $winncpapassivechecksconfig = '
 # AUTO GENERATED NRDP CONFIG FROM WINDOWS INSTALLER
 #
 
-[passive checks]
+#[passive checks]
 
 # Host check  - This is to stop "pending check" status in Nagios
-%HOSTNAME%|__HOST__ = system/agent_version
+#%HOSTNAME%|__HOST__ = system/agent_version
 
 # Service checks
-%HOSTNAME%|CPU Usage = cpu/percent --warning 80 --critical 90 --aggregate avg
-%HOSTNAME%|Disk Usage = disk/logical/C:|/used_percent --warning 80 --critical 90 --units Gi
+#%HOSTNAME%|CPU Usage = cpu/percent --warning 80 --critical 90 --aggregate avg
+#%HOSTNAME%|Disk Usage = disk/logical/C:|/used_percent --warning 80 --critical 90 --units Gi
 #%HOSTNAME%|Swap Usage = memory/swap --warning 60 --critical 80 --units Gi
-%HOSTNAME%|Memory Usage = memory/virtual --warning 80 --critical 90 --units Gi
-%HOSTNAME%|Process Count = processes --warning 300 --critical 400
+#%HOSTNAME%|Memory Usage = memory/virtual --warning 80 --critical 90 --units Gi
+#%HOSTNAME%|Process Count = processes --warning 300 --critical 400
 
 '
 
