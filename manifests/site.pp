@@ -87,6 +87,6 @@ node /^nagios\..*/ {
   include nagios::export
 }
 
-node /^nagiosxi\..*/ {
-  include nagiosxi::server::standalone
+node /^pmom01\..*/ {
+  include nagios::export
 }
