@@ -25,6 +25,7 @@ class nagios::export {
     active_checks_enabled => '0',
     host_name => $::fqdn,
     flap_detection_options => 'o',
+    check_command => 'check_dummy!0',
   }
 
 
