@@ -9,7 +9,7 @@ define nagios::resource::file(
 
   if $bexport {
 
-    @@file { downcase($name):
+    @@file { $name.downcase:
       ensure => $ensure,
       tag => $resource_tag,
       owner => $nagios::params::user,
@@ -18,7 +18,7 @@ define nagios::resource::file(
     }
   } else {
 
-    file { downcase($name):
+    file { $name.downcase:
       ensure => $ensure,
       tag => $resource_tag,
       owner => $nagios::params::user,
