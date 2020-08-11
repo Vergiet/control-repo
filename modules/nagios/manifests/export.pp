@@ -22,7 +22,8 @@ class nagios::export {
     bexport => true,
     service_use => 'passive_service',
     #service_description => $cpuservicename,
-    active_checks_enabled => '0'
+    active_checks_enabled => '0',
+    host_name => $::fqdn,
   }
 
 

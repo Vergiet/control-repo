@@ -46,6 +46,7 @@ define nagios::resource(
   $notes_url = '',
   $action_url = '',
   $use = '',
+  $host_name = '',
 ) {
 
   include nagios::params
@@ -80,6 +81,7 @@ define nagios::resource(
     }
     service: {
       nagios::resource::service { $name:
+        host_name => $host_name,
         ensure => $ensure,
         use => $service_use,
         check_command => $check_command,
