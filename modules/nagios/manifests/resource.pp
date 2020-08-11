@@ -71,7 +71,6 @@ $target_path_template = @("END")
   #$target = inline_template("${nagios::params::resource_dir}/${type}_${name}.cfg")
   #$target = "${nagios::params::resource_dir}/${type}_${name}.cfg".downcase
   $target = regsubst("${nagios::params::resource_dir}/${type}_${name}.cfg",'\\s+', '_', 'G').downcase
-  
   #$target = inline_template("${nagios::params::resource_dir}/${type}_${::fqdn}.cfg")
   #$target = inline_template("${nagios::params::resource_dir}/${type}_<%=name.gsub(/\\s+/, '_').downcase %>.cfg")
 
@@ -98,6 +97,50 @@ $target_path_template = @("END")
     }
     service: {
       nagios::resource::service { $name:
+        host_name => $host_name,
+        ensure => $ensure,
+        use => $service_use,
+        check_command => $check_command,
+        #hostgroup_name => $hostgroup_name,
+        target => $target,
+        bexport => $bexport,
+        max_check_attempts => $max_check_attempts,
+        check_period => $check_period,
+        notification_interval => $notification_interval,
+        notification_period => $notification_period,
+        first_notification_delay => $first_notification_delay,
+        active_checks_enabled => $active_checks_enabled,
+        passive_checks_enabled => $passive_checks_enabled,
+        #obsess_over_service => $obsess_over_service,
+        check_freshness => $check_freshness,
+        notifications_enabled => $notifications_enabled,
+        event_handler_enabled => $event_handler_enabled,
+        #event_handler => $event_handler,
+        flap_detection_enabled => $flap_detection_enabled,
+        flap_detection_options => $flap_detection_options,
+        low_flap_threshold => $low_flap_threshold,
+        high_flap_threshold => $high_flap_threshold,
+        process_perf_data => $process_perf_data,
+        retain_status_information => $retain_status_information,
+        retain_nonstatus_information => $retain_nonstatus_information,
+        #is_volatile => $is_volatile,
+        check_interval => $check_interval,
+        retry_interval => $retry_interval,
+        contact_groups => $contact_groups,
+        notification_options => $notification_options,
+        service_description => $service_description,
+        display_name => $display_name,
+        #parents => $parents,
+        #servicegroups => $servicegroups,
+        initial_state	=> $initial_state,
+        stalking_options => $stalking_options,
+        notes => $notes,
+        notes_url => $notes_url,
+        action_url => $action_url,
+      }
+    }
+    passive_service: {
+      nagios::resource::passive_service { $name:
         host_name => $host_name,
         ensure => $ensure,
         use => $service_use,

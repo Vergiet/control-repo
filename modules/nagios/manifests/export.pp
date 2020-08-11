@@ -20,7 +20,7 @@ class nagios::export {
   case $::kernel {
     windows: {
       nagios::resource { $cpu_service_name:
-        type => 'service',
+        type => 'passive_service',
         bexport => true,
         service_use => 'passive_service',
         service_description => $cpu_service_name,
