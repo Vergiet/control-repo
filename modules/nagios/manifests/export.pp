@@ -37,7 +37,7 @@ class nagios::export {
         bexport => true,
         service_description => $load_service_name,
         service_use => 'local-service',
-        active_checks_enabled => '0',
+        active_checks_enabled => '1',
         host_name => $::fqdn,
         flap_detection_options => 'o',
         check_command => 'check_local_load!5.0,4.0,3.0!10.0,6.0,4.0',
