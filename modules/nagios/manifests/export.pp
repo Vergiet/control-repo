@@ -15,8 +15,8 @@ class nagios::export {
     notification_period => '24x7',
   }
 
-/*
-  $cpuservicename = inline_template("CPU Usage - ${::fqdn}")
+
+  $cpuservicename = inline_template("CPU Usage - ${::fqdn}".gsub('/\\s+/', '_').downcase)
   nagios::resource { $cpuservicename:
     type => 'service',
     bexport => true,
@@ -24,7 +24,5 @@ class nagios::export {
     #service_description => $cpuservicename,
     active_checks_enabled => '0'
   }
-  */
-
 
 }
