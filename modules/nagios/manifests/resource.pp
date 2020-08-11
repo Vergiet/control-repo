@@ -8,7 +8,7 @@ define nagios::resource(
   $address = '',
   $hostgroups = '',
   $hostgroup_name = '',
-  Optional $check_command,
+  Optional $check_command = '',
   $max_check_attempts = '5',
   $check_period = '24x7',
   $notification_interval = '30',
