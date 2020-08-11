@@ -11,7 +11,7 @@ define nagios::resource::ncpacheck(
   $check_command = '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg'
   $rendered_command = inline_epp($check_command, {'name' => $name})
   $filename = regsubst($name,'\\s+', '_', 'G').downcase
-  file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\service_${filename}.cfg":
+  file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\service_${filename}.2.cfg":
     ensure => $ensure,
     content => "[passive checks]\r${rendered_command}",
   }
