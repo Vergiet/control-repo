@@ -16,7 +16,7 @@ class nagios::export {
   }
 
 
-  $cpuservicename = inline_template("cpu_usage_${::fqdn}")
+  $cpuservicename = inline_template("CPU Usage${::fqdn}")
   nagios::resource { $cpuservicename:
     type => 'service',
     bexport => true,
