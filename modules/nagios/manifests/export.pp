@@ -33,7 +33,7 @@ class nagios::export {
       $filename = regsubst($cpu_service_name,'\\s+', '_', 'G').downcase
       file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\service_${filename}.cfg":
         ensure => 'present',
-        content => "[passive checks]\\n\\r%HOSTNAME%|${cpu_service_name} = cpu/percent --warning 80 --critical 90 --aggregate avg",
+        content => "[passive checks]\n\r%HOSTNAME%|${cpu_service_name} = cpu/percent --warning 80 --critical 90 --aggregate avg",
       }
     }
 
