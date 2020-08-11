@@ -54,7 +54,21 @@ define nagios::resource(
   # figure out where to write the file
   # replace spaces with an underscore and convert 
   # everything to lowercase
-  $target = inline_template("${nagios::params::resource_dir}/${type}_${name}.cfg")
+
+$target_path_template = @("END")
+<%- | 
+  String  $resource_dir,
+  String  $type,
+  String  $name,
+| -%>
+"<%= $resource_dir -%>/<%= regsubst($type,'/\\s+/', '_')  -%>_<%= $name.downcase() -%>.cfg"
+|-END
+
+
+
+  $target = inline_epp($target_path_template, {'resource_dir' => $nagios::params::resource_dir, 'type' => $type, 'name' => $name})
+
+  #$target = inline_template("${nagios::params::resource_dir}/${type}_${name}.cfg")
   #$target = inline_template("${nagios::params::resource_dir}/${type}_${::fqdn}.cfg")
   #$target = inline_template("${nagios::params::resource_dir}/${type}_<%=name.gsub(/\\s+/, '_').downcase %>.cfg")
 
