@@ -1,4 +1,4 @@
-define nagios::resource::passiveservice(
+define nagios::resource::service(
   $bexport,
   $target,
   $check_command,

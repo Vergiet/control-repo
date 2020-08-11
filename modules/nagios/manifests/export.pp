@@ -20,7 +20,7 @@ class nagios::export {
   case $::kernel {
     windows: {
       nagios::resource { $cpu_service_name:
-        type => 'passiveservice',
+        type => 'service',
         bexport => true,
         service_use => 'passive_service',
         service_description => $cpu_service_name,
@@ -30,7 +30,7 @@ class nagios::export {
         check_command => 'check_dummy!0',
       }
     }
-/*
+
     linux: {
       nagios::resource { $load_service_name:
         type => 'service',
@@ -43,7 +43,6 @@ class nagios::export {
         check_command => 'check_local_load!5.0,4.0,3.0!10.0,6.0,4.0',
       }
     }
-*/
   }
 
 }
