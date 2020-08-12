@@ -6,10 +6,46 @@ class vmm::master (
   require temp::folder
   include chocolatey
 
+$vmmserverconfig = '
+[OPTIONS]
+# ProductKey=xxxxx-xxxxx-xxxxx-xxxxx-xxxxx
+UserName=Administrator
+CompanyName=Microsoft Corporation
+ProgramFiles=C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager
+CreateNewSqlDatabase=1
+SqlInstanceName= MICROSOFT$VMM$
+SqlDatabaseName=VirtualManagerDB
+RemoteDatabaseImpersonation=0
+SqlMachineName=vm01.mshome.net
+IndigoTcpPort=8100
+IndigoHTTPSPort=8101
+IndigoNETTCPPort=8102
+IndigoHTTPPort=8103
+WSManTcpPort=5985
+BitsTcpPort=443
+CreateNewLibraryShare=1
+LibraryShareName=MSSCVMMLibrary
+LibrarySharePath=C:\\ProgramData\\Virtual Machine Manager Library Files
+LibraryShareDescription=Virtual Machine Manager Library Files
+SQMOptIn = 1
+MUOptIn = 0
+VmmServiceLocalAccount = 0
+TopContainerName = VMMServer
+HighlyAvailable = 0
+VmmServerName = vm01.mshome.net
+# VMMStaticIPAddress = <comma-separated-ip-for-HAVMM>
+
+'
+
     file { 'vmminstaller':
       ensure => present,
       path => 'c:\\temp\\SCVMM_2019.exe',
       source => 'http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCVMM_2019.exe',
+    }
+
+    file { 'C:\\Temp\\VMServer.ini':
+      ensure => present,
+      content => $vmmserverconfig,
     }
 
     exec { 'extractvmm':
@@ -36,9 +72,8 @@ class vmm::master (
     }
 
 
-
     exec { 'installvmm':
-      command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/vmmservicedomain=\'mshome.net\'", "/vmmserviceUserName=\'administrator\'", "/vmmserviceuserpassword=\'Beheer123\'", "/SqlDBAdminDomain=\'mshome.net\'", "/SqlDBAdminName=\'administrator\'", "/SqlDBAdminpassword=\'Beheer123\'", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       subscribe   => File['vmminstaller'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
