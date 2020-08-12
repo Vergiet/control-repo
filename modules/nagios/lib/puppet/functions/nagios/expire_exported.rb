@@ -16,14 +16,13 @@ Puppet::Functions.create_function(:'nagios::expire_exported') do
   
       hosts.each do |host|
         Puppet.notice("Expiring resources for host: #{host}")
-        conn.exec("SELECT id FROM hosts WHERE name = 
-  ↪\'#{host}\'") do |host_id|
+        conn.exec("SELECT id FROM hosts WHERE name = \'#{host}\'") do |host_id|
+          Puppet.notice("host_id: #{host_id}")
           raise "Too many hosts" if host_id.ntuples > 1
-          conn.exec("SELECT id FROM param_names WHERE name = 
-  ↪'ensure'") do |param_id|
-  
-            conn.exec("SELECT id FROM resources WHERE host_id =
-  ↪#{host_id.values.flatten[0].to_i}") do |results|
+          conn.exec("SELECT id FROM param_names WHERE name = 'ensure'") do |param_id|
+            Puppet.notice("param_id: #{param_id}")
+            Puppet.notice("host_id.values.flatten[0].to_i: #{host_id.values.flatten[0].to_i}")
+            conn.exec("SELECT id FROM resources WHERE host_id = #{host_id.values.flatten[0].to_i}") do |results|
   
               resource_ids = []
               results.each do |row|
