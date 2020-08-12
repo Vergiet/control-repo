@@ -24,18 +24,18 @@ class nagios::export {
   $load_service_name = inline_template("Current Load ${::fqdn}")
   case $::kernel {
     windows: {
-      nagios::resource { $cpu_service_name:
+      nagios::resource { $cpu_usage_service_name:
         type => 'service',
         bexport => true,
         service_use => 'passive_service',
-        service_description => $cpu_service_name,
+        service_description => $cpu_usage_service_name,
         active_checks_enabled => '0',
         host_name => $::fqdn,
         flap_detection_options => 'o',
         check_command => 'check_dummy!0',
       }
 
-      nagios::resource::ncpacheck { $cpu_service_name:
+      nagios::resource::ncpacheck { $cpu_usage_service_name:
        check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
       }
 
