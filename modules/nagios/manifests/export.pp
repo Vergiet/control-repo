@@ -24,6 +24,7 @@ class nagios::export {
   $load_service_name = inline_template("Current Load ${::fqdn}")
   case $::kernel {
     windows: {
+      
       nagios::resource { $cpu_usage_service_name:
         type => 'service',
         bexport => true,

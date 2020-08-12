@@ -38,7 +38,7 @@ class vmm::master (
 
 
     exec { 'installvmm':
-      command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/vmmservicedomain=\'ad.contoso.com\'", "/vmmserviceUserName=\'administrator\'", "/vmmserviceuserpassword=\'Beheer123\'", "/SqlDBAdminDomain=\'ad.contoso.com\'", "/SqlDBAdminName=\'administrator\'", "/SqlDBAdminpassword=\'Beheer123\'", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/vmmservicedomain=\'contoso.com\'", "/vmmserviceUserName=\'administrator\'", "/vmmserviceuserpassword=\'Beheer123\'", "/SqlDBAdminDomain=\'contoso.com\'", "/SqlDBAdminName=\'administrator\'", "/SqlDBAdminpassword=\'Beheer123\'", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       subscribe   => File['vmminstaller'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
