@@ -74,15 +74,15 @@ VmmServerName = vm01.mshome.net
     }
 
 
-/*
+
     exec { 'installvmm':
       command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       subscribe   => File['vmminstaller'],
       provider => 'powershell',
       #unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
-      require => File['C:\\Temp\\VMServer.ini'],
+      require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm']],
     }
-    */
+
 
 /* 
     dsc_xscvmmmanagementserversetup { "VMMMS":
