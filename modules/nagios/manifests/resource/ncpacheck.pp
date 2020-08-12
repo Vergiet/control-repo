@@ -2,7 +2,7 @@ define nagios::resource::ncpacheck(
   #$resource_tag,
   #$requires,
   #$bexport = true,
-  $ensure = 'absent',
+  $ensure = 'present',
   $check_command,
 ) {
 
