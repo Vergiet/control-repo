@@ -5,10 +5,11 @@ Puppet::Functions.create_function(:'nagios::upcase') do
   end
 
   require 'logger'  
-  log = Logger.new(STDOUT)
-  log.level = Logger::INFO
+
 
   def up(some_string)
+    log = Logger.new(STDOUT)
+    log.level = Logger::INFO
     log.info(some_string.upcase)
   end
 end
