@@ -3,6 +3,7 @@ define nagios::resource::file(
   $requires,
   $bexport = true,
   $ensure = 'present',
+  $purge = true,
 ) {
 
   include nagios::params
@@ -16,6 +17,7 @@ define nagios::resource::file(
       owner => $nagios::params::user,
       group => $nagios::params::user,
       require => $requires,
+      purge => $purge,
     }
   } else {
 
@@ -26,6 +28,7 @@ define nagios::resource::file(
       owner => $nagios::params::user,
       group => $nagios::params::user,
       require => $requires,
+      purge => $purge,
     }
   }
 }

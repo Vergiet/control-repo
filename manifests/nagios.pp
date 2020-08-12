@@ -1811,6 +1811,7 @@ allow_empty_hostgroup_assignment=0
     ensure   => present,
     source => 'https://raw.githubusercontent.com/NagiosEnterprises/ncpa/master/client/check_ncpa.py',
     mode => '0755',
+    replace => 'no',
     require => Exec['/root/installnagios.sh'],
   }
 
