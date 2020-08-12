@@ -73,21 +73,6 @@ node 'vm01.mshome.net' {
   include base::server
   include vmm::master
 
-  $disk_usage_d_service_name = inline_template("Disk Usage D ${::fqdn}")
-  nagios::resource { $disk_usage_d_service_name:
-    type => 'service',
-    bexport => true,
-    service_use => 'passive_service',
-    service_description => $disk_usage_d_service_name,
-    active_checks_enabled => '0',
-    host_name => $::fqdn,
-    flap_detection_options => 'o',
-    check_command => 'check_dummy!0',
-  }
-
-  nagios::resource::ncpacheck { $disk_usage_d_service_name:
-    check_command => '%HOSTNAME%|<%= $name %> = disk/logical/D:|/used_percent --warning 80 --critical 90 --units Gi',
-  }
 }
 
 node 'dc01.mshome.net' {
