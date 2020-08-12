@@ -380,6 +380,11 @@ plugin_path = plugins/
 
   include nagios::params
 
+  service { $nagios::params::ncpaservice:
+    ensure => running,
+    enable => true,
+  }
+
   $downloads_dir = 'c:\\downloads'
 
   file { $downloads_dir:
@@ -411,17 +416,16 @@ plugin_path = plugins/
     ensure   => present,
     content => $winncpaconfigrender,
     require => Exec['installncpa'],
+    notify => Service[$nagios::params::ncpaservice],
   }
 
   file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\nrdp.cfg" :
     ensure   => absent,
     content => $winncpapassivechecksconfig,
     require => Exec['installncpa'],
+    notify => Service[$nagios::params::ncpaservice],
   }
 
-  service { $nagios::params::ncpaservice:
-    ensure => running,
-    enable => true,
-  }
+
 
 }
