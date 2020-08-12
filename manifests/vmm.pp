@@ -77,6 +77,7 @@ VmmServerName = vm01.mshome.net
       subscribe   => File['vmminstaller'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
+      require => File['C:\\Temp\\VMServer.ini'],
     }
 
 /* 
