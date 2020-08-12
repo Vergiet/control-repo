@@ -10,7 +10,7 @@ define nagios::resource::ncpacheck(
 
   $rendered_command = inline_epp($check_command, {'name' => $name})
   $filename = regsubst($name,'\\s+', '_', 'G').downcase
-  file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\service_${filename}.2.cfg":
+  file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\service_${filename}.cfg":
     ensure => $ensure,
     content => "[passive checks]\n${rendered_command}",
   }

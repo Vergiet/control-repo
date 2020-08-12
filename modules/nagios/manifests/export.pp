@@ -15,7 +15,12 @@ class nagios::export {
     notification_period => '24x7',
   }
 
-  $cpu_service_name = inline_template("CPU Usage ${::fqdn}")
+  $cpu_usage_service_name = inline_template("CPU Usage ${::fqdn}")
+  $disk_usage_c_service_name = inline_template("Disk Usage C ${::fqdn}")
+  $swap_usage_service_name = inline_template("Swap Usage ${::fqdn}")
+  $memory_usage_service_name = inline_template("Memory Usage ${::fqdn}")
+  $process_count_service_name = inline_template("Process Count ${::fqdn}")
+
   $load_service_name = inline_template("Current Load ${::fqdn}")
   case $::kernel {
     windows: {
@@ -31,6 +36,66 @@ class nagios::export {
       }
 
       nagios::resource::ncpacheck { $cpu_service_name:
+       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
+      }
+
+      nagios::resource { $disk_usage_c_service_name:
+        type => 'service',
+        bexport => true,
+        service_use => 'passive_service',
+        service_description => $disk_usage_c_service_name,
+        active_checks_enabled => '0',
+        host_name => $::fqdn,
+        flap_detection_options => 'o',
+        check_command => 'check_dummy!0',
+      }
+
+      nagios::resource::ncpacheck { $disk_usage_c_service_name:
+       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
+      }
+
+      nagios::resource { $swap_usage_service_name:
+        type => 'service',
+        bexport => true,
+        service_use => 'passive_service',
+        service_description => $swap_usage_service_name,
+        active_checks_enabled => '0',
+        host_name => $::fqdn,
+        flap_detection_options => 'o',
+        check_command => 'check_dummy!0',
+      }
+
+      nagios::resource::ncpacheck { $swap_usage_service_name:
+       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
+      }
+
+      nagios::resource { $memory_usage_service_name:
+        type => 'service',
+        bexport => true,
+        service_use => 'passive_service',
+        service_description => $memory_usage_service_name,
+        active_checks_enabled => '0',
+        host_name => $::fqdn,
+        flap_detection_options => 'o',
+        check_command => 'check_dummy!0',
+      }
+
+      nagios::resource::ncpacheck { $memory_usage_service_name:
+       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
+      }
+
+      nagios::resource { $process_count_service_name:
+        type => 'service',
+        bexport => true,
+        service_use => 'passive_service',
+        service_description => $process_count_service_name,
+        active_checks_enabled => '0',
+        host_name => $::fqdn,
+        flap_detection_options => 'o',
+        check_command => 'check_dummy!0',
+      }
+
+      nagios::resource::ncpacheck { $process_count_service_name:
        check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
       }
     }
