@@ -31,6 +31,7 @@ class nagios::export {
       }
 
       nagios::resource::ncpacheck { $cpu_service_name:
+       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
       }
     }
 
