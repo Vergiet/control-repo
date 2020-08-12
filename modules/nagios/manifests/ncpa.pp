@@ -410,7 +410,7 @@ plugin_path = plugins/
   }
 
   file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\nrdp.cfg" :
-    ensure   => present,
+    ensure   => absent,
     content => $winncpapassivechecksconfig,
     require => Exec['installncpa'],
   }
