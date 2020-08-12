@@ -29,12 +29,20 @@ node default {
   # Example:
   #   class { 'my_class': }
 
+  include nagios::export
+
   if $::kernel == 'windows' {
     Package { provider => chocolatey, }
     windows_updates::list {'*':
       ensure    => 'present',
       name_mask => '*'
     }
+
+    include site::basic
+    include nagios::ncpa
+
+
+
   }
 
   
@@ -68,8 +76,8 @@ node /^vmm\d+$/ {
 
 node 'vm01.mshome.net' {
 
-  include site::basic
-  include nagios::ncpa
+  #include site::basic
+  #include nagios::ncpa
   include base::server
   include vmm::master
 
@@ -77,21 +85,21 @@ node 'vm01.mshome.net' {
 
 node 'dc01.mshome.net' {
 
-  include site::basic
-  include nagios::ncpa
+  #include site::basic
+  #include nagios::ncpa
   include ad::pdc
 }
 
 node /^nagios\..*/ {
 
-  $my_nagios_purge_hosts = [ 'VM01.mshome.net' ]
+  #$my_nagios_purge_hosts = [ 'VM01.mshome.net' ]
   #$my_nagios_purge_hosts = 'VM01.mshome.net'
 
   include nagios::server::standalone
   #include nagios::server
-  include nagios::export
+  #include nagios::export
 }
 
 node /^pmom01\..*/ {
-  include nagios::export
+  #include nagios::export
 }
