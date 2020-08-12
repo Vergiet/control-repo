@@ -114,19 +114,19 @@ Foreach ($Script in $Scripts){
 
 '
 
-  file { "c:\\scripts\\ensurepmom01.ps1" :
+  file { "c:\\scripts\\03_ensurepmom01.ps1" :
     ensure   => present,
     content => $ensurepmom01,
     require => File[$scripts_dir],
   }
 
-  file { "c:\\scripts\\ensurenagios.ps1" :
+  file { "c:\\scripts\\02_ensurenagios.ps1" :
     ensure   => present,
     content => $ensurenagios,
     require => File[$scripts_dir],
   }
 
-  file { "c:\\scripts\\ensurednsforwarder.ps1" :
+  file { "c:\\scripts\\01_ensurednsforwarder.ps1" :
     ensure   => present,
     content => $ensurednsforwarder,
     require => File[$scripts_dir],
