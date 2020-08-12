@@ -12,7 +12,7 @@ define nagios::resource::ncpacheck(
   $filename = regsubst($name,'\\s+', '_', 'G').downcase
   file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\service_${filename}.2.cfg":
     ensure => $ensure,
-    content => "[passive checks]\r${rendered_command}",
+    content => "[passive checks]\n${rendered_command}",
   }
 }
 
