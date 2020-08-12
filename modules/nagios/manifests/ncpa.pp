@@ -286,7 +286,8 @@ token =d19e2543-5c32-4c04-b193-552547f919a3
 # The hostname that will replace %HOSTNAME% in the check definitions and will be
 # sent to NRDP with the check name as the service description (service name)
 #
-hostname =DC01.mshome.net
+#hostname =DC01.mshome.net
+hostname =<%= $hostname %> 
 
 #
 # -------------------------------
@@ -405,9 +406,10 @@ plugin_path = plugins/
     unless => 'if (Test-Path -Path "C:\\Program Files (x86)\\Nagios\\NCPA\\ncpa_passive.exe" -PathType Leaf){exit} else {exit 1}',
   }
 
+  $winncpaconfigrender = inline_epp($winncpaconfig, {'hostname' => $::fqdn})
   file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg" :
     ensure   => present,
-    content => $winncpaconfig,
+    content => $winncpaconfigrender,
     require => Exec['installncpa'],
   }
 
