@@ -4,3 +4,4 @@ class nagios::expire_resources {
     call_function('expire_exported', $my_nagios_purge_hosts)
   }
 }
+
