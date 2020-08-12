@@ -1,4 +1,4 @@
-Puppet::Functions.create_function(:expire_exported) do
+Puppet::Functions.create_function(:'nagios::expire_exported') do
 
   def expire_exported(*args)
 
