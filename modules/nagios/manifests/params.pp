@@ -15,6 +15,7 @@ class nagios::params {
     }
     windows:{
       $service = 'nagios'
+      $ncpaservice = 'ncpapassive'
     }
     default: {
       fail("This module is not supported on $::operatingsystem")

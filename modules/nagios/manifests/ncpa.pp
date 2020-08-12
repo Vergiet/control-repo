@@ -377,6 +377,8 @@ plugin_path = plugins/
 
 '
 
+  include nagios::params
+
   $downloads_dir = 'c:\\downloads'
 
   file { $downloads_dir:
@@ -413,6 +415,11 @@ plugin_path = plugins/
     ensure   => absent,
     content => $winncpapassivechecksconfig,
     require => Exec['installncpa'],
+  }
+
+  service { $nagios::params::ncpaservice:
+    ensure => running,
+    enable => true,
   }
 
 }

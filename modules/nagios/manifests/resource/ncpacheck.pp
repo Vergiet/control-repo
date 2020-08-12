@@ -13,6 +13,7 @@ define nagios::resource::ncpacheck(
   file { "C:\\Program Files (x86)\\Nagios\\NCPA\\etc\\ncpa.cfg.d\\service_${filename}.cfg":
     ensure => $ensure,
     content => "[passive checks]\n${rendered_command}",
+    notify => Service[$nagios::params::ncpaservice],
   }
 }
 
