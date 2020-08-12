@@ -30,7 +30,7 @@ LibraryShareDescription=Virtual Machine Manager Library Files
 SQMOptIn = 1
 MUOptIn = 0
 VmmServiceLocalAccount = 0
-TopContainerName = VMMServer
+#TopContainerName = VMMServer
 HighlyAvailable = 0
 VmmServerName = vm01.mshome.net
 # VMMStaticIPAddress = <comma-separated-ip-for-HAVMM>
@@ -63,6 +63,7 @@ VmmServerName = vm01.mshome.net
     package { 'sqlserver-cmdlineutils':
       ensure   => installed,
       provider          => 'chocolatey',
+      install_options => ['version=14.0'],
     }
 
 
