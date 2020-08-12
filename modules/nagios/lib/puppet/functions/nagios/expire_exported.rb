@@ -34,16 +34,16 @@ Puppet::Functions.create_function(:'nagios::expire_exported') do
                 conn.exec("UPDATE param_values SET VALUE = 
   ↪'absent' WHERE resource_id = #{resource['id']} AND 
   ↪param_name_id = #{param_id.values}")
-                end
               end
             end
           end
         end
-      rescue => e
-        Puppet.notice(e.message)
-      ensure
-        conn.close
       end
+    rescue => e
+      Puppet.notice(e.message)
+    ensure
+      conn.close
     end
   end
 end
+#end
