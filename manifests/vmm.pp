@@ -64,6 +64,7 @@ VmmServerName = vm01.mshome.net
       ensure   => installed,
       provider          => 'chocolatey',
       install_options => ['--version=14.0'],
+      require => Reboot['vmm_dsc_reboot'],
     }
 
 
