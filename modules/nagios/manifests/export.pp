@@ -51,7 +51,7 @@ class nagios::export {
       }
 
       nagios::resource::ncpacheck { $disk_usage_c_service_name:
-       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
+       check_command => '%HOSTNAME%|<%= $name %> = disk/logical/C:|/used_percent --warning 80 --critical 90 --units Gi',
       }
 
       nagios::resource { $swap_usage_service_name:
@@ -66,7 +66,7 @@ class nagios::export {
       }
 
       nagios::resource::ncpacheck { $swap_usage_service_name:
-       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
+       check_command => '%HOSTNAME%|<%= $name %> = memory/swap --warning 60 --critical 80 --units Gi',
       }
 
       nagios::resource { $memory_usage_service_name:
@@ -81,7 +81,7 @@ class nagios::export {
       }
 
       nagios::resource::ncpacheck { $memory_usage_service_name:
-       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
+       check_command => '%HOSTNAME%|<%= $name %> = memory/virtual --warning 80 --critical 90 --units Gi',
       }
 
       nagios::resource { $process_count_service_name:
@@ -96,7 +96,7 @@ class nagios::export {
       }
 
       nagios::resource::ncpacheck { $process_count_service_name:
-       check_command => '%HOSTNAME%|<%= $name %> = cpu/percent --warning 80 --critical 90 --aggregate avg',
+       check_command => '%HOSTNAME%|<%= $name %> = processes --warning 300 --critical 400',
       }
     }
 
