@@ -12,7 +12,7 @@ Puppet::Functions.create_function(:'nagios::expire_exported') do
     log.level = Logger::INFO
     hosts = some_string.flatten
     hosts.each do |host|
-
       log.info(host.upcase)
+    end
   end
 end
