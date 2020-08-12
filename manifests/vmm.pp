@@ -63,7 +63,7 @@ VmmServerName = vm01.mshome.net
     package { 'sqlserver-cmdlineutils':
       ensure   => installed,
       provider          => 'chocolatey',
-      install_options => ['--version=14.0'],
+      #install_options => ['--version=14.0'],
       require => Reboot['vmm_dsc_reboot'],
     }
 
