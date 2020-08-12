@@ -4,7 +4,8 @@ class nagios::expire_resources {
     #call_function('expire_exported', $my_nagios_purge_hosts)
     #call_expire_exported('expire_exported', $my_nagios_purge_hosts)
     #function_expire_exported($my_nagios_purge_hosts)
-    nagios::expire_exported($my_nagios_purge_hosts)
+    #nagios::expire_exported($my_nagios_purge_hosts)
+    nagios::upcase('asd')
   }
 }
 
