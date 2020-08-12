@@ -4,7 +4,11 @@ Puppet::Functions.create_function(:'nagios::upcase') do
     param 'String', :some_string
   end
 
+  require 'logger'  
+  log = Logger.new(STDOUT)
+  log.level = Logger::INFO
+
   def up(some_string)
-    some_string.upcase
+    log.info(some_string.upcase)
   end
 end
