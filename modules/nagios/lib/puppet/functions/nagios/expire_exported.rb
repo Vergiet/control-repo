@@ -1,7 +1,7 @@
 # /etc/puppetlabs/code/environments/production/modules/mymodule/lib/puppet/functions/mymodule/upcase.rb
 Puppet::Functions.create_function(:'nagios::expire_exported') do
   dispatch :up do
-    param 'String', :some_string
+    param 'tuple', :some_string
   end
 
   require 'logger'  
