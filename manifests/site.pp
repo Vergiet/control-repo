@@ -83,6 +83,9 @@ node 'dc01.mshome.net' {
 }
 
 node /^nagios\..*/ {
+
+  $my_nagios_purge_hosts = [ 'foo', 'bar', 'baz' ]
+
   include nagios::server::standalone
   #include nagios::server
   include nagios::export
