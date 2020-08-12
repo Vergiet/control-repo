@@ -97,9 +97,9 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
 
 $configtasks = '
 $Scripts = @(
-    "C:\\scripts\\ensurednsforwarder.ps1"
-    "C:\\scripts\\ensurenagios.ps1"
-    "C:\\scripts\\ensurepmom01.ps1"
+    "C:\\scripts\\01_ensurednsforwarder.ps1"
+    "C:\\scripts\\02_ensurenagios.ps1"
+    "C:\\scripts\\03_ensurepmom01.ps1"
 )
 
 Foreach ($Script in $Scripts){
