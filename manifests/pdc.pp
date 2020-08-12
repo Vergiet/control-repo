@@ -47,12 +47,12 @@ $IPAddress = (Resolve-DnsName -name pmom01.mshome.net -Server $IPv4DefaultGatewa
 
 $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name pmom01 -ZoneName mshome.net -ErrorAction SilentlyContinue
 
-if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData -ne $IPAddress){
+if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
 
     if ($null -ne $DnsServerResourceRecord){
         Remove-DnsServerResourceRecord -ZoneName mshome.net -Name pmom01 -RRType "A" -Confirm:$False -force
 
-        restart-computer
+        #restart-computer
     }
 
     Add-DnsServerResourceRecordA -Name pmom01 -ZoneName mshome.net -IPv4Address $IPAddress
@@ -70,12 +70,12 @@ $IPAddress = (Resolve-DnsName -name nagios.mshome.net -Server $IPv4DefaultGatewa
 
 $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name nagios -ZoneName mshome.net -ErrorAction SilentlyContinue
 
-if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData -ne $IPAddress){
+if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
 
     if ($null -ne $DnsServerResourceRecord){
         Remove-DnsServerResourceRecord -ZoneName mshome.net -Name nagios -RRType "A" -Confirm:$False -force
 
-        restart-computer
+        #restart-computer
     }
 
     Add-DnsServerResourceRecordA -Name nagios -ZoneName mshome.net -IPv4Address $IPAddress
