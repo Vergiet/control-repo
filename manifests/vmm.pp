@@ -1,5 +1,5 @@
 class vmm::master (
-  
+
 ) {
 
   require sql::standalone
