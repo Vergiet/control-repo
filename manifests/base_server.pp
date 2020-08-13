@@ -69,17 +69,4 @@ Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -Serve
     when    => pending,
   }
 
-  
-  pspackageprovider {'Nuget':
-    ensure   => 'present',
-    provider => 'windowspowershell',
-    before   => Package['NetworkingDsc'],
-  }
-
-  package { 'NetworkingDsc':
-    ensure   => latest,
-    provider => 'windowspowershell',
-    source   => 'PSGallery',
-  }
-
 }
