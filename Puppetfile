@@ -16,9 +16,9 @@ forge 'https://forge.puppet.com'
 #  git:    'https://github.com/puppetlabs/puppetlabs-apache',
 #  branch: 'docs_experiment'
 
-mod "puppetlabs/inifile",                  :latest
+
 mod "puppetlabs/stdlib",                   '5.2.0'
-mod "puppetlabs/concat",                   :latest
+mod "puppetlabs/concat", :latest
 mod 'puppetlabs/apt',                      :latest
 mod 'puppetlabs/firewall',                 :latest
 mod 'puppetlabs/puppet_authorization',     :latest
@@ -56,6 +56,7 @@ mod 'puppetlabs/mysql',                    :latest
 mod 'puppetlabs/nagios_core',              :latest
 mod 'puppetlabs/windows_puppet_certificates', :latest
 
+
 mod 'puppet/archive',                      :latest
 mod 'puppet/grafana',                      :latest
 mod 'puppet/telegraf',                     :latest
@@ -85,3 +86,4 @@ mod 'kreeuwijk/vmtools_win',               :latest
 mod 'stm/debconf',                         '2.3.0'
 mod 'beergeek-active_directory',           :latest
 mod 'jamtur01-httpauth',                   :latest
+mod 'nekototori/winrmssl',                 :latest
