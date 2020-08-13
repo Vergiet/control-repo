@@ -9,7 +9,7 @@ class base::server {
   }
 */
 
-include profile::os::windows::winrm
+#include profile::os::windows::winrm
 
 
 $ensuredns = '
