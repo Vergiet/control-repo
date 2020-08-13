@@ -74,6 +74,13 @@ node /^vmm\d+$/ {
 
 }
 
+node /^hv\d+$/ {
+
+  include temp::folder
+  include base::server
+
+}
+
 node 'vm01.mshome.net' {
 
   #include site::basic
