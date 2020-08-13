@@ -9,6 +9,8 @@ class base::server {
   }
 */
 
+include profile::os::windows::winrm
+
 
 $ensuredns = '
 
@@ -65,6 +67,19 @@ Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -Serve
   reboot {'dsc_reboot':
     message => 'DSC has requested a reboot',
     when    => pending,
+  }
+
+  
+  pspackageprovider {'Nuget':
+    ensure   => 'present',
+    provider => 'windowspowershell',
+    before   => Package['NetworkingDsc'],
+  }
+
+  package { 'NetworkingDsc':
+    ensure   => latest,
+    provider => 'windowspowershell',
+    source   => 'PSGallery',
   }
 
 }

@@ -1,6 +1,11 @@
 class ad::pdc (
   String $ntds_dir = 'c:\\NTDS',
 ){
+
+
+include profile::os::windows::winrm
+
+
   if $osfamily == 'windows' {
 
     file {[$ntds_dir,]:
