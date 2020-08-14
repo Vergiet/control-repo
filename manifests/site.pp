@@ -28,24 +28,7 @@ node default {
   # This is where you can declare classes for all nodes.
   # Example:
   #   class { 'my_class': }
-
-  include nagios::export
-
-  if $::kernel == 'windows' {
-    Package { provider => chocolatey, }
-    windows_updates::list {'*':
-      ensure    => 'present',
-      name_mask => '*'
-    }
-
-    include site::basic
-    include nagios::ncpa
-
-
-
-  }
-
-  
+   
   #if $osfamily == 'RedHat' {
     /* class { 'firewall': } */
     /*
@@ -87,6 +70,7 @@ node 'dc01.mshome.net' {
 
   #include site::basic
   #include nagios::ncpa
+  include site::basic
   include ad::pdc
 }
 
