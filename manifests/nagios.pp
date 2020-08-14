@@ -2340,6 +2340,7 @@ file { '/usr/local/nrdp/server/config.inc.php':
   ensure  => file,
   content => template('nagios/config.inc.php.erb'),
   # Loads /etc/puppetlabs/code/environments/production/modules/ntp/templates/ntp.conf.erb
+  notify => Service['nagios'],
 }
 
 
