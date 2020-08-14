@@ -65,15 +65,6 @@ node default {
 
 #lookup('classes', {merge => unique}).include
 
-node /^vmm\d+$/ {
-
-  include temp::folder
-  include base::server
-  include sql::standalone
-  include vmm::master
-
-}
-
 node 'hv01.mshome.net' {
 
     include site::basic
@@ -109,6 +100,3 @@ node /^nagios\..*/ {
   include nagios::export
 }
 
-node /^pmom01\..*/ {
-  include nagios::export
-}

@@ -2332,6 +2332,18 @@ allow_empty_hostgroup_assignment=0
 
 */
 
+
+$nrdp_tokens = hiera('nagios::nrdp_tokens', [])
+/*
+
+$cfg['authorized_tokens'] = array(
+<% @nrdp_tokens.each do |token| -%>
+	"<%= token %>",
+<% end -%>
+);
+
+*/
+
   # This defines a modified "24x7" timeperiod that covers every day of the
   # year, except for U.S. holidays (defined in the timeperiod above).
 

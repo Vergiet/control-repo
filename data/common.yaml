@@ -1,5 +1,6 @@
 ---
 message: "This node is using common data"
 mysql::server::root_password: 'password'
+nagios::nrdp_tokens: ["d19e2543-5c32-4c04-b193-552547f919a3", "d19e2543-5c32-4c04-b193-552547f919a3"]
 
   # --Nothing. Just use the default parameter values.
