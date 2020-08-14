@@ -2334,6 +2334,20 @@ allow_empty_hostgroup_assignment=0
 
 
 $nrdp_tokens = hiera('nagios::nrdp_tokens', [])
+
+
+file { '/usr/local/nrdp/server/config.inc.php':
+  ensure  => file,
+  content => template('nagios/config.inc.php.erb'),
+  # Loads /etc/puppetlabs/code/environments/production/modules/ntp/templates/ntp.conf.erb
+}
+
+
+
+
+
+
+
 /*
 
 $cfg['authorized_tokens'] = array(
