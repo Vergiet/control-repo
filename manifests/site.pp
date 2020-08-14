@@ -105,9 +105,9 @@ node /^nagios\..*/ {
 
   include nagios::server::standalone
   #include nagios::server
-  #include nagios::export
+  include nagios::export
 }
 
 node /^pmom01\..*/ {
-  #include nagios::export
+  include nagios::export
 }
