@@ -3,7 +3,7 @@ class ad::pdc (
 ){
 
 
-include profile::os::windows::winrm
+
 
 
   if $osfamily == 'windows' {
