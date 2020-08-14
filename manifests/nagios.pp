@@ -1937,6 +1937,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
   nagios_command {'notify-service-by-email':
@@ -1945,6 +1946,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -1954,6 +1956,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -1963,6 +1966,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -1972,6 +1976,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -1981,6 +1986,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -1990,6 +1996,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -1999,6 +2006,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2008,6 +2016,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2017,6 +2026,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2026,6 +2036,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2035,6 +2046,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2044,6 +2056,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2053,6 +2066,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2062,6 +2076,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2071,6 +2086,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2080,6 +2096,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2089,6 +2106,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2098,6 +2116,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2107,6 +2126,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2116,6 +2136,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2125,6 +2146,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
   ################################################################################
@@ -2144,6 +2166,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
 
@@ -2153,6 +2176,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
   #/etc/nagios/resource.d/hostgroup_all-servers.cfg
@@ -2178,6 +2202,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
   ###############################################################################
@@ -2196,6 +2221,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
   ###############################################################################
@@ -2236,6 +2262,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
 
   }
 
@@ -2255,6 +2282,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
 
   }
 
@@ -2268,6 +2296,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
 
   }
 
@@ -2322,6 +2351,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
 
   }
 
@@ -2355,6 +2385,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
   ###############################################################################
@@ -2395,6 +2426,7 @@ allow_empty_hostgroup_assignment=0
     host_name => 'localhost',
     service_description => 'PING',
     check_command => 'check_ping!100.0,20%!500.0,60%',
+    notify => Service['nagios'],
 
   }
 
@@ -2426,6 +2458,7 @@ allow_empty_hostgroup_assignment=0
     host_name => 'localhost',
     service_description => 'Root Partition',
     check_command => 'check_local_disk!20%!10%!/',
+    notify => Service['nagios'],
 
   }
 
@@ -2443,6 +2476,7 @@ allow_empty_hostgroup_assignment=0
     host_name => 'localhost',
     service_description => 'Current Users',
     check_command => 'check_local_users!20!50',
+    notify => Service['nagios'],
 
   }
 
@@ -2463,6 +2497,7 @@ allow_empty_hostgroup_assignment=0
     host_name => 'localhost',
     service_description => 'Total Processes',
     check_command => 'check_local_procs!250!400!RSZDT',
+    notify => Service['nagios'],
 
   }
 
@@ -2478,6 +2513,7 @@ allow_empty_hostgroup_assignment=0
     host_name => 'localhost',
     service_description => 'Current Load',
     check_command => 'check_local_load!5.0,4.0,3.0!10.0,6.0,4.0',
+    notify => Service['nagios'],
 
   }
 
@@ -2493,6 +2529,7 @@ allow_empty_hostgroup_assignment=0
     host_name => 'localhost',
     service_description => 'Swap Usage',
     check_command => 'check_local_swap!20%!10%',
+    notify => Service['nagios'],
 
   }
 
@@ -2512,6 +2549,7 @@ allow_empty_hostgroup_assignment=0
     service_description => 'SSH',
     check_command => 'check_ssh',
     notifications_enabled => '0',
+    notify => Service['nagios'],
 
   }
 
@@ -2554,6 +2592,7 @@ allow_empty_hostgroup_assignment=0
     mode => '0777',
     group => $nagios::params::user,
     owner => $nagios::params::user,
+    notify => Service['nagios'],
   }
 
   nagios_host { 'passive_host':
@@ -2576,6 +2615,7 @@ allow_empty_hostgroup_assignment=0
     notification_interval => '60',
     notification_period => '24x7',
     notification_options => 'd,u,r',
+    notify => Service['nagios'],
   }
 
 
@@ -2600,6 +2640,7 @@ allow_empty_hostgroup_assignment=0
     notification_period => '24x7',
     notification_options => 'w,u,c,r',
     service_description => 'passive_service',
+    notify => Service['nagios'],
 
   }
 
