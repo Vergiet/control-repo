@@ -32,18 +32,24 @@ $cfg["valid_basic_auth_users"]=array(
 // the name of the system group that has write permissions to the external command file
 // this group is also used to set file permissions when writing bulk commands or passive check results
 // NOTE: both the Apache and Nagios users must be a member of this group
-$cfg["nagios_command_group"]="www-data";
+$cfg["nagios_command_group"]="nagcmd";
 
 // full path to Nagios external command file
-$cfg["command_file"]="/var/lib/nagios3/rw/nagios.cmd";
+$cfg["command_file"]="/usr/local/nagios/var/rw/nagios.cmd";
 
 // full path to check results spool directory
-$cfg["check_results_dir"]="/var/lib/nagios3/spool/checkresults";
+$cfg["check_results_dir"]="/usr/local/nagios/var/spool/checkresults";
 
 // full path to directory where temp scratch files can be written
 // NOTE: the Apache user need to be able create files here, and the Nagios user needs to read/delete those same files, so the /tmp system directory won't work (it has a sticky bit on it)
-$cfg["tmp_dir"]="/var/lib/nagios3/tmp";
 
+
+
+$cfg["disable_external_commands"] = false;
+$cfg["allow_old_results"] = false;
+$cfg["hide_display_page"] = false;
+$cfg["debug"] = false;
+$cfg["debug_log"] = "/usr/local/nrdp/server/debug.log";
 
 ///////// DONT MODIFY ANYTHING BELOW THIS LINE /////////
 
