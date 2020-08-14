@@ -76,7 +76,8 @@ node /^vmm\d+$/ {
 
 node 'hv01.mshome.net' {
 
-  include temp::folder
+    include site::basic
+    include nagios::ncpa
   include base::server
   include hv::baseline
 
