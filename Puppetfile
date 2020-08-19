@@ -86,3 +86,4 @@ mod 'stm/debconf',                         '2.3.0'
 mod 'beergeek-active_directory',           :latest
 mod 'jamtur01-httpauth',                   :latest
 mod 'nekototori/winrmssl',                 :latest
+mod 'geoffwilliams/mount_windows_smb',     :latest
