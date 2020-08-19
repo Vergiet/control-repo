@@ -19,4 +19,11 @@ class hv::baseline (
    subscribe => Windowsfeature['Hyper-V'],
  }
 
+ mount { "D:":
+  ensure   => mounted,
+  provider => windows_smb,
+  device   => "//DESKTOP-2866BO2/D$",
+  options  => '{"user":"DESKTOP-2866BO2/HvShareAccess","password":"Beheer123"}',
+}
+
 }
