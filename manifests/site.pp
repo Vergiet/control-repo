@@ -59,8 +59,10 @@ node 'hv01.mshome.net' {
 
 node 'vm01.mshome.net' {
 
-  #include site::basic
-  #include nagios::ncpa
+  include site::basic
+  include nagios::ncpa
+  require sql::standalone
+  require temp::folder
   include base::server
   include vmm::master
 

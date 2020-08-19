@@ -2,8 +2,7 @@ class vmm::master (
 
 ) {
 
-  require sql::standalone
-  require temp::folder
+
   include chocolatey
 
 $vmmserverconfig = '
