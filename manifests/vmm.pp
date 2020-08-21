@@ -114,19 +114,12 @@ VmmServerName = vm01.mshome.net
     }
 
 
-     mount { "D:":
+    mount { "D:":
       ensure   => mounted,
       provider => windows_smb,
       device   => "//DESKTOP-2866BO2/D",
       options  => '{"user":"DESKTOP-2866BO2/HvShareAccess","password":"Beheer123"}',
     }
-
-    local_security_policy { 'Allow log on locally':
-      ensure => present,
-      policy_value => '90',
-
-    }
-
 
     local_security_policy { 'Allow log on locally':
       ensure         => 'present',
