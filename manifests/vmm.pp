@@ -129,6 +129,14 @@ VmmServerName = vm01.mshome.net
       provider       => 'policy',
     }
 
+    local_security_policy { 'Allow log on through Remote Desktop Services':
+      ensure         => 'present',
+      policy_setting => 'SeRemoteInteractiveLogonRight',
+      policy_type    => 'Privilege Rights',
+      policy_value   => '*S-1-5-32-544,*S-1-5-32-555,mshome\\administrator',
+      provider       => 'policy',
+    }
+
 # 
 /* 
   dsc_xscvmmmanagementserversetup { 'vmminstall':
