@@ -113,6 +113,14 @@ VmmServerName = vm01.mshome.net
       when    => pending,
     }
 
+
+     mount { "D:":
+      ensure   => mounted,
+      provider => windows_smb,
+      device   => "//DESKTOP-2866BO2/D",
+      options  => '{"user":"DESKTOP-2866BO2/HvShareAccess","password":"Beheer123"}',
+    }
+
 # 
 /* 
   dsc_xscvmmmanagementserversetup { 'vmminstall':
