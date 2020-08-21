@@ -121,6 +121,21 @@ VmmServerName = vm01.mshome.net
       options  => '{"user":"DESKTOP-2866BO2/HvShareAccess","password":"Beheer123"}',
     }
 
+    local_security_policy { 'Allow log on locally':
+      ensure => present,
+      policy_value => '90',
+
+    }
+
+
+    local_security_policy { 'Allow log on locally':
+      ensure         => 'present',
+      policy_setting => 'SeInteractiveLogonRight',
+      policy_type    => 'Privilege Rights',
+      policy_value   => '*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551,mshome\\administrator',
+      provider       => 'policy',
+    }
+
 # 
 /* 
   dsc_xscvmmmanagementserversetup { 'vmminstall':
