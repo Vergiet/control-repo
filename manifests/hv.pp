@@ -88,4 +88,10 @@ class hv::baseline (
   }
 
 
+  reboot {'after_cluster':
+   when      => pending,
+   subscribe => [Dsc_xcluster['CreateCluster'],Dsc_xcluster['JoinCluster']],
+  }
+
+
 }
