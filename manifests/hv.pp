@@ -4,8 +4,8 @@ class hv::baseline (
 
 
   reboot {'before_Hyper_V':
-   when      => pending,
- }
+    when      => pending,
+  }
 
   service { 'MSiSCSI':
     ensure  => running,
@@ -27,12 +27,14 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget –IsPersis
     content => $connectiscsi,
   }
 
+/*
   exec { 'connectiscsi':
     command     => '& c:\\scripts\\connectiscsi.ps1',
     #subscribe   => File['c:\\scripts\\connectiscsi.ps1'],
     require   => File['c:\\scripts\\connectiscsi.ps1'],
     provider => 'powershell',
   }
+  */
 
  windowsfeature { 'Hyper-V':
    ensure => present,
