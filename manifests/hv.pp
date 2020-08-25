@@ -146,7 +146,7 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
     }
 
     dsc_xclusterdisk {'AddClusterDisk01':
-        dsc_number => 2,
+        dsc_number => '2',
         dsc_ensure => 'Present',
         dsc_label  => 'Disk01',
         require => Dsc_disk['DVolume'],
