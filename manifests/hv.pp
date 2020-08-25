@@ -145,6 +145,14 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
           require => Dsc_waitfordisk['Disk2'],
     }
 
+    dsc_xclusterdisk {'AddClusterDisk01':
+        dsc_number => 2,
+        dsc_ensure => 'Present',
+        dsc_label  => 'Disk01',
+        require => Dsc_disk['DVolume'],
+    }
+
+
     reboot {'after_cluster':
       when      => pending,
       subscribe => Dsc_xcluster['CreateCluster'],
