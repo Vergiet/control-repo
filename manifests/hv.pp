@@ -25,7 +25,6 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget –IsPersis
   file { "C:\\scripts\\connectiscsi.ps1" :
     ensure   => present,
     content => $connectiscsi,
-    mode => '0655',
   }
 
   exec { 'connectiscsi':
