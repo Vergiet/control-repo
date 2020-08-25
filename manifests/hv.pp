@@ -61,7 +61,7 @@ class hv::baseline (
         'user'     => 'Administrator@mshome.net',
         'password' => Sensitive('Beheer123')
       },
-      require => Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'],
+      require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V']],
   }
 
 }
