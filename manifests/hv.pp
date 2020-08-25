@@ -7,6 +7,13 @@ class hv::baseline (
    when      => pending,
  }
 
+  service { 'MSiSCSI':
+    ensure  => running,
+    enable  => true,
+  }
+
+
+
 
 
  windowsfeature { 'Hyper-V':
