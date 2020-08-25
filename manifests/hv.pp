@@ -19,11 +19,49 @@ class hv::baseline (
    subscribe => Windowsfeature['Hyper-V'],
  }
 
- mount { "D:":
-  ensure   => mounted,
-  provider => windows_smb,
-  device   => "//DESKTOP-2866BO2/D",
-  options  => '{"user":"DESKTOP-2866BO2/HvShareAccess","password":"Beheer123"}',
-}
+ /*
+
+   dsc_computer { 'joindomain':
+    dsc_name => $facts['networking']['hostname'],
+    dsc_domainname => 'mshome.net',
+    dsc_credential => {
+        'user'     => 'Administrator@mshome.net',
+        'password' => Sensitive('Beheer123')
+      },
+    require => Exec['ensurednsadres'],
+  }
+
+
+
+*/
+
+  dsc_windowsfeature { 'AddFailoverFeature':
+      dsc_ensure => 'Present',
+      dsc_name   => 'Failover-clustering',
+  }
+
+  dsc_windowsfeature { 'AddRemoteServerAdministrationToolsClusteringPowerShellFeature':
+      dsc_ensure    => 'Present',
+      dsc_name      => 'RSAT-Clustering-PowerShell',
+      require => Dsc_windowsfeature['AddFailoverFeature'],
+      # DependsOn = '[WindowsFeature]AddFailoverFeature'
+  }
+
+  dsc_windowsfeature { 'AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature':
+      dsc_ensure    => 'Present',
+      dsc_name      => 'RSAT-Clustering-CmdInterface',
+      require => Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringPowerShellFeature'],
+      #DependsOn = '[WindowsFeature]AddRemoteServerAdministrationToolsClusteringPowerShellFeature'
+  }
+
+  dsc_xcluster { 'CreateCluster':
+      dsc_name => 'Cluster01',
+      dsc_staticipaddress               => '192.168.1.13/24',
+      dsc_domainadministratorcredential => {
+        'user'     => 'Administrator@mshome.net',
+        'password' => Sensitive('Beheer123')
+      },
+      require => Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'],
+  }
 
 }
