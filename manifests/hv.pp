@@ -82,6 +82,15 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
       #DependsOn = '[WindowsFeature]AddRemoteServerAdministrationToolsClusteringPowerShellFeature'
   }
 
+  dsc_windowsfeature { 'AddRemoteServerAdministrationToolsClusteringManagementToolsFeature':
+      dsc_ensure    => 'Present',
+      dsc_name      => 'RSAT-Clustering-Mgmt',
+      require => Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringPowerShellFeature'],
+      #DependsOn = '[WindowsFeature]AddRemoteServerAdministrationToolsClusteringPowerShellFeature'
+  }
+
+
+
 
   dsc_waitfordisk { 'Disk2':
         dsc_diskid => '6589CFC0000005D6A7C4F4EDC02D37FE', # Disk 3
@@ -97,7 +106,7 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
         dsc_retryintervalsec => 10,
         dsc_retrycount       => 60,
         require        => Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'],
-    }
+  }
 
     dsc_xcluster { 'JoinCluster':
         dsc_name => 'Cluster01',
