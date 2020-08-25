@@ -28,6 +28,8 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
   }
 
 
+
+
   exec { 'connectiscsi':
     command     => '& c:\\scripts\\connectiscsi.ps1',
     #subscribe   => File['c:\\scripts\\connectiscsi.ps1'],
@@ -80,6 +82,14 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
       #DependsOn = '[WindowsFeature]AddRemoteServerAdministrationToolsClusteringPowerShellFeature'
   }
 
+
+  dsc_waitfordisk { 'Disk2':
+        dsc_diskid => '6589CFC0000005D6A7C4F4EDC02D37FE', # Disk 3
+        dsc_diskidtype => 'UniqueId',
+        dsc_retryintervalsec => 60,
+        dsc_retrycount => 60,
+  }
+
   # https://regex101.com/r/8yU9Oa/1
   if $hostname =~ /\A[a-zA-Z]+[0-9][2-9]\Z/ {
     dsc_xwaitforcluster { 'WaitForCluster':
@@ -117,10 +127,21 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
         require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V']],
     }
 
+    dsc_disk { 'DVolume':
+          dsc_diskid => '6589CFC0000005D6A7C4F4EDC02D37FE', # Disk 3
+          dsc_diskidtype => 'UniqueId',
+          dsc_driveletter => 'D',
+          dsc_fsformat => 'NTFS',
+          dsc_allocationunitsize => '4KB',
+          require => Dsc_waitfordisk['Disk2'],
+    }
+
     reboot {'after_cluster':
       when      => pending,
       subscribe => Dsc_xcluster['CreateCluster'],
     }
+
+
 
 
   }
