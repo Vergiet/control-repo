@@ -73,6 +73,12 @@ class hv::baseline (
         require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V'], Dsc_xwaitforcluster['WaitForCluster']],
     }
 
+    reboot {'after_cluster':
+      when      => pending,
+      subscribe =>Dsc_xcluster['JoinCluster'],
+    }
+
+
   } else {
 
     dsc_xcluster { 'CreateCluster':
@@ -85,13 +91,12 @@ class hv::baseline (
         require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V']],
     }
 
+    reboot {'after_cluster':
+      when      => pending,
+      subscribe => Dsc_xcluster['CreateCluster'],
+    }
+
+
   }
-
-
-  reboot {'after_cluster':
-   when      => pending,
-   subscribe => [Dsc_xcluster['CreateCluster'],Dsc_xcluster['JoinCluster']],
-  }
-
 
 }
