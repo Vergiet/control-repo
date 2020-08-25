@@ -54,14 +54,38 @@ class hv::baseline (
       #DependsOn = '[WindowsFeature]AddRemoteServerAdministrationToolsClusteringPowerShellFeature'
   }
 
-  dsc_xcluster { 'CreateCluster':
-      dsc_name => 'Cluster01',
-      dsc_staticipaddress               => '192.168.1.13/24',
-      dsc_domainadministratorcredential => {
-        'user'     => 'Administrator@mshome.net',
-        'password' => Sensitive('Beheer123')
-      },
-      require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V']],
+  # https://regex101.com/r/8yU9Oa/1
+  if $hostname =~ /\A[a-zA-Z]+[0-9][2-9]\Z/ {
+    dsc_xwaitforcluster { 'WaitForCluster':
+        dsc_name             => 'Cluster01',
+        dsc_retryintervalsec => 10,
+        dsc_retrycount       => 60,
+        require        => Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'],
+    }
+
+    dsc_xcluster { 'JoinCluster':
+        dsc_name => 'Cluster01',
+        dsc_staticipaddress               => '192.168.1.13/24',
+        dsc_domainadministratorcredential => {
+          'user'     => 'Administrator@mshome.net',
+          'password' => Sensitive('Beheer123')
+        },
+        require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V'], Dsc_xwaitforcluster['WaitForCluster']],
+    }
+
+  } else {
+
+    dsc_xcluster { 'CreateCluster':
+        dsc_name => 'Cluster01',
+        dsc_staticipaddress               => '192.168.1.13/24',
+        dsc_domainadministratorcredential => {
+          'user'     => 'Administrator@mshome.net',
+          'password' => Sensitive('Beheer123')
+        },
+        require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V']],
+    }
+
   }
+
 
 }
