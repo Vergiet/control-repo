@@ -14,21 +14,20 @@ class base::server {
 
 $ensuredns = '
 
-$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"})[0]
+$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"} | Sort-Object InterfaceMetric)[0]
 
 [array] $ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
 
 if ($ServerAddresses.count -gt 1 -and $False -eq (Test-NetConnection -ComputerName $ServerAddresses[0] -erroraction silentlycontinue).PingSucceeded){
     
     Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ResetServerAddresses
-} 
 
-$IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
+    $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
-$IPAddress = (Resolve-DnsName dc01.mshome.net).IPAddress
+    $IPAddress = (Resolve-DnsName dc01.mshome.net).IPAddress
 
-Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $IPAddress,$IPv4DefaultGateway -verbose
-
+    Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $IPAddress,$IPv4DefaultGateway -verbose
+}
 '
 
   $scripts_dir = 'c:\\scripts'
