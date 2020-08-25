@@ -19,7 +19,7 @@ if (([array](get-IscsiTargetPortal)).count -eq 0){
     New-IscsiTargetPortal -TargetPortalAddress "192.168.1.4" -InitiatorInstanceName "ROOT\\ISCSIPRT\\0000_0"
 }
 
-Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget –IsPersistent $true
+Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersistent $true
 '
 
   file { "c:\\scripts\\connectiscsi.ps1" :
