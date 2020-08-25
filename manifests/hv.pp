@@ -13,8 +13,26 @@ class hv::baseline (
   }
 
 
+$connectiscsi = '
+if (([array](get-IscsiTargetPortal)).count -eq 0){
 
+    New-IscsiTargetPortal -TargetPortalAddress "192.168.1.4" -InitiatorInstanceName "ROOT\\ISCSIPRT\\0000_0"
+}
 
+Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget –IsPersistent $true
+'
+
+  file { "C:\\scripts\\connectiscsi.ps1" :
+    ensure   => present,
+    content => $connectiscsi,
+    mode => '0655',
+  }
+
+  exec { 'connectiscsi':
+    command     => '& c:\\scripts\\connectiscsi.ps1',
+    subscribe   => File['c:\\scripts\\connectiscsi.ps1'],
+    provider => 'powershell',
+  }
 
  windowsfeature { 'Hyper-V':
    ensure => present,
