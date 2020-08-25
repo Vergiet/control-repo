@@ -132,7 +132,7 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
           dsc_diskidtype => 'UniqueId',
           dsc_driveletter => 'D',
           dsc_fsformat => 'NTFS',
-          dsc_allocationunitsize => '4KB',
+          dsc_allocationunitsize => '[int]4KB',
           require => Dsc_waitfordisk['Disk2'],
     }
 
