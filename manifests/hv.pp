@@ -30,7 +30,7 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget –IsPersis
 
   exec { 'connectiscsi':
     command     => '& c:\\scripts\\connectiscsi.ps1',
-    subscribe   => File['c:\\scripts\\connectiscsi.ps1'],
+    #subscribe   => File['c:\\scripts\\connectiscsi.ps1'],
     require   => File['c:\\scripts\\connectiscsi.ps1'],
     provider => 'powershell',
   }
