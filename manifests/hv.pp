@@ -22,7 +22,7 @@ if (([array](get-IscsiTargetPortal)).count -eq 0){
 Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget –IsPersistent $true
 '
 
-  file { "C:\\scripts\\connectiscsi.ps1" :
+  file { "c:\\scripts\\connectiscsi.ps1" :
     ensure   => present,
     content => $connectiscsi,
   }
