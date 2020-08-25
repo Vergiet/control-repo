@@ -130,9 +130,9 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
     dsc_disk { 'DVolume':
           dsc_diskid => '6589CFC0000005D6A7C4F4EDC02D37FE', # Disk 3
           dsc_diskidtype => 'UniqueId',
-          dsc_driveletter => 'D',
+          #dsc_driveletter => 'D',
           dsc_fsformat => 'NTFS',
-          dsc_allocationunitsize => 4096,
+          dsc_allocationunitsize => 4096, #4KB
           require => Dsc_waitfordisk['Disk2'],
     }
 
