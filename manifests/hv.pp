@@ -19,7 +19,7 @@ if (([array](get-IscsiTargetPortal)).count -eq 0){
     New-IscsiTargetPortal -TargetPortalAddress "192.168.1.4" -InitiatorInstanceName "ROOT\\ISCSIPRT\\0000_0"
 }
 
-Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersistent $true
+Get-IscsiTarget | ?{$_.IsConnected -eq $False -and $_.NodeAddress -like "*target-hv"} | Connect-IscsiTarget -IsPersistent $true
 '
 
   file { "c:\\scripts\\connectiscsi.ps1" :
@@ -47,9 +47,9 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
    subscribe => Windowsfeature['Hyper-V'],
  }
 
- /*
+/*
 
-   dsc_computer { 'joindomain':
+  dsc_computer { 'joindomain':
     dsc_name => $facts['networking']['hostname'],
     dsc_domainname => 'mshome.net',
     dsc_credential => {
@@ -58,8 +58,6 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
       },
     require => Exec['ensurednsadres'],
   }
-
-
 
 */
 
@@ -146,7 +144,7 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False} | Connect-IscsiTarget -IsPersiste
     }
 
     dsc_xclusterdisk {'AddClusterDisk01':
-        dsc_number => '2',
+        dsc_number => '1',
         dsc_ensure => 'Present',
         dsc_label  => 'Disk01',
         require => Dsc_disk['DVolume'],

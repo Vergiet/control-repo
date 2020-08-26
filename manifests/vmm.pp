@@ -25,7 +25,7 @@ WSManTcpPort=5985
 BitsTcpPort=443
 CreateNewLibraryShare=1
 LibraryShareName=MSSCVMMLibrary
-LibrarySharePath=C:\\ProgramData\\Virtual Machine Manager Library Files
+LibrarySharePath=D:\\ProgramData\\Virtual Machine Manager Library Files
 LibraryShareDescription=Virtual Machine Manager Library Files
 SQMOptIn = 1
 MUOptIn = 0
@@ -111,14 +111,6 @@ VmmServerName = vm01.mshome.net
     reboot {'vmm_dsc_reboot':
       message => 'DSC has requested a reboot',
       when    => pending,
-    }
-
-
-    mount { "D:":
-      ensure   => mounted,
-      provider => windows_smb,
-      device   => "//DESKTOP-2866BO2/D",
-      options  => '{"user":"DESKTOP-2866BO2/HvShareAccess","password":"Beheer123"}',
     }
 
     local_security_policy { 'Allow log on locally':
