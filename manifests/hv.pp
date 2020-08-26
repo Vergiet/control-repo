@@ -134,6 +134,8 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False -and $_.NodeAddress -like "*target
         require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V']],
     }
 
+    /*
+
     dsc_disk { 'DVolume':
           dsc_diskid => '6589CFC0000005D6A7C4F4EDC02D37FE', # Disk 3
           dsc_diskidtype => 'UniqueId',
@@ -142,12 +144,14 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False -and $_.NodeAddress -like "*target
           dsc_allocationunitsize => 4096, #4KB
           require => Dsc_waitfordisk['Disk2'],
     }
+    */
 
     dsc_xclusterdisk {'AddClusterDisk01':
         dsc_number => '1',
         dsc_ensure => 'Present',
         dsc_label  => 'Disk01',
-        require => Dsc_disk['DVolume'],
+        #require => Dsc_disk['DVolume'],
+        require => Dsc_waitfordisk['Disk2'],
     }
 
 
