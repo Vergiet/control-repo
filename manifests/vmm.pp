@@ -129,6 +129,14 @@ VmmServerName = vm01.mshome.net
       provider       => 'policy',
     }
 
+    dsc_disk { 'DVolume':
+      dsc_diskid => '60022480584332A5B7EBE6A618F251F7', # Disk 3
+      dsc_diskidtype => 'UniqueId',
+      dsc_driveletter => 'D',
+      dsc_fsformat => 'NTFS',
+      dsc_allocationunitsize => 4096, #4KB
+    }
+
 # 
 /* 
   dsc_xscvmmmanagementserversetup { 'vmminstall':
