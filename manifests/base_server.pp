@@ -13,12 +13,11 @@ class base::server {
 
 
 $ensuredns = '
-
 $NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.InterfaceAlias -notlike "Local Area Connection*" -and $_.ConnectionState -eq "Connected"} | Sort-Object InterfaceMetric)[0]
 
 [array] $ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
 
-if ($ServerAddresses.count -gt 1 -and $False -eq (Test-NetConnection -ComputerName $ServerAddresses[0] -erroraction silentlycontinue).PingSucceeded){
+if ($ServerAddresses.count -eq 1 -or $False -eq (Test-NetConnection -ComputerName $ServerAddresses[0] -erroraction silentlycontinue).PingSucceeded){
     
     Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ResetServerAddresses
 
