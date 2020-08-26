@@ -66,7 +66,7 @@ node 'hv02.mshome.net' {
 
 }
 
-node 'vm01.mshome.net' {
+node 'vmm01.mshome.net' {
 
   include site::basic
   include nagios::ncpa
