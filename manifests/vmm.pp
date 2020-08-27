@@ -16,7 +16,7 @@ CreateNewSqlDatabase=1
 SqlInstanceName=MSSQLSERVER
 SqlDatabaseName=VirtualManagerDB
 RemoteDatabaseImpersonation=0
-SqlMachineName=vm01
+SqlMachineName=vmm01
 IndigoTcpPort=8100
 IndigoHTTPSPort=8101
 IndigoNETTCPPort=8102
@@ -32,7 +32,7 @@ MUOptIn = 0
 VmmServiceLocalAccount = 0
 #TopContainerName = VMMServer
 HighlyAvailable = 0
-VmmServerName = vm01.mshome.net
+VmmServerName = vmm01.mshome.net
 # VMMStaticIPAddress = <comma-separated-ip-for-HAVMM>
 
 
@@ -76,10 +76,11 @@ VmmServerName = vm01.mshome.net
     }
 
 
-  # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /SqlDBAdminDomain mshome /SqlDBAdminName administrator /SqlDBAdminpassword Beheer123 /IACCEPTSCEULA
-  /*
+  # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
+  
     exec { 'installvmm':
-      command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'cmd',
       subscribe   => File['vmminstaller'],
@@ -87,7 +88,7 @@ VmmServerName = vm01.mshome.net
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
       require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm'], Dsc_disk['DVolume']],
     }
-*/
+
 
 /* 
     dsc_xscvmmmanagementserversetup { "VMMMS":
