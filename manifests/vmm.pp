@@ -138,6 +138,8 @@ VmmServerName = vm01.mshome.net
       dsc_driveletter => 'D',
       dsc_fsformat => 'NTFS',
       dsc_allocationunitsize => 4096, #4KB
+      dsc_allowdestructive => true,
+      dsc_cleardisk => true,
     }
 
 # 
