@@ -1,5 +1,5 @@
 class sql::standalone (
-  
+
 ) {
 
   require temp::folder
