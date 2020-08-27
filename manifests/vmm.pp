@@ -130,9 +130,11 @@ VmmServerName = vm01.mshome.net
       provider       => 'policy',
     }
 
+    
+
     dsc_disk { 'DVolume':
-      dsc_diskid => '60022480397815C98CB80A0D6D9DB958', # Disk 3
-      dsc_diskidtype => 'UniqueId',
+      dsc_diskid => '2', # Disk 3
+      #dsc_diskidtype => 'UniqueId',
       dsc_driveletter => 'D',
       dsc_fsformat => 'NTFS',
       dsc_allocationunitsize => 4096, #4KB
