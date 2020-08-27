@@ -133,13 +133,13 @@ VmmServerName = vm01.mshome.net
     
 
     dsc_disk { 'DVolume':
-      dsc_diskid => '2', # Disk 3
+      dsc_diskid => '1', # Disk 3
       #dsc_diskidtype => 'UniqueId',
       dsc_driveletter => 'D',
       dsc_fsformat => 'NTFS',
       dsc_allocationunitsize => 4096, #4KB
-      dsc_allowdestructive => true,
-      dsc_cleardisk => true,
+      #dsc_allowdestructive => true,
+      #dsc_cleardisk => true,
     }
 
 # 
