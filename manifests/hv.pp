@@ -23,8 +23,8 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False -and $_.NodeAddress -like "*target
 '
 
 $renamenetadapters = '
-Get-NetAdapter | ?{$_.linkspeed -eq "10 Gbps"} | Rename-NetAdapter -NewName "mshome"
-Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps"} | Rename-NetAdapter -NewName "vrgt.xyz"
+Get-NetAdapter | ?{$_.linkspeed -eq "10 Gbps" -and $_.name -ne "mshome"} | Rename-NetAdapter -NewName "mshome"
+Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rename-NetAdapter -NewName "vrgt.xyz"
 '
 
   file { "c:\\scripts\\connectiscsi.ps1" :
@@ -187,6 +187,9 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps"} | Rename-NetAdapter -NewName "vrgt
   }
 
 
+  /*
+
+
   dsc_xvmswitch { 'External':
     dsc_ensure => present,
     dsc_name => 'External',
@@ -195,5 +198,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps"} | Rename-NetAdapter -NewName "vrgt
     dsc_allowmanagementos => true,
     require => [Windowsfeature['Hyper-V'],Exec['renamenetadapters']],
   }
+
+  */
 
 }
