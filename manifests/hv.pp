@@ -165,6 +165,7 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False -and $_.NodeAddress -like "*target
 
 
   dsc_xvmhost { 'hv':
+    dsc_issingleinstance => 'yes',
     dsc_enableenhancedsessionmode => true,
     require => Windowsfeature['Hyper-V'],
   }
