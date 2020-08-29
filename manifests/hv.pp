@@ -22,6 +22,11 @@ if (([array](get-IscsiTargetPortal)).count -eq 0){
 Get-IscsiTarget | ?{$_.IsConnected -eq $False -and $_.NodeAddress -like "*target-hv"} | Connect-IscsiTarget -IsPersistent $true
 '
 
+$renamenetadapters = '
+Get-NetAdapter | ?{$_.linkspeed -eq "10 Gbps"} | Rename-NetAdapter -NewName "mshome"
+Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps"} | Rename-NetAdapter -NewName "vrgt.xyz"
+'
+
   file { "c:\\scripts\\connectiscsi.ps1" :
     ensure   => present,
     content => $connectiscsi,
@@ -167,6 +172,16 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False -and $_.NodeAddress -like "*target
   dsc_xvmhost { 'hv':
     dsc_issingleinstance => 'yes',
     dsc_enableenhancedsessionmode => true,
+    require => Windowsfeature['Hyper-V'],
+  }
+
+
+  dsc_xVMSwitch { 'External':
+    dsc_ensure => present,
+    dsc_name => 'External',
+    dsc_type => 'External',
+    dsc_NetAdapterName => 'Ethernet 2',
+    dsc_allowmanagementos => true,
     require => Windowsfeature['Hyper-V'],
   }
 
