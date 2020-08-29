@@ -32,6 +32,10 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps"} | Rename-NetAdapter -NewName "vrgt
     content => $connectiscsi,
   }
 
+  file { "c:\\scripts\\renamenetadapters.ps1" :
+    ensure   => present,
+    content => $renamenetadapters,
+  }
 
 
 
@@ -39,6 +43,13 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps"} | Rename-NetAdapter -NewName "vrgt
     command     => '& c:\\scripts\\connectiscsi.ps1',
     #subscribe   => File['c:\\scripts\\connectiscsi.ps1'],
     require   => File['c:\\scripts\\connectiscsi.ps1'],
+    provider => 'powershell',
+  }
+
+  exec { 'renamenetadapters':
+    command     => '& c:\\scripts\\renamenetadapters.ps1',
+    #subscribe   => File['c:\\scripts\\connectiscsi.ps1'],
+    require   => File['c:\\scripts\\renamenetadapters.ps1'],
     provider => 'powershell',
   }
 
@@ -182,7 +193,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps"} | Rename-NetAdapter -NewName "vrgt
     dsc_type => 'External',
     dsc_netadaptername => 'mshome',
     dsc_allowmanagementos => true,
-    require => Windowsfeature['Hyper-V'],
+    require => [Windowsfeature['Hyper-V'],Exec['renamenetadapters']],
   }
 
 }
