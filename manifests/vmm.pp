@@ -36,6 +36,8 @@ VmmServerName = vmm01.mshome.net
 # VMMStaticIPAddress = <comma-separated-ip-for-HAVMM>
 '
 
+/*
+
 $vmminstall = '
 $username = "mshome\\administrator"
 $password = "Beheer123"
@@ -44,18 +46,20 @@ $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword
 start-process powershell -Credential $credential -ArgumentList "-EncodedCommand cwB0AGEAcgB0AC0AcAByAG8AYwBlAHMAcwAgACIAQwA6AFwAUwB5AHMAdABlAG0AIABDAGUAbgB0AGUAcgAgAFYAaQByAHQAdQBhAGwAIABNAGEAYwBoAGkAbgBlACAATQBhAG4AYQBnAGUAcgBcAHMAZQB0AHUAcAAuAGUAeABlACIAIAAtAEEAcgBnAHUAbQBlAG4AdABMAGkAcwB0ACAAIgAvAHMAZQByAHYAZQByACIALAAgACIALwBpACIALAAgACIALwBmACAAQwA6AFwAVABlAG0AcABcAFYATQBTAGUAcgB2AGUAcgAuAGkAbgBpACIALAAgACIALwB2AG0AbQBzAGUAcgB2AGkAYwBlAGQAbwBtAGEAaQBuACAAbQBzAGgAbwBtAGUAIgAsACAAIgAvAHYAbQBtAHMAZQByAHYAaQBjAGUAVQBzAGUAcgBOAGEAbQBlACAAYQBkAG0AaQBuAGkAcwB0AHIAYQB0AG8AcgAiACwAIAAiAC8AdgBtAG0AcwBlAHIAdgBpAGMAZQB1AHMAZQByAHAAYQBzAHMAdwBvAHIAZAAgAEIAZQBoAGUAZQByADEAMgAzACIALAAgACIALwBJAEEAQwBDAEUAUABUAFMAQwBFAFUATABBACIAIAAtAE4AbwBOAGUAdwBXAGkAbgBkAG8AdwAgAC0AVwBhAGkAdAA=" -NoNewWindow -Wait
 '
+*/
 
     file { 'vmminstaller':
       ensure => present,
       path => 'c:\\temp\\SCVMM_2019.exe',
       source => 'http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCVMM_2019.exe',
     }
-
+/*
     file { 'vmminstall':
       ensure => present,
       path => 'c:\\scripts\\vmminstall.ps1',
       content => $vmminstall,
     }
+    */
 
     file { 'C:\\Temp\\VMServer.ini':
       ensure => present,
@@ -90,11 +94,10 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
   # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
   
-  /*
     exec { 'installvmm':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
-      #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
-      command => 'c:\\scripts\\vmminstall.ps1',
+      command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      #command => 'c:\\scripts\\vmminstall.ps1',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'cmd',
       subscribe   => File['vmminstaller'],
@@ -102,7 +105,6 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
       require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm'], Dsc_disk['DVolume'], File['vmminstall']],
     }
-    */
 
 
 /* 
