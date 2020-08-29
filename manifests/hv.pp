@@ -160,9 +160,12 @@ Get-IscsiTarget | ?{$_.IsConnected -eq $False -and $_.NodeAddress -like "*target
       subscribe => Dsc_xcluster['CreateCluster'],
     }
 
+  }
 
 
 
+  dsc_xvmhost { 'hv':
+    dsc_enableenhancedsessionmode => true,
   }
 
 }
