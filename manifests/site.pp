@@ -66,6 +66,15 @@ node 'hv02.mshome.net' {
 
 }
 
+node 'hv03.mshome.net' {
+
+    include site::basic
+    include nagios::ncpa
+  include base::server
+  include hv::baseline
+
+}
+
 node 'vmm01.mshome.net' {
 
   include site::basic
