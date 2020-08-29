@@ -176,11 +176,11 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps"} | Rename-NetAdapter -NewName "vrgt
   }
 
 
-  dsc_xVMSwitch { 'External':
+  dsc_xvmswitch { 'External':
     dsc_ensure => present,
     dsc_name => 'External',
     dsc_type => 'External',
-    dsc_NetAdapterName => 'Ethernet 2',
+    dsc_netadaptername => 'mshome',
     dsc_allowmanagementos => true,
     require => Windowsfeature['Hyper-V'],
   }
