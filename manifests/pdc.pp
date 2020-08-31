@@ -150,9 +150,38 @@ Foreach ($Script in $Scripts){
     require => Dsc_xaddomain['firstdc'],
   }
 
-    reboot {'dsc_reboot':
-      message => 'DSC has requested a reboot',
-      when    => pending,
-    }
+  reboot {'dsc_reboot':
+    message => 'DSC has requested a reboot',
+    when    => pending,
+  }
+
+
+
+
+
+  windows_ad::group{'Network Controller Admins':
+    ensure               => present,
+    displayname          => 'Network Controller Admins',
+    path                 => 'CN=Users,DC=mshome,DC=net',
+    groupname            => 'Network Controller Admins',
+    groupscope           => 'Global',
+    groupcategory        => 'Security',
+    description          => 'Network Controller Admins group',
+    require => Dsc_xaddomain['firstdc'],
+  }
+
+  windows_ad::group{'Network Controller Users':
+    ensure               => present,
+    displayname          => 'Network Controller Users',
+    path                 => 'CN=Users,DC=mshome,DC=net',
+    groupname            => 'Network Controller Users',
+    groupscope           => 'Global',
+    groupcategory        => 'Security',
+    description          => 'Network Controller Users group',
+    require => Dsc_xaddomain['firstdc'],
+  }
+
+
+
   }
 }
