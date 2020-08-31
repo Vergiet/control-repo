@@ -188,6 +188,11 @@ https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d
 
  */
 
+  windowsfeature { 'RSAT-NetworkController':
+    ensure => present,
+    require => Reboot['before_Hyper_V'],
+  }
+
 
 
 /* 
