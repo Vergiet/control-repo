@@ -88,3 +88,4 @@ mod 'jamtur01-httpauth',                   :latest
 mod 'nekototori/winrmssl',                 :latest
 mod 'geoffwilliams/mount_windows_smb',     :latest
 mod 'ayohrling/local_security_policy',     :latest
+mod 'jriviere/windows_ad',                 :latest
