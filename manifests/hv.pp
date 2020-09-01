@@ -109,7 +109,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
 
 
   dsc_waitfordisk { 'Disk2':
-        dsc_diskid => '6589CFC0000006372FCD5E7AAB386935', # Disk 3
+        dsc_diskid => '6589CFC00000085BF473AC1C6E103E0A', # Disk 3
         dsc_diskidtype => 'UniqueId',
         dsc_retryintervalsec => 60,
         dsc_retrycount => 60,
@@ -155,7 +155,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
 
 
     dsc_disk { 'DVolume':
-          dsc_diskid => '6589CFC0000006372FCD5E7AAB386935', # Disk 3
+          dsc_diskid => '6589CFC00000085BF473AC1C6E103E0A', # Disk 3
           dsc_diskidtype => 'UniqueId',
           dsc_driveletter => 'D',
           dsc_fsformat => 'NTFS',
