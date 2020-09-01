@@ -44,53 +44,48 @@ class ad::pdc (
     ensure => directory,
   }
 
-$ensurepmom01 = '
-$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"})[0]
+$ensuredns = '
+
+[array] $Names += [pscustomobject]@{name = "pmom01"; ip = ""}
+[array] $Names += [pscustomobject]@{name = "nagios"; ip = ""}
+[array] $Names += [pscustomobject]@{name = "Cluster01"; ip = "192.168.1.13"}
+
+$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
-$IPAddress = (Resolve-DnsName -name pmom01.mshome.net -Server $IPv4DefaultGateway).IPAddress
+$Name = $Names[2]
 
-$DnsServerResourceRecord = Get-DnsServerResourceRecord -Name pmom01 -ZoneName mshome.net -ErrorAction SilentlyContinue
+foreach ($Name in $Names){
 
-if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
+    $DnsName = ("{0}.mshome.net" -f $Name.name)
+  if ([string]::isnullorempty($Name.ip)){
+  
+  $IPAddress = (Resolve-DnsName -name $DnsName -Server $IPv4DefaultGateway).IPAddress
+  } else {
+    $IPAddress = $Name.ip
+  }
 
-    if ($null -ne $DnsServerResourceRecord){
-        Remove-DnsServerResourceRecord -ZoneName mshome.net -Name pmom01 -RRType "A" -Confirm:$False -force
 
-        #restart-computer
-    }
 
-    Add-DnsServerResourceRecordA -Name pmom01 -ZoneName mshome.net -IPv4Address $IPAddress
+  $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name $Name.name -ZoneName mshome.net -ErrorAction SilentlyContinue
 
-}
+  if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
 
-'
+      if ($null -ne $DnsServerResourceRecord){
+          Remove-DnsServerResourceRecord -ZoneName mshome.net -Name $Name.name -RRType "A" -Confirm:$False -force
 
-$ensurenagios = '
+          #restart-computer
+      }
 
-$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"})[0]
-$IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
+      Add-DnsServerResourceRecordA -Name $Name.name -ZoneName mshome.net -IPv4Address $IPAddress
 
-$IPAddress = (Resolve-DnsName -name nagios.mshome.net -Server $IPv4DefaultGateway).IPAddress
-
-$DnsServerResourceRecord = Get-DnsServerResourceRecord -Name nagios -ZoneName mshome.net -ErrorAction SilentlyContinue
-
-if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
-
-    if ($null -ne $DnsServerResourceRecord){
-        Remove-DnsServerResourceRecord -ZoneName mshome.net -Name nagios -RRType "A" -Confirm:$False -force
-
-        #restart-computer
-    }
-
-    Add-DnsServerResourceRecordA -Name nagios -ZoneName mshome.net -IPv4Address $IPAddress
+  }
 
 }
-
 '
 
 $ensurednsforwarder = '
-$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.ConnectionState -eq "Connected"})[0]
+$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
 if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString){
@@ -118,16 +113,9 @@ Foreach ($Script in $Scripts){
 }
 
 '
-
-  file { "c:\\scripts\\03_ensurepmom01.ps1" :
+  file { "c:\\scripts\\ensuredns.ps1" :
     ensure   => present,
-    content => $ensurepmom01,
-    require => File[$scripts_dir],
-  }
-
-  file { "c:\\scripts\\02_ensurenagios.ps1" :
-    ensure   => present,
-    content => $ensurenagios,
+    content => $ensuredns,
     require => File[$scripts_dir],
   }
 
@@ -148,6 +136,13 @@ Foreach ($Script in $Scripts){
     subscribe   => File['c:\\scripts\\configtasks.ps1'],
     provider => 'powershell',
     require => Dsc_xaddomain['firstdc'],
+  }
+
+  exec { 'ensuredns' :
+    command     => '& c:\\scripts\\ensuredns.ps1',
+    subscribe   => File['c:\\scripts\\ensuredns.ps1'],
+    provider => 'powershell',
+    require => [Dsc_xaddomain['firstdc'], File["c:\\scripts\\ensuredns.ps1"]],
   }
 
   reboot {'dsc_reboot':
