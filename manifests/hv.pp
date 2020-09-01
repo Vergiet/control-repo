@@ -33,7 +33,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
   }
 
   file { "c:\\scripts\\renamenetadapters.ps1" :
-    ensure   => present,
+    ensure   => absent,
     content => $renamenetadapters,
   }
 
