@@ -78,6 +78,11 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       provider          => 'chocolatey',
     }
 
+    package { 'git':
+      ensure   => installed,
+      provider          => 'chocolatey',
+    }
+
     package { 'sqlserver-cmdlineutils':
       ensure   => installed,
       provider          => 'chocolatey',
