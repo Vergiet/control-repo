@@ -168,7 +168,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
         dsc_number => '1',
         dsc_ensure => 'Present',
         dsc_label  => 'Disk01',
-        require => Dsc_disk['DVolume'],
+        require => [Dsc_disk['DVolume'], Dsc_xcluster['CreateCluster']],
         #require => Dsc_waitfordisk['Disk2'],
     }
 
