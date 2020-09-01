@@ -13,7 +13,7 @@ class base::server {
 
 
 $ensuredns = '
-$NetIPInterface = (Get-NetIPInterface -AddressFamily ipv4 | ?{$_.InterfaceAlias -notlike "Loopback*" -and $_.InterfaceAlias -notlike "Local Area Connection*" -and $_.ConnectionState -eq "Connected"} | Sort-Object InterfaceMetric)[0]
+$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
 
 [array] $ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
 

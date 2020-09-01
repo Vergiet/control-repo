@@ -46,12 +46,14 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
     provider => 'powershell',
   }
 
+/*
   exec { 'renamenetadapters':
     command     => '& c:\\scripts\\renamenetadapters.ps1',
     #subscribe   => File['c:\\scripts\\connectiscsi.ps1'],
     require   => File['c:\\scripts\\renamenetadapters.ps1'],
     provider => 'powershell',
   }
+  */
 
  windowsfeature { 'Hyper-V':
    ensure => present,
