@@ -193,9 +193,11 @@ https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d
 
  */
 
+/*
   windowsfeature { 'RSAT-NetworkController':
     ensure => present,
   }
+  */
 
   $rsat = ["RSAT","RSAT-Feature-Tools","RSAT-SMTP","RSAT-Feature-Tools-BitLocker","RSAT-Feature-Tools-BitLocker-RemoteAdminTool","RSAT-Feature-Tools-BitLocker-BdeAducExt","RSAT-Bits-Server","RSAT-DataCenterBridging-LLDP-Tools","RSAT-Clustering","RSAT-Clustering-Mgmt","RSAT-Clustering-PowerShell","RSAT-Clustering-AutomationServer","RSAT-Clustering-CmdInterface","RSAT-NLB","RSAT-Shielded-VM-Tools","RSAT-SNMP","RSAT-Storage-Replica","RSAT-WINS","RSAT-Role-Tools","RSAT-AD-Tools","RSAT-AD-PowerShell","RSAT-ADDS","RSAT-AD-AdminCenter","RSAT-ADDS-Tools","RSAT-ADLDS","RSAT-Hyper-V-Tools","RSAT-RDS-Tools","RSAT-RDS-Gateway","RSAT-RDS-Licensing-Diagnosis-UI","RSAT-ADCS","RSAT-ADCS-Mgmt","RSAT-Online-Responder","RSAT-ADRMS","RSAT-DHCP","RSAT-DNS-Server","RSAT-Fax","RSAT-File-Services","RSAT-DFS-Mgmt-Con","RSAT-FSRM-Mgmt","RSAT-NFS-Admin","RSAT-NetworkController","RSAT-NPAS","RSAT-Print-Services","RSAT-RemoteAccess","RSAT-RemoteAccess-Mgmt","RSAT-RemoteAccess-PowerShell","RSAT-VA-Tools"]
 
