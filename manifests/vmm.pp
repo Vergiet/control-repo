@@ -197,6 +197,12 @@ https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d
     ensure => present,
   }
 
+  windowsfeature { 'RSAT':
+    ensure => present,
+  }
+
+
+
   service { 'SCVMMService':
     ensure  => running,
     enable  => true,
