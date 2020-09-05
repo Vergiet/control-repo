@@ -178,5 +178,20 @@ Foreach ($Script in $Scripts){
 
 
 
+  dsc_xdnsserversetting { 'mshome':
+  dsc_name => 'mshome',
+    dsc_allowupdate => true,
+    dsc_autocacheupdate => true,
+    dsc_defaultagingstate => 1,
+    dsc_scavenginginterval => 1,
+    dsc_defaultrefreshinterval => 1,
+    dsc_disableautoreversezones => false,
+    dsc_dstombstoneinterval => 100,
+    dsc_ednscachetimeout => 100,
+    dsc_forwarders => $networking.dhcp,
+  }
+
+
+
   }
 }
