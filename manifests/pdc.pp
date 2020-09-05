@@ -113,9 +113,57 @@ Foreach ($Script in $Scripts){
 }
 
 '
+
+
+$configureScavaging = '
+$GetDnsServerScavenging = Get-DnsServerScavenging 
+
+$scavagingtime = (New-TimeSpan -Start (get-date).AddHours(-1) -End (get-date))
+
+$setDnsServerScavenging = @{}
+
+if ($GetDnsServerScavenging.ScavengingState -eq $False){
+
+    $setDnsServerScavenging.ScavengingState = $True
+}
+
+if ($GetDnsServerScavenging.RefreshInterval -ne $scavagingtime){
+
+    $setDnsServerScavenging.RefreshInterval = $scavagingtime
+}
+
+
+if ($GetDnsServerScavenging.RefreshInterval -ne $scavagingtime){
+
+    $setDnsServerScavenging.RefreshInterval = $scavagingtime
+}
+
+if ($GetDnsServerScavenging.ScavengingInterval -ne $scavagingtime){
+
+    $setDnsServerScavenging.ScavengingInterval = $scavagingtime
+}
+
+if ($GetDnsServerScavenging.NoRefreshInterval -ne $scavagingtime){
+
+    $setDnsServerScavenging.NoRefreshInterval = $scavagingtime
+}
+
+if ($setDnsServerScavenging.Keys.Count -gt 0){
+    Set-DnsServerScavenging -ApplyOnAllZones @setDnsServerScavenging -Verbose
+}
+'
+
+
+
   file { "c:\\scripts\\ensuredns.ps1" :
     ensure   => present,
     content => $ensuredns,
+    require => File[$scripts_dir],
+  }
+
+  file { "c:\\scripts\\configureScavaging.ps1" :
+    ensure   => present,
+    content => $configureScavaging,
     require => File[$scripts_dir],
   }
 
@@ -144,6 +192,14 @@ Foreach ($Script in $Scripts){
     provider => 'powershell',
     require => [Dsc_xaddomain['firstdc'], File["c:\\scripts\\ensuredns.ps1"]],
   }
+
+  exec { 'configureScavaging' :
+    command     => '& c:\\scripts\\configureScavaging.ps1',
+    subscribe   => File['c:\\scripts\\configureScavaging.ps1'],
+    provider => 'powershell',
+    require => [Dsc_xaddomain['firstdc'], File["c:\\scripts\\configureScavaging.ps1"]],
+  }
+
 
   reboot {'dsc_reboot':
     message => 'DSC has requested a reboot',
@@ -176,20 +232,6 @@ Foreach ($Script in $Scripts){
     require => Dsc_xaddomain['firstdc'],
   }
 
-
-
-  dsc_xdnsserversetting { 'mshome':
-    dsc_name => 'mshome',
-    dsc_allowupdate => 1,
-    dsc_autocacheupdate => 1,
-    dsc_defaultagingstate => 1,
-    dsc_scavenginginterval => 1,
-    dsc_defaultrefreshinterval => 1,
-    dsc_disableautoreversezones => 0,
-    dsc_dstombstoneinterval => 100,
-    dsc_ednscachetimeout => 100,
-    dsc_forwarders => $networking['dhcp'],
-  }
 
 
 
