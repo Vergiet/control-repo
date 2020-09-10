@@ -44,6 +44,12 @@ class ad::pdc (
     ensure => directory,
   }
 
+  service { 'puppet':
+    ensure  => running,
+    enable  => 'manual',
+  }
+
+
 $ensuredns = '
 
 [array] $Names += [pscustomobject]@{name = "pmom01"; ip = ""}
