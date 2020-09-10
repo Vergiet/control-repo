@@ -140,6 +140,7 @@ if ($setDnsServerScavenging.Keys.Count -gt 0){
 '
 
 $task = '
+Start-Sleep -seconds 200
 
 $NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
