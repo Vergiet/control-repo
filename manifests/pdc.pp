@@ -140,12 +140,13 @@ if ($setDnsServerScavenging.Keys.Count -gt 0){
 '
 
 $task = '
+
 $NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
 if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString){
     
-    Set-DnsServerForwarder -IPAddress $IPv4DefaultGateway
+    Set-DnsServerForwarder -IPAddress $IPv4DefaultGateway -Verbose
 }
 
 $GetDnsServerScavenging = Get-DnsServerScavenging 
@@ -201,28 +202,30 @@ foreach ($Name in $Names){
     $DnsName = ("{0}.mshome.net" -f $Name.name)
   if ([string]::isnullorempty($Name.ip)){
   
-  $IPAddress = (Resolve-DnsName -name $DnsName -Server $IPv4DefaultGateway).IPAddress
+  $IPAddress = (Resolve-DnsName -name $DnsName -Server $IPv4DefaultGateway -ErrorAction SilentlyContinue).IPAddress
   } else {
     $IPAddress = $Name.ip
   }
 
 
+  if (-not ([string]::IsNullOrEmpty($IPAddress))){
+      $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name $Name.name -ZoneName mshome.net -ErrorAction SilentlyContinue
 
-  $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name $Name.name -ZoneName mshome.net -ErrorAction SilentlyContinue
+      if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
 
-  if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
+          if ($null -ne $DnsServerResourceRecord){
+              Remove-DnsServerResourceRecord -ZoneName mshome.net -Name $Name.name -RRType "A" -Confirm:$False -force
 
-      if ($null -ne $DnsServerResourceRecord){
-          Remove-DnsServerResourceRecord -ZoneName mshome.net -Name $Name.name -RRType "A" -Confirm:$False -force
+              #restart-computer
+          }
 
-          #restart-computer
+          Add-DnsServerResourceRecordA -Name $Name.name -ZoneName mshome.net -IPv4Address $IPAddress
+
       }
-
-      Add-DnsServerResourceRecordA -Name $Name.name -ZoneName mshome.net -IPv4Address $IPAddress
-
   }
 
 }
+
 
 '
 
