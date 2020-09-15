@@ -153,7 +153,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
     }
 
 
-
+    /*
     dsc_disk { 'DVolume':
           dsc_diskid => '6589CFC00000085BF473AC1C6E103E0A', # Disk 3
           dsc_diskidtype => 'UniqueId',
@@ -171,6 +171,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
         require => [Dsc_disk['DVolume'], Dsc_xcluster['CreateCluster']],
         #require => Dsc_waitfordisk['Disk2'],
     }
+    */
 
 
     reboot {'after_cluster':
@@ -183,7 +184,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
 
 
   dsc_xvmhost { 'hv':
-    dsc_issingleinstance => 'yes',
+    dsc_issingleinstance => 'yes', # dsc requirement, must be yes.
     dsc_enableenhancedsessionmode => true,
     require => Windowsfeature['Hyper-V'],
   }
