@@ -105,7 +105,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
       #DependsOn = '[WindowsFeature]AddRemoteServerAdministrationToolsClusteringPowerShellFeature'
   }
 
-  if $os.windows.installation_type == 'Server' {
+  if $os['windows']['installation_type'] == 'Server' {
     dsc_windowsfeature { 'AddRemoteServerAdministrationToolsClusteringManagementToolsFeature':
         dsc_ensure    => 'Present',
         dsc_name      => 'RSAT-Clustering-Mgmt',
