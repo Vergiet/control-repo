@@ -137,7 +137,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
   }
 
     dsc_xcluster { 'JoinCluster':
-        dsc_name => 'Cluster01',
+        dsc_name => 'Cluster02',
         dsc_staticipaddress               => '192.168.1.13/24',
         dsc_domainadministratorcredential => {
           'user'     => 'Administrator@mshome.net',
@@ -155,7 +155,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
   } else {
 
     dsc_xcluster { 'CreateCluster':
-        dsc_name => 'Cluster01',
+        dsc_name => 'Cluster02',
         dsc_staticipaddress               => '192.168.1.13/24',
         dsc_domainadministratorcredential => {
           'user'     => 'Administrator@mshome.net',
