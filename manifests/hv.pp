@@ -161,6 +161,20 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
     }
 
 
+    dsc_failoverclusterquorum { 'FileShareQuorum':
+        dsc_issingleinstance => 'Yes',
+        dsc_quorumtype => 'NodeAndFileShareMajority',
+        dsc_resource => '\\\\mshome.net\\SYSVOL\\mshome.net',
+        require => Dsc_xcluster['CreateCluster'],
+    }
+
+    dsc_failoverclusters2d { 'EnableS2D':
+        dsc_issingleinstance => 'yes',
+        dsc_ensure => 'Present',
+        require => Dsc_xcluster['CreateCluster'],
+    }
+
+
     /*
     dsc_disk { 'DVolume':
           dsc_diskid => '6589CFC00000085BF473AC1C6E103E0A', # Disk 3
