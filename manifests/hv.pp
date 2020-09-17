@@ -12,6 +12,7 @@ class hv::baseline (
     enable  => true,
   }
 
+/*
 
 $connectiscsi = '
 if (([array](get-IscsiTargetPortal)).count -eq 0){
@@ -27,17 +28,20 @@ Get-NetAdapter | ?{$_.linkspeed -eq "10 Gbps" -and $_.name -ne "mshome"} | Renam
 Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rename-NetAdapter -NewName "vrgt.xyz"
 '
 
+
   file { "c:\\scripts\\connectiscsi.ps1" :
     ensure   => present,
     content => $connectiscsi,
   }
+  
 
   file { "c:\\scripts\\renamenetadapters.ps1" :
     ensure   => absent,
     content => $renamenetadapters,
   }
+  */
 
-
+/*
 
   exec { 'connectiscsi':
     command     => '& c:\\scripts\\connectiscsi.ps1',
@@ -45,6 +49,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
     require   => File['c:\\scripts\\connectiscsi.ps1'],
     provider => 'powershell',
   }
+  */
 
 /*
   exec { 'renamenetadapters':
@@ -107,13 +112,14 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
 
 
 
-
+/*
   dsc_waitfordisk { 'Disk2':
         dsc_diskid => '6589CFC00000085BF473AC1C6E103E0A', # Disk 3
         dsc_diskidtype => 'UniqueId',
         dsc_retryintervalsec => 60,
         dsc_retrycount => 60,
   }
+  */
 
   # https://regex101.com/r/8yU9Oa/1
   if $hostname =~ /\A[a-zA-Z]+[0-9][2-9]\Z/ {
