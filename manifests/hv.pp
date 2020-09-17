@@ -169,7 +169,7 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
     dsc_xclusterquorum { 'FileShareQuorum':
         dsc_issingleinstance => 'Yes',
         dsc_type => 'NodeAndFileShareMajority',
-        dsc_resource => '\\\\mshome.net\\SYSVOL\\mshome.net',
+        dsc_resource => '\\\\dc01\\C$\\scripts',
         require => Dsc_xcluster['CreateCluster'],
     }
 
