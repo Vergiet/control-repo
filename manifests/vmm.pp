@@ -48,11 +48,18 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 '
 */
 
-    file { 'vmminstaller':
-      ensure => present,
+    file { 'vmminstaller-2019':
+      ensure => absent,
       path => 'c:\\temp\\SCVMM_2019.exe',
       source => 'http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCVMM_2019.exe',
     }
+
+    file { 'vmminstaller-2016':
+      ensure => present,
+      path => 'c:\\temp\\SCVMM_2016.exe',
+      source => 'http://download.microsoft.com/download/2/B/8/2B8C6E4F-7918-40A6-9785-986D4D1175A5/SC2016_SCVMM.EXE',
+    }
+
 /*
     file { 'vmminstall':
       ensure => present,
@@ -66,12 +73,22 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       content => $vmmserverconfig,
     }
 
-    exec { 'extractvmm':
+/*
+    exec { 'extractvmm-2019':
       command     => 'start-process "c:\\temp\\SCVMM_2019.exe" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
-      subscribe   => File['vmminstaller'],
+      subscribe   => File['vmminstaller-2019'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\System Center Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
     }
+    */
+
+    exec { 'extractvmm-2016':
+      command     => 'start-process "c:\\temp\\SCVMM_2016.exe" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
+      subscribe   => File['vmminstaller-2016'],
+      provider => 'powershell',
+      unless => 'if (Test-Path -Path "C:\\System Center Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
+    }
+
 
     package { 'sql2012.nativeclient':
       ensure   => installed,
@@ -98,7 +115,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
 
   # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
-  
+
     exec { 'installvmm':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
@@ -224,3 +241,4 @@ https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d
   } 
 */
 }
+
