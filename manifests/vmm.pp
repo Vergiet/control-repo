@@ -125,7 +125,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       subscribe   => File['vmminstaller-2016'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
-      require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm'], Dsc_disk['DVolume']],
+      require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm-2016'], Dsc_disk['DVolume']],
     }
 
 
