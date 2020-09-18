@@ -191,7 +191,7 @@ Start-DnsServerScavenging -Force
 
 [array] $Names += [pscustomobject]@{name = "pmom01"; ip = ""}
 [array] $Names += [pscustomobject]@{name = "nagios"; ip = ""}
-[array] $Names += [pscustomobject]@{name = "Cluster01"; ip = "192.168.1.13"}
+[array] $Names += [pscustomobject]@{name = "Cluster02"; ip = "192.168.1.13"}
 
 $NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
