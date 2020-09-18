@@ -187,7 +187,7 @@ New-NetIPAddress -IPAddress "10.0.0.$ip" -InterfaceIndex (Get-NetAdapter -Name "
     dsc_xclusterquorum { 'FileShareQuorum':
         dsc_issingleinstance => 'Yes',
         dsc_type => 'NodeAndFileShareMajority',
-        dsc_resource => '\\\\dc01\\C$\\scripts',
+        dsc_resource => '\\\\DC01\\fsw',
         require => Dsc_xcluster['CreateCluster'],
     }
 

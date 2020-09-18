@@ -259,6 +259,16 @@ if (!(Get-ScheduledTask | ?{$_.TaskName -eq (split-path -Leaf $Script)})){
     require => File[$scripts_dir],
   }
 
+  file { "c:\\fsw" :
+    ensure   => directory,
+  }
+
+  fileshare { 'fsw':
+    ensure  => present,
+    path    => 'C:\\fsw',
+    require => File["c:\\fsw"],
+  }
+
 
   exec { 'task' :
     command     => '& c:\\scripts\\task.ps1',
