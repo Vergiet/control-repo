@@ -86,6 +86,24 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
 
 */
 
+$setipaddress = '
+$ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[0]
+
+New-NetIPAddress -IPAddress "10.0.0.$ip" -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex
+'
+
+  file { "c:\\scripts\\setipaddress.ps1" :
+    ensure   => present,
+    content => $setipaddress,
+  }
+
+
+  exec { 'setipaddress':
+    command     => '& c:\\scripts\\setipaddress.ps1',
+    require   => File['c:\\scripts\\setipaddress.ps1'],
+    provider => 'powershell',
+  }
+
   dsc_windowsfeature { 'AddFailoverFeature':
       dsc_ensure => 'Present',
       dsc_name   => 'Failover-clustering',
