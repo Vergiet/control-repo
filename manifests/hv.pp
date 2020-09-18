@@ -148,7 +148,7 @@ New-NetIPAddress -IPAddress "10.0.0.$ip" -InterfaceIndex (Get-NetAdapter -Name "
   # https://regex101.com/r/8yU9Oa/1
   if $hostname =~ /\A[a-zA-Z]+[0-9][2-9]\Z/ {
     dsc_xwaitforcluster { 'WaitForCluster':
-        dsc_name             => 'Cluster01',
+        dsc_name             => 'Cluster02',
         dsc_retryintervalsec => 10,
         dsc_retrycount       => 60,
         require        => Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'],
