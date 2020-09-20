@@ -292,7 +292,7 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   }
 
 
-  exec { 'task' :
+  exec { 'setipaddress' :
     command     => '& c:\\scripts\\setipaddress.ps1',
     subscribe   => File['c:\\scripts\\setipaddress.ps1'],
     provider => 'powershell',
