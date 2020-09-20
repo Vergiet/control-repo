@@ -34,7 +34,8 @@ class sql::standalone (
       dsc_features            => 'SQLENGINE',
       dsc_sourcepath          => 'S:\\',
       dsc_sqlsysadminaccounts => 'Administrators',
-      subscribe               => [Dsc_windowsfeature['NET-Framework-45-Core'], Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso']],
+      #subscribe               => [Dsc_windowsfeature['NET-Framework-45-Core'], Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso']],
+      subscribe               => Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso'],
     }
 
     dsc_sqlwindowsfirewall { 'InstallDefaultInstancefw':
