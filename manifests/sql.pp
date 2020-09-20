@@ -4,10 +4,13 @@ class sql::standalone (
 
   require temp::folder
 
-    dsc_windowsfeature { "NET-Framework-45-Core":
-        dsc_ensure => "Present",
-        dsc_name => "NET-Framework-45-Core",
-    }
+
+  if $operatingsystemmajrelease == '2019' {
+      dsc_windowsfeature { "NET-Framework-45-Core":
+          dsc_ensure => "Present",
+          dsc_name => "NET-Framework-45-Core",
+      }
+  }
 
     file { 'downloadsqlinstalleriso':
       ensure => present,
