@@ -186,7 +186,7 @@ if ($setDnsServerScavenging.Keys.Count -gt 0){
     Set-DnsServerScavenging -ApplyOnAllZones @setDnsServerScavenging -Verbose
 }
 
-Start-DnsServerScavenging -Force
+Start-DnsServerScavenging -Force -verbose
 
 
 [array] $Names += [pscustomobject]@{name = "pmom01"; ip = ""}
@@ -220,12 +220,12 @@ foreach ($Name in $Names){
       if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
 
           if ($null -ne $DnsServerResourceRecord){
-              Remove-DnsServerResourceRecord -ZoneName mshome.net -Name $Name.name -RRType "A" -Confirm:$False -force
+              Remove-DnsServerResourceRecord -ZoneName mshome.net -Name $Name.name -RRType "A" -Confirm:$False -force -verbose
 
               #restart-computer
           }
 
-          Add-DnsServerResourceRecordA -Name $Name.name -ZoneName mshome.net -IPv4Address $IPAddress
+          Add-DnsServerResourceRecordA -Name $Name.name -ZoneName mshome.net -IPv4Address $IPAddress -verbose
 
       }
   }
