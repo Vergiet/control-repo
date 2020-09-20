@@ -107,6 +107,66 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
     provider => 'powershell',
   }
 
+$configs2d = '
+
+Set-Item WSMAN:\Localhost\Client\TrustedHosts -Value * -Force
+
+Get-Item WSMAN:\Localhost\Client\TrustedHosts
+
+$Computernames = @(
+    "hv01"
+    "hv02"
+    "hv03"
+)
+
+$Sessions = New-PSSession -ComputerName $Computernames
+
+
+
+Invoke-Command -Session $Sessions -ScriptBlock {
+    Install-WindowsFeature -Name "Hyper-V", "Failover-Clustering", "Data-Center-Bridging", "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell", "FS-FileServer"
+}
+
+
+$ServerList = $Computernames
+
+Invoke-Command ($ServerList) {
+    Update-StorageProviderCache
+    Get-StoragePool | ? IsPrimordial -eq $false | Set-StoragePool -IsReadOnly:$false #-ErrorAction SilentlyContinue
+    Get-StoragePool | ? IsPrimordial -eq $false | Get-VirtualDisk | Remove-VirtualDisk -Confirm:$false #-ErrorAction SilentlyContinue
+    Get-StoragePool | ? IsPrimordial -eq $false | Remove-StoragePool -Confirm:$false #-ErrorAction SilentlyContinue
+    Get-PhysicalDisk | Reset-PhysicalDisk #-ErrorAction SilentlyContinue
+    Get-Disk | ? Number -ne $null | ? IsBoot -ne $true | ? IsSystem -ne $true | ? PartitionStyle -ne RAW | % {
+        $_ | Set-Disk -isoffline:$false
+        $_ | Set-Disk -isreadonly:$false
+        $_ | Clear-Disk -RemoveData -RemoveOEM -Confirm:$false
+        $_ | Set-Disk -isreadonly:$true
+        $_ | Set-Disk -isoffline:$true
+    }
+    Get-Disk | Where Number -Ne $Null | Where IsBoot -Ne $True | Where IsSystem -Ne $True | Where PartitionStyle -Eq RAW | Group -NoElement -Property FriendlyName
+} | Sort -Property PsComputerName, Count
+
+
+Test-Cluster –Node $ServerList –Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
+
+
+Enable-ClusterStorageSpacesDirect –CimSession Cluster02
+
+Invoke-Command -ComputerName $ServerList[0] -ScriptBlock {
+    New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName S2D* -Size 100GB
+}
+
+
+
+$ClusterName = "Cluster02"
+$CSVCacheSize = 2048 #Size in MB
+
+Write-Output "Setting the CSV cache..."
+(Get-Cluster $ClusterName).BlockCacheSize = $CSVCacheSize
+
+$CSVCurrentCacheSize = (Get-Cluster $ClusterName).BlockCacheSize
+Write-Output "$ClusterName CSV cache size: $CSVCurrentCacheSize MB"'
+
   dsc_windowsfeature { 'AddFailoverFeature':
       dsc_ensure => 'Present',
       dsc_name   => 'Failover-clustering',

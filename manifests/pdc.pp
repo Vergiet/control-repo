@@ -252,6 +252,15 @@ if (!(Get-ScheduledTask | ?{$_.TaskName -eq (split-path -Leaf $Script)})){
 '
 
 
+$setipaddress = '
+
+if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex | ?{$_.ipAddress -eq "10.0.0.2"})){
+
+  New-NetIPAddress -IPAddress "10.0.0.2" -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -PrefixLength 24 -verbose
+}
+'
+
+
   file { "c:\\scripts\\configtask.ps1" :
     ensure   => present,
     content => $configtask,
@@ -269,12 +278,26 @@ if (!(Get-ScheduledTask | ?{$_.TaskName -eq (split-path -Leaf $Script)})){
     ensure   => directory,
   }
 
+
+  file { "c:\\scripts\\setipaddress.ps1" :
+    ensure   => present,
+    content => $setipaddress,
+    require => File[$scripts_dir],
+  }
+
   fileshare { 'fsw':
     ensure  => present,
     path    => 'C:\\fsw',
     require => File["c:\\fsw"],
   }
 
+
+  exec { 'task' :
+    command     => '& c:\\scripts\\setipaddress.ps1',
+    subscribe   => File['c:\\scripts\\setipaddress.ps1'],
+    provider => 'powershell',
+    require => [Dsc_xaddomain['firstdc'], File["c:\\scripts\\setipaddress.ps1"]],
+  }
 
   exec { 'task' :
     command     => '& c:\\scripts\\task.ps1',
