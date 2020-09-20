@@ -201,16 +201,21 @@ $Name = $Names[2]
 foreach ($Name in $Names){
 
     $DnsName = ("{0}.mshome.net" -f $Name.name)
+    $DnsName
   if ([string]::isnullorempty($Name.ip)){
   
   $IPAddress = (Resolve-DnsName -name $DnsName -Server $IPv4DefaultGateway -ErrorAction SilentlyContinue).IPAddress
   } else {
     $IPAddress = $Name.ip
+    
   }
+
+  $IPAddress 
 
 
   if (-not ([string]::IsNullOrEmpty($IPAddress))){
       $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name $Name.name -ZoneName mshome.net -ErrorAction SilentlyContinue
+      $DnsServerResourceRecord
 
       if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
 
@@ -227,6 +232,7 @@ foreach ($Name in $Names){
 
 }
 
+ipconfig /flushdns
 
 '
 
