@@ -333,6 +333,19 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
     require => Dsc_xaddomain['firstdc'],
   }
 
+
+  windows_ad::group{'NetworkControllers':
+    ensure               => present,
+    displayname          => 'NetworkControllers',
+    path                 => 'CN=Users,DC=mshome,DC=net',
+    groupname            => 'NetworkControllers',
+    groupscope           => 'Global',
+    groupcategory        => 'Security',
+    description          => 'NetworkControllers group',
+    require => Dsc_xaddomain['firstdc'],
+  }
+
+
   windows_ad::group{'Network Controller Users':
     ensure               => present,
     displayname          => 'Network Controller Users',
