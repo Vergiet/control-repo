@@ -36,6 +36,20 @@ VmmServerName = vmm01.mshome.net
 # VMMStaticIPAddress = <comma-separated-ip-for-HAVMM>
 '
 
+
+
+
+/* notes:
+
+Enable-NetFirewallRule -DisplayGroup 'Remote Event Log Management' -Verbose
+
+invoke-command -ComputerName nce-ncvm01 -ScriptBlock { Enable-NetFirewallRule -Name WINRM-HTTP-Compat-In-TCP -Verbose }
+
+
+
+
+
+
 /*
 
 $vmminstall = '
@@ -119,7 +133,8 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
     exec { 'installvmm':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
-      command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      command     => 'start-process "C:\\System Center 2016 Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command => 'c:\\scripts\\vmminstall.ps1',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'cmd',
@@ -128,6 +143,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
       require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm-2016'], Dsc_disk['DVolume']],
     }
+    
 
 $setipaddress = '
 $ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
