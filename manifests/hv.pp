@@ -297,6 +297,24 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
       subscribe => Dsc_xcluster['CreateCluster'],
     }
 
+    dsc_xwaitforcluster { 'WaitForClusterToDeployS2D':
+          dsc_name             => 'Cluster02',
+          dsc_retryintervalsec => 10,
+          dsc_retrycount       => 60,
+          require        => Windowsfeature['RSAT-Clustering-CmdInterface'],
+    }
+
+    file { "c:\\scripts\\configs2d.ps1" :
+      ensure   => present,
+      content => $configs2d,
+    }
+
+    exec { 'configs2d':
+      command     => '& c:\\scripts\\configs2d.ps1',
+      require => [File["c:\\scripts\\configs2d.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
+      provider => 'powershell',
+    }
+
   }
 
   dsc_xvmhost { 'hv':
@@ -305,23 +323,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
     require => Windowsfeature['Hyper-V'],
   }
 
-  dsc_xwaitforcluster { 'WaitForClusterToDeployS2D':
-        dsc_name             => 'Cluster02',
-        dsc_retryintervalsec => 10,
-        dsc_retrycount       => 60,
-        require        => Windowsfeature['RSAT-Clustering-CmdInterface'],
-  }
 
-  file { "c:\\scripts\\configs2d.ps1" :
-    ensure   => present,
-    content => $configs2d,
-  }
-
-  exec { 'configs2d':
-    command     => '& c:\\scripts\\configs2d.ps1',
-    require => [File["c:\\scripts\\configs2d.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
-    provider => 'powershell',
-  }
 
 
   /*
