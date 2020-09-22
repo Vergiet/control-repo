@@ -273,6 +273,13 @@ https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d
     enable  => true,
   }
 
+  dsc_xwaitforcluster { 'WaitForCluster':
+        dsc_name             => 'Cluster02',
+        dsc_retryintervalsec => 10,
+        dsc_retrycount       => 60,
+        require => Windowsfeature['RSAT-Clustering-CmdInterface'],
+  }
+
 
 /* 
   dsc_dnsserveraddress { 'configurednsaddress':
