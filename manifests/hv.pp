@@ -136,7 +136,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
 
   Test-Cluster -Node $Computernames -Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
 
-  Enable-ClusterStorageSpacesDirect -CimSession Cluster02
+  Enable-ClusterStorageSpacesDirect -CimSession Cluster02 -Confirm:$False
 
   New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 100GB
 
