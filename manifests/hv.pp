@@ -108,7 +108,7 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   }
 
 $configs2d = '
-if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
+if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
 
   $Computernames = @(
       "hv01"
