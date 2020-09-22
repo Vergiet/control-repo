@@ -89,10 +89,10 @@ node 'wac01.mshome.net' {
 node 'vmm01.mshome.net' {
 
   include site::basic
+  include base::server
   include nagios::ncpa
   require sql::standalone
   require temp::folder
-  include base::server
   include vmm::master
 
 }
