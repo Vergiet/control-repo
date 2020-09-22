@@ -116,7 +116,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
       "hv03"
   )
 
-
+<#
   Invoke-Command ($Computernames) {
       Update-StorageProviderCache
       Get-StoragePool | ? IsPrimordial -eq $false | Set-StoragePool -IsReadOnly:$false #-ErrorAction SilentlyContinue
@@ -141,6 +141,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
   New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 100GB
 
   (Get-Cluster -Name Cluster02).BlockCacheSize = 2048
+  #>
 }
 '
 
