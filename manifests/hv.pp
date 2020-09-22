@@ -223,8 +223,8 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
         dsc_name             => 'Cluster02',
         dsc_retryintervalsec => 10,
         dsc_retrycount       => 60,
-        require        => Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'],
-  }
+        require        => Windowsfeature['RSAT-Clustering-CmdInterface'],
+    }
 
     dsc_xcluster { 'JoinCluster':
         dsc_name => 'Cluster02',
@@ -233,7 +233,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
           'user'     => 'Administrator@mshome.net',
           'password' => Sensitive('Beheer123')
         },
-        require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V'], Dsc_xwaitforcluster['WaitForCluster']],
+        require => [Windowsfeature['RSAT-Clustering-CmdInterface'], Reboot['before_Hyper_V'], Dsc_xwaitforcluster['WaitForCluster']],
     }
 
     reboot {'after_cluster':
@@ -251,7 +251,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
           'user'     => 'Administrator@mshome.net',
           'password' => Sensitive('Beheer123')
         },
-        require => [Dsc_windowsfeature['AddRemoteServerAdministrationToolsClusteringCmdInterfaceFeature'], Reboot['before_Hyper_V']],
+        require => [Windowsfeature['RSAT-Clustering-CmdInterface'], Reboot['before_Hyper_V']],
     }
 
 
@@ -300,12 +300,29 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
 
   }
 
-
-
   dsc_xvmhost { 'hv':
     dsc_issingleinstance => 'yes', # dsc requirement, must be yes.
     dsc_enableenhancedsessionmode => true,
     require => Windowsfeature['Hyper-V'],
+  }
+
+  dsc_xwaitforcluster { 'WaitForClusterToDeployS2D':
+        dsc_name             => 'Cluster02',
+        dsc_retryintervalsec => 10,
+        dsc_retrycount       => 60,
+        require        => Windowsfeature['RSAT-Clustering-CmdInterface'],
+  }
+
+  file { "c:\\scripts\\configs2d.ps1" :
+    ensure   => present,
+    content => $configs2d,
+  }
+
+  exec { 'configs2d':
+    command     => '& c:\\scripts\\configs2d.ps1',
+    require   => File['c:\\scripts\\configs2d.ps1'],
+    provider => 'powershell',
+    require => [File["c:\\scripts\\configs2d.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
   }
 
 
