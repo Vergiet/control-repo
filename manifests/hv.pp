@@ -134,14 +134,14 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
   } | Sort -Property PsComputerName, Count
 
 
-  Test-Cluster –Node $Computernames –Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
-<#
-  Enable-ClusterStorageSpacesDirect –CimSession Cluster02
+  Test-Cluster -Node $Computernames -Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
+
+  Enable-ClusterStorageSpacesDirect -CimSession Cluster02
 
   New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 100GB
 
   (Get-Cluster -Name Cluster02).BlockCacheSize = 2048
-  #>
+
 }
 '
 
