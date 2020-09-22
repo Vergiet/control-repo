@@ -144,10 +144,30 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
       require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm-2016'], Dsc_disk['DVolume']],
     }
+
+    service { 'SCVMMService':
+      ensure  => running,
+      enable  => true,
+      require => Exec['installvmm'],
+    }
+
+    dsc_xwaitforcluster { 'WaitForCluster':
+          dsc_name             => 'Cluster02',
+          dsc_retryintervalsec => 10,
+          dsc_retrycount       => 60,
+          require => Windowsfeature['RSAT-Clustering-CmdInterface'],
+    }
+
+    exec { 'WaitForS2D':
+        command     => 'if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){exit -1} else {exit 0}',
+        provider => 'powershell',
+        require => Exec['installvmm'],
+    }
+
   }
 
 
-    
+
 
 $setipaddress = '
 $ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
@@ -212,7 +232,7 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
       provider       => 'policy',
     }
 
-    
+
 
     dsc_disk { 'DVolume':
       dsc_diskid => '1', # Disk 3
@@ -268,23 +288,6 @@ https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d
 
 
 
-  service { 'SCVMMService':
-    ensure  => running,
-    enable  => true,
-  }
-
-  dsc_xwaitforcluster { 'WaitForCluster':
-        dsc_name             => 'Cluster02',
-        dsc_retryintervalsec => 10,
-        dsc_retrycount       => 60,
-        require => Windowsfeature['RSAT-Clustering-CmdInterface'],
-  }
-
-  exec { 'WaitForS2D':
-      command     => 'if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){exit -1} else {exit 0}',
-      provider => 'powershell',
-      require => Exec['installvmm'],
-  }
 
 
 /* 
