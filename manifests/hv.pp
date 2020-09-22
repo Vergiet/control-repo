@@ -116,7 +116,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
       "hv03"
   )
 
-<#
+
   Invoke-Command ($Computernames) {
       Update-StorageProviderCache
       Get-StoragePool | ? IsPrimordial -eq $false | Set-StoragePool -IsReadOnly:$false #-ErrorAction SilentlyContinue
@@ -133,7 +133,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
       Get-Disk | Where Number -Ne $Null | Where IsBoot -Ne $True | Where IsSystem -Ne $True | Where PartitionStyle -Eq "RAW" | Group -NoElement -Property FriendlyName
   } | Sort -Property PsComputerName, Count
 
-
+<#
   Test-Cluster –Node $Computernames –Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
 
   Enable-ClusterStorageSpacesDirect –CimSession Cluster02
