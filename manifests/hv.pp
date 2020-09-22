@@ -188,7 +188,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
 
 
 
-  $features = ["Hyper-V", "Failover-Clustering", "Data-Center-Bridging", "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell", "FS-FileServer", "RSAT-Clustering-CmdInterface"]
+  $features = ["Failover-Clustering", "Data-Center-Bridging", "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell", "FS-FileServer", "RSAT-Clustering-CmdInterface"]
 
   windowsfeature { $features:
     ensure => present,
