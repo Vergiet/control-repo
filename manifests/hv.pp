@@ -140,10 +140,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
 
   New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 100GB
 
-  $ClusterName = "Cluster02"
-  $CSVCacheSize = 2048 #Size in MB
-
-  (Get-Cluster $ClusterName).BlockCacheSize = $CSVCacheSize
+  (Get-Cluster -Name Cluster02).BlockCacheSize = 2048
 }
 '
 
