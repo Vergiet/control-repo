@@ -280,6 +280,12 @@ https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d
         require => Windowsfeature['RSAT-Clustering-CmdInterface'],
   }
 
+  exec { 'WaitForS2D':
+      command     => 'if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){exit -1} else {exit 0}',
+      provider => 'powershell',
+      require => Exec['installvmm'],
+  }
+
 
 /* 
   dsc_dnsserveraddress { 'configurednsaddress':
