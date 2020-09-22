@@ -133,9 +133,9 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
       Get-Disk | Where Number -Ne $Null | Where IsBoot -Ne $True | Where IsSystem -Ne $True | Where PartitionStyle -Eq "RAW" | Group -NoElement -Property FriendlyName
   } | Sort -Property PsComputerName, Count
 
-<#
-  Test-Cluster –Node $Computernames –Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
 
+  Test-Cluster –Node $Computernames –Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
+<#
   Enable-ClusterStorageSpacesDirect –CimSession Cluster02
 
   New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 100GB
