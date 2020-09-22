@@ -116,6 +116,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
       "hv03"
   )
 
+
   Invoke-Command ($Computernames) {
       Update-StorageProviderCache
       Get-StoragePool | ? IsPrimordial -eq $false | Set-StoragePool -IsReadOnly:$false #-ErrorAction SilentlyContinue
