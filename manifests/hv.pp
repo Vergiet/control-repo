@@ -108,7 +108,6 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   }
 
 $configs2d = '
-
 if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
 
   $Computernames = @(
@@ -117,19 +116,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
       "hv03"
   )
 
-  <#
-
-  $Sessions = New-PSSession -ComputerName $Computernames
-
-  Invoke-Command -Session $Sessions -ScriptBlock {
-      Install-WindowsFeature -Name 
-  }
-
-  #>
-
-  $ServerList = $Computernames
-
-  Invoke-Command ($ServerList) {
+  Invoke-Command ($Computernames) {
       Update-StorageProviderCache
       Get-StoragePool | ? IsPrimordial -eq $false | Set-StoragePool -IsReadOnly:$false #-ErrorAction SilentlyContinue
       Get-StoragePool | ? IsPrimordial -eq $false | Get-VirtualDisk | Remove-VirtualDisk -Confirm:$false #-ErrorAction SilentlyContinue
@@ -146,7 +133,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
   } | Sort -Property PsComputerName, Count
 
 
-  Test-Cluster –Node $ServerList –Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
+  Test-Cluster –Node $Computernames –Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
 
   Enable-ClusterStorageSpacesDirect –CimSession Cluster02
 
@@ -155,13 +142,8 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -ne 0){
   $ClusterName = "Cluster02"
   $CSVCacheSize = 2048 #Size in MB
 
-  Write-Output "Setting the CSV cache..."
   (Get-Cluster $ClusterName).BlockCacheSize = $CSVCacheSize
-
-  $CSVCurrentCacheSize = (Get-Cluster $ClusterName).BlockCacheSize
-  Write-Output "$ClusterName CSV cache size: $CSVCurrentCacheSize MB"
 }
-
 '
 
 /*
