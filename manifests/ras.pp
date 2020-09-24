@@ -8,7 +8,7 @@ class ras::multitenant (
     when    => pending,
   }
 
-  $rasroles = ["RemoteAccess","DirectAccess-VPN","Routing"]
+  $rasroles = ["RemoteAccess","DirectAccess-VPN","Routing", "RSAT-RemoteAccess-PowerShell"]
 
   windowsfeature { $rasroles:
     ensure => present,
