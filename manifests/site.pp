@@ -111,6 +111,7 @@ node 'ras01.mshome.net' {
   include base::server
   include nagios::ncpa
   require temp::folder
+  include ras::multitenant
 }
 
 node /^nagios\..*/ {
