@@ -147,7 +147,7 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
 if ((Get-Cluster -Name cluster02).S2DEnabled -eq 1){
 
   if (!(Get-Volume | ?{$_.FileSystemLabel -eq "Volume1"})){
-    New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 50GB -ResiliencySettingName Parity
+    New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 50GB
   } 
 }
 
