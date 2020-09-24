@@ -214,6 +214,7 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
     reboot {'vmm_dsc_reboot':
       message => 'DSC has requested a reboot',
       when    => pending,
+      onlyif => ['pending_dsc_reboot', 'pending_ccm_reboot', 'pending_domain_join']
     }
 
     local_security_policy { 'Allow log on locally':
