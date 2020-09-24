@@ -22,6 +22,13 @@ class ras::multitenant (
     when    => pending,
   }
 
+  exec { 'installvmm':
+    command     => 'Install-RemoteAccess -MultiTenancy',
+    provider => 'powershell',
+    unless => 'if ((get-RemoteAccess).VpnMultiTenancyStatus -eq "installed"){exit} else {exit 1}',
+    require => [Windowsfeature['RSAT-RemoteAccess-PowerShell'], Reboot['after-reboot']],
+  }
+
 
 
 }
