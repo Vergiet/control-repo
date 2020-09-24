@@ -105,6 +105,14 @@ node 'dc01.mshome.net' {
   include ad::pdc
 }
 
+node 'ras01.mshome.net' {
+
+  include site::basic
+  include base::server
+  include nagios::ncpa
+  require temp::folder
+}
+
 node /^nagios\..*/ {
 
   #$my_nagios_purge_hosts = [ 'VM01.mshome.net' ]
