@@ -299,11 +299,13 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 1){
       content => $configs2d,
     }
 
+    /*
     exec { 'configs2d':
       command     => '& c:\\scripts\\configs2d.ps1',
       require => [File["c:\\scripts\\configs2d.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
       provider => 'powershell',
     }
+    */
 
   }
 
