@@ -154,6 +154,14 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 1){
 
 '
 
+$configsddc = '
+
+if (!(get-ClusterResourceType -Name "SDDC Management")){
+  Add-ClusterResourceType -Name "SDDC Management" -dll "$env:SystemRoot\Cluster\sddcres.dll" -DisplayName "SDDC Management"
+}
+
+'
+
 /*
 
   dsc_windowsfeature { 'AddFailoverFeature':
@@ -299,13 +307,23 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 1){
       content => $configs2d,
     }
 
-    /*
     exec { 'configs2d':
       command     => '& c:\\scripts\\configs2d.ps1',
       require => [File["c:\\scripts\\configs2d.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
       provider => 'powershell',
     }
-    */
+
+    file { "c:\\scripts\\configsddc.ps1" :
+      ensure   => present,
+      content => $configsddc,
+    }
+
+    exec { 'configsddc':
+      command     => '& c:\\scripts\\configsddc.ps1',
+      require => [File["c:\\scripts\\configsddc.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
+      provider => 'powershell',
+    }
+
 
   }
 
