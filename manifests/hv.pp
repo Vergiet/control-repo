@@ -12,11 +12,13 @@ class hv::baseline (
     enable  => true,
   }
 
+/*
     package { 'microsoft-monitoring-agent':
       ensure   => installed,
       provider => 'chocolatey',
       install_options => ["/WorkspaceId:44170c64-6ba4-4627-99ed-ccf7c7262862" ,"/workspaceKey:M9Lc4WWPAAhv4GWfMCC98/HuMo1GYqidtqus7t/jDEuUF+2cSS2epemGHh8Ym5WmZaVeM8SnakFFglyQReYmPw=="]
     }
+    */
 
 /*
 
