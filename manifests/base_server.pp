@@ -65,8 +65,9 @@ if ($ServerAddresses.count -eq 1 -or $False -eq (Test-NetConnection -ComputerNam
 
 
   reboot {'dsc_reboot':
-    message => 'DSC has requested a reboot',
+    message => 'DSC has requested a reboot after the domain join',
     when    => pending,
+    onlyif => 'pending_domain_join',
   }
 
 }

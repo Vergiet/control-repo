@@ -70,7 +70,9 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
   }
   */
 
- windowsfeature { 'Hyper-V':
+  $features = ['FS-Data-Deduplication', 'Hyper-V', 'FS-BranchCache', 'RSAT-NetworkController']
+
+ windowsfeature { $features:
    ensure => present,
    require => Reboot['before_Hyper_V'],
  }
