@@ -79,6 +79,7 @@ node 'hv03.mshome.net' {
 node 'wac01.mshome.net' {
 
   include site::basic
+  require temp::folder
   include nagios::ncpa
   include base::server
   include wac
