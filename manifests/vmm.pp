@@ -107,17 +107,17 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
     package { 'sql2012.nativeclient':
       ensure   => installed,
-      provider          => 'chocolatey',
+      provider => 'chocolatey',
     }
 
     package { 'git':
       ensure   => installed,
-      provider          => 'chocolatey',
+      provider => 'chocolatey',
     }
 
     package { 'sqlserver-cmdlineutils':
       ensure   => installed,
-      provider          => 'chocolatey',
+      provider => 'chocolatey',
       #install_options => ['--version=14.0'],
       require => Reboot['vmm_dsc_reboot'],
     }
@@ -125,7 +125,12 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
     package { 'windows-adk-all':
       ensure   => installed,
-      provider          => 'chocolatey',
+      provider => 'chocolatey',
+    }
+
+    package { 'microsoft-edge':
+      ensure   => installed,
+      provider => 'chocolatey',
     }
 
 

@@ -16,5 +16,11 @@ class wac (
       require => File['c:\\temp\\WindowsAdminCenter2007.msi'],
     }
 
+    service { 'ServerManagementGateway':
+      ensure  => running,
+      enable  => true,
+      require => Exec['installwac'],
+    }
+
 
 }
