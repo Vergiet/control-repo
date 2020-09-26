@@ -3,10 +3,7 @@ class hv::baseline (
 ) {
 
 
-  reboot {'before_Hyper_V':
-    message => 'DSC has requested a reboot before installing hyper-v',
-    when      => pending,
-  }
+
 
   service { 'MSiSCSI':
     ensure  => running,
@@ -357,5 +354,10 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
   }
 
   */
+
+  reboot {'before_Hyper_V':
+    message => 'DSC has requested a reboot before installing hyper-v',
+    when      => pending,
+  }
 
 }
