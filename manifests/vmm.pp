@@ -217,7 +217,7 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
  */
 
     reboot {'vmm_dsc_reboot':
-      message => 'DSC has requested a reboot',
+      message => 'VMM Reboot has been requested for either dsc, ccm or domain join.',
       when    => pending,
       onlyif => ['pending_dsc_reboot', 'pending_ccm_reboot', 'pending_domain_join']
     }
