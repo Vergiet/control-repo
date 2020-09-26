@@ -48,7 +48,9 @@ if ($ServerAddresses.count -eq 1 -or $False -eq (Test-NetConnection -ComputerNam
     provider => 'powershell',
   }
 
-
+  windowsfeature { 'FS-SMB1':
+    ensure => absent,
+  }
 
   dsc_computer { 'joindomain':
     dsc_name => $facts['networking']['hostname'],
