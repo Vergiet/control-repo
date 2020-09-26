@@ -1,6 +1,8 @@
 class wac (
 
 ) {
+
+  /*
     file { 'c:\\temp\\WindowsAdminCenter2007.msi':
       ensure => present,
       path => 'c:\\temp\\WindowsAdminCenter2007.msi',
@@ -16,10 +18,17 @@ class wac (
       require => File['c:\\temp\\WindowsAdminCenter2007.msi'],
     }
 
+    */
+
+    package { 'windows-admin-center':
+      ensure   => installed,
+      provider => 'chocolatey',
+    }
+
     service { 'ServerManagementGateway':
       ensure  => running,
       enable  => true,
-      require => Exec['installwac'],
+      require => Package['windows-admin-center'],
     }
 
 
