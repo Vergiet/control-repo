@@ -4,6 +4,7 @@ class hv::baseline (
 
 
   reboot {'before_Hyper_V':
+    message => 'DSC has requested a reboot before installing hyper-v',
     when      => pending,
   }
 
@@ -70,17 +71,11 @@ Get-NetAdapter | ?{$_.linkspeed -eq "1 Gbps" -and $_.name -ne "vrgt.xyz"} | Rena
   }
   */
 
-  $features = ['FS-Data-Deduplication', 'Hyper-V', 'FS-BranchCache', 'RSAT-NetworkController']
-
- windowsfeature { $features:
-   ensure => present,
-   require => Reboot['before_Hyper_V'],
- }
-
- reboot {'after_Hyper_V':
-   when      => pending,
-   subscribe => Windowsfeature['Hyper-V'],
- }
+reboot {'after_Hyper_V':
+  message => 'DSC has requested a reboot after installing hyper-v',
+  when      => pending,
+  subscribe => Windowsfeature['Hyper-V'],
+}
 
 /*
 
@@ -196,11 +191,12 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
 
 
 
-  $features = ["Failover-Clustering", "Data-Center-Bridging", "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell", "FS-FileServer", "RSAT-Clustering-CmdInterface"]
+  $featurelijst = ["Failover-Clustering", "Data-Center-Bridging", "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell", "FS-FileServer", "RSAT-Clustering-CmdInterface", 'FS-Data-Deduplication', 'Hyper-V', 'FS-BranchCache', 'RSAT-NetworkController']
 
-  windowsfeature { $features:
+  windowsfeature { $featurelijst:
     ensure => present,
     installsubfeatures => true,
+    require => Reboot['before_Hyper_V'],
   }
 
   if $os['windows']['installation_type'] == 'Server' {
@@ -244,6 +240,7 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
     }
 
     reboot {'after_cluster':
+      message => 'DSC has requested a reboot after joining the cluster',
       when      => pending,
       subscribe =>Dsc_xcluster['JoinCluster'],
     }
@@ -301,6 +298,7 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
 
 
     reboot {'after_cluster':
+      message => 'DSC has requested a reboot after creating the cluster',
       when      => pending,
       subscribe => Dsc_xcluster['CreateCluster'],
     }
