@@ -75,6 +75,15 @@ node 'hv03.mshome.net' {
 
 }
 
+node 'hv04.mshome.net' {
+
+  include site::basic
+  include nagios::ncpa
+  include base::server
+  include hv::baseline
+
+}
+
 
 node 'wac01.mshome.net' {
 
