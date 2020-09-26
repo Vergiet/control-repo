@@ -12,6 +12,11 @@ class hv::baseline (
     enable  => true,
   }
 
+    package { 'microsoft-monitoring-agent':
+      ensure   => installed,
+      provider => 'chocolatey',
+    }
+
 /*
 
 
