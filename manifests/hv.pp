@@ -217,6 +217,37 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
   }
   */
 
+$configdiagtools = '
+
+if ([Net.ServicePointManager]::SecurityProtocol -notmatch [Net.SecurityProtocolType]::Tls12){
+  [Net.ServicePointManager]::SecurityProtocol += [Net.SecurityProtocolType]::Tls12
+}
+
+if (!(Get-PackageProvider | ?{$_.name -eq "Nuget"})){
+  Install-PackageProvider -Name Nuget -verbose
+}
+
+if (!(Get-PSRepository)){
+  Register-PSRepository -Default -verbose
+}
+
+if (!(Get-Module -ListAvailable | ?{$_.name -eq "privatecloud.diagnosticinfo"})){
+  Install-module -name privatecloud.diagnosticinfo -verbose -confirm:$False -force
+}
+
+'
+
+    file { "c:\\scripts\\configdiagtools.ps1" :
+      ensure   => present,
+      content => $configdiagtools,
+    }
+
+    exec { 'configdiagtools':
+      command     => '& c:\\scripts\\configdiagtools.ps1',
+      require => [File["c:\\scripts\\configdiagtools.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
+      provider => 'powershell',
+    }
+
   # https://regex101.com/r/8yU9Oa/1
   if $hostname =~ /\A[a-zA-Z]+[0-9][2-9]\Z/ {
     dsc_xwaitforcluster { 'WaitForCluster':
@@ -330,36 +361,7 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
     }
 
 
-$configdiagtools = '
 
-if ([Net.ServicePointManager]::SecurityProtocol -notmatch [Net.SecurityProtocolType]::Tls12){
-  [Net.ServicePointManager]::SecurityProtocol += [Net.SecurityProtocolType]::Tls12
-}
-
-if (!(Get-PackageProvider | ?{$_.name -eq "Nuget"})){
-  Install-PackageProvider -Name Nuget -verbose
-}
-
-if (!(Get-PSRepository)){
-  Register-PSRepository -Default -verbose
-}
-
-if (!(Get-Module -ListAvailable | ?{$_.name -eq "privatecloud.diagnosticinfo"})){
-  Install-module -name privatecloud.diagnosticinfo -verbose -confirm:$False -force
-}
-
-'
-
-    file { "c:\\scripts\\configdiagtools.ps1" :
-      ensure   => present,
-      content => $configdiagtools,
-    }
-
-    exec { 'configdiagtools':
-      command     => '& c:\\scripts\\configdiagtools.ps1',
-      require => [File["c:\\scripts\\configdiagtools.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
-      provider => 'powershell',
-    }
 
 
 
