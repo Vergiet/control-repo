@@ -259,6 +259,7 @@ Foreach ($Module in $Modules){
 
     file { "C:\\Program Files\\WindowsPowerShell\\Modules\\Pester\\3.4.0":
       ensure => absent,
+      force => true,
     }
 
   # https://regex101.com/r/8yU9Oa/1
