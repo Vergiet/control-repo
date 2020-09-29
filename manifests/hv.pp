@@ -231,9 +231,18 @@ if (!(Get-PSRepository)){
   Register-PSRepository -Default -verbose
 }
 
-if (!(Get-Module -ListAvailable | ?{$_.name -eq "privatecloud.diagnosticinfo"})){
-  Install-module -name privatecloud.diagnosticinfo -verbose -confirm:$False -force
+$Modules = @(
+  "privatecloud.diagnosticinfo"
+  "MSFT.network.diag"
+)
+
+Foreach ($Module in $Modules){
+  if (!(Get-Module -ListAvailable | ?{$_.name -eq $Module})){
+    Install-module -name $Module -verbose -confirm:$False -force
+  }
 }
+
+
 
 '
 
