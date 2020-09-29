@@ -253,8 +253,12 @@ Foreach ($Module in $Modules){
 
     exec { 'configdiagtools':
       command     => '& c:\\scripts\\configdiagtools.ps1',
-      require => File["c:\\scripts\\configdiagtools.ps1"],
+      require => [File["c:\\scripts\\configdiagtools.ps1"], File["C:\\Program Files\\WindowsPowerShell\\Modules\\Pester\\3.4.0"]],
       provider => 'powershell',
+    }
+
+    file { "C:\\Program Files\\WindowsPowerShell\\Modules\\Pester\\3.4.0":
+      ensure => absent,
     }
 
   # https://regex101.com/r/8yU9Oa/1
