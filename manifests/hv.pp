@@ -244,7 +244,7 @@ if (!(Get-Module -ListAvailable | ?{$_.name -eq "privatecloud.diagnosticinfo"}))
 
     exec { 'configdiagtools':
       command     => '& c:\\scripts\\configdiagtools.ps1',
-      require => [File["c:\\scripts\\configdiagtools.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
+      require => File["c:\\scripts\\configdiagtools.ps1"],
       provider => 'powershell',
     }
 
