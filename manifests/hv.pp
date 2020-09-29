@@ -253,7 +253,7 @@ Foreach ($Module in $Modules){
 
     exec { 'configdiagtools':
       command     => '& c:\\scripts\\configdiagtools.ps1',
-      require => [File["c:\\scripts\\configdiagtools.ps1"], Exec["removepester"]],
+      require => [File["c:\\scripts\\configdiagtools.ps1"], Exec['removepester']],
       provider => 'powershell',
     }
 
