@@ -330,6 +330,39 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
     }
 
 
+$configdiagtools = '
+
+if ([Net.ServicePointManager]::SecurityProtocol -notmatch [Net.SecurityProtocolType]::Tls12){
+  [Net.ServicePointManager]::SecurityProtocol += [Net.SecurityProtocolType]::Tls12
+}
+
+if (!(Get-PackageProvider | ?{$_.name -eq "Nuget"})){
+  Install-PackageProvider -Name Nuget
+}
+
+if (!(Get-PSRepository)){
+  Register-PSRepository -Default
+}
+
+if (!(Get-Module -ListAvailable | ?{$_.name -eq "privatecloud.diagnosticinfo"})){
+  Install-module -name "privatecloud.diagnosticinfo"
+}
+
+'
+
+    file { "c:\\scripts\\configdiagtools.ps1" :
+      ensure   => present,
+      content => $configdiagtools,
+    }
+
+    exec { 'configdiagtools':
+      command     => '& c:\\scripts\\configdiagtools.ps1',
+      require => [File["c:\\scripts\\configdiagtools.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
+      provider => 'powershell',
+    }
+
+
+
   }
 
   dsc_xvmhost { 'hv':
