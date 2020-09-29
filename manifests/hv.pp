@@ -269,11 +269,14 @@ if (Test-path -path $destination -pathtype container){
 
   $Tempdir = (new-item -path $TemporaryFile.fullname -itemtype "directory" -verbose).fullname
 
-  robocopy $Tempdir $destination /MIR /MT:16
+  robocopy $Tempdir $destination /MIR /MT:16 /LOG:NUL
 
   remove-item -path $Tempdir -verbose
   remove-item -path $destination -verbose
 }
+
+exit 0
+
 '
 
 
