@@ -257,7 +257,9 @@ Foreach ($Module in $Modules){
       provider => 'powershell',
     }
 
-
+$cleanupphysdisk = '
+get-PhysicalDisk -Usage Retired | remove-PhysicalDisk
+'
 
 $removepester = '
 
@@ -337,6 +339,20 @@ exit 0
         dsc_resource => '\\\\DC01\\fsw',
         require => Dsc_xcluster['CreateCluster'],
     }
+
+
+
+    file { "c:\\scripts\\cleanupphysdisk.ps1" :
+      ensure   => present,
+      content => $cleanupphysdisk,
+    }
+
+    exec { 'cleanupphysdisk':
+      command     => '& c:\\scripts\\cleanupphysdisk.ps1',
+      require => [File["c:\\scripts\\cleanupphysdisk.ps1"], Exec['configsddc']],
+      provider => 'powershell',
+    }
+
 
     /*
 
