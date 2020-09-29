@@ -337,15 +337,15 @@ if ([Net.ServicePointManager]::SecurityProtocol -notmatch [Net.SecurityProtocolT
 }
 
 if (!(Get-PackageProvider | ?{$_.name -eq "Nuget"})){
-  Install-PackageProvider -Name Nuget
+  Install-PackageProvider -Name Nuget -verbose
 }
 
 if (!(Get-PSRepository)){
-  Register-PSRepository -Default
+  Register-PSRepository -Default -verbose
 }
 
 if (!(Get-Module -ListAvailable | ?{$_.name -eq "privatecloud.diagnosticinfo"})){
-  Install-module -name "privatecloud.diagnosticinfo"
+  Install-module -name privatecloud.diagnosticinfo -verbose -confirm:$False -force
 }
 
 '
