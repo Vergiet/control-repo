@@ -242,9 +242,9 @@ Foreach ($Module in $Modules){
   }
 }
 
-
-
 '
+
+
 
     file { "c:\\scripts\\configdiagtools.ps1" :
       ensure   => present,
@@ -253,13 +253,39 @@ Foreach ($Module in $Modules){
 
     exec { 'configdiagtools':
       command     => '& c:\\scripts\\configdiagtools.ps1',
-      require => [File["c:\\scripts\\configdiagtools.ps1"], File["C:\\Program Files\\WindowsPowerShell\\Modules\\Pester\\3.4.0"]],
+      require => [File["c:\\scripts\\configdiagtools.ps1"], Exec["removepester"]],
       provider => 'powershell',
     }
 
-    file { "C:\\Program Files\\WindowsPowerShell\\Modules\\Pester\\3.4.0":
-      ensure => absent,
-      force => true,
+
+
+$removepester = '
+
+$destination = "C:\Program Files\WindowsPowerShell\Modules\Pester\3.4.0"
+
+if (Test-path -path $destination -pathtype container){
+  $TemporaryFile = New-TemporaryFile
+  remove-item -path $TemporaryFile -verbose
+
+  $Tempdir = (new-item -path $TemporaryFile.fullname -itemtype "directory" -verbose).fullname
+
+  robocopy $Tempdir $destination /MIR /MT:16
+
+  remove-item -path $Tempdir -verbose
+  remove-item -path $destination -verbose
+}
+'
+
+
+    file { "c:\\scripts\\removepester.ps1" :
+      ensure   => present,
+      content => $removepester,
+    }
+
+    exec { 'removepester':
+      command     => '& c:\\scripts\\removepester.ps1',
+      require => File["c:\\scripts\\removepester.ps1"],
+      provider => 'powershell',
     }
 
   # https://regex101.com/r/8yU9Oa/1
