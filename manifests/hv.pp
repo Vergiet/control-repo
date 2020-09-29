@@ -258,7 +258,7 @@ Foreach ($Module in $Modules){
     }
 
 $cleanupphysdisk = '
-get-PhysicalDisk -Usage Retired | remove-PhysicalDisk
+  get-PhysicalDisk -Usage Retired | %{remove-PhysicalDisk -Storagepool (Get-StoragePool -FriendlyName "S2D*"") -PhysicalDisks $_ -Confirm:$False}
 '
 
 $removepester = '
