@@ -190,10 +190,22 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
 
 
 
-  $featurelijst = ["Failover-Clustering", "Data-Center-Bridging", "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell", "FS-FileServer", "RSAT-Clustering-CmdInterface", 'FS-Data-Deduplication', 'Hyper-V', 'FS-BranchCache', 'RSAT-NetworkController']
+  $featurelijst = ["Failover-Clustering", "Data-Center-Bridging", "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell", "FS-FileServer", "RSAT-Clustering-CmdInterface", 'Hyper-V', 'RSAT-NetworkController']
 
   windowsfeature { $featurelijst:
     ensure => present,
+    installsubfeatures => true,
+    require => Reboot['before_Hyper_V'],
+  }
+
+  windowsfeature {'FS-Data-Deduplication':
+    ensure => absent,
+    installsubfeatures => true,
+    require => Reboot['before_Hyper_V'],
+  }
+
+  windowsfeature {'FS-BranchCache':
+    ensure => absent,
     installsubfeatures => true,
     require => Reboot['before_Hyper_V'],
   }
