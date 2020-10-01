@@ -49,7 +49,7 @@ if ($ServerAddresses.count -eq 1 -or $False -eq (Test-NetConnection -ComputerNam
   }
 
   windowsfeature { 'FS-SMB1':
-    ensure => absent,
+    ensure => present,
   }
 
   dsc_computer { 'joindomain':
