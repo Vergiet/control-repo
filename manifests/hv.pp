@@ -421,8 +421,26 @@ exit 0
     }
 
 
+    exec { 'test-demo':
+      command   => '[System.Console]::Error.WriteLine("foo")',
+      provider  => powershell,
+    }
 
 
+    exec { 'test-output':
+      command   => 'write-output "foo"',
+      provider  => powershell,
+    }
+
+    exec { 'test-error':
+      command   => 'write-error "foo"',
+      provider  => powershell,
+    }
+
+    exec { 'test-debug':
+      command   => 'write-debug "foo"',
+      provider  => powershell,
+    }
 
 
   }
