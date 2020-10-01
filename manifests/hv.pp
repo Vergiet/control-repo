@@ -196,13 +196,17 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
 
 
 
-  $featurelijst = ["Failover-Clustering", "Data-Center-Bridging", "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell", "FS-FileServer", "RSAT-Clustering-CmdInterface", 'Hyper-V', 'RSAT-NetworkController']
+#"FS-FileServer",
+#"Data-Center-Bridging",
+  $featurelijst = ["Failover-Clustering",  "RSAT-Clustering-PowerShell", "Hyper-V-PowerShell",  "RSAT-Clustering-CmdInterface", 'Hyper-V', 'RSAT-NetworkController']
 
   windowsfeature { $featurelijst:
     ensure => present,
     installsubfeatures => true,
     require => Reboot['before_Hyper_V'],
   }
+
+  /*
 
   windowsfeature {'FS-Data-Deduplication':
     ensure => absent,
@@ -215,6 +219,8 @@ if (!(get-ClusterResourceType -Name "SDDC Management")){
     installsubfeatures => true,
     require => Reboot['before_Hyper_V'],
   }
+
+  */
 
   if $os['windows']['installation_type'] == 'Server' {
     dsc_windowsfeature { 'AddRemoteServerAdministrationToolsClusteringManagementToolsFeature':
