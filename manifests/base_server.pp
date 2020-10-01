@@ -13,6 +13,9 @@ class base::server {
 
 
 $ensuredns = '
+
+Clear-DnsClientCache
+
 $NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
 
 [array] $ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
@@ -27,6 +30,8 @@ if ($ServerAddresses.count -eq 1 -or $False -eq (Test-NetConnection -ComputerNam
 
     Set-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex -ServerAddresses $IPAddress,$IPv4DefaultGateway -verbose
 }
+
+Register-DnsClient
 '
 
   $scripts_dir = 'c:\\scripts'
