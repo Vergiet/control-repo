@@ -110,41 +110,47 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   }
 
 $configs2d = '
-
 $ErrorActionPreference = "Stop"
-if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
 
-  $Computernames = @(
-      "hv01"
-      "hv02"
-      "hv03"
-  )
+if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
 
 
-  Invoke-Command ($Computernames) {
-      Update-StorageProviderCache
-      Get-StoragePool | ? IsPrimordial -eq $false | Set-StoragePool -IsReadOnly:$false #-ErrorAction SilentlyContinue
-      Get-StoragePool | ? IsPrimordial -eq $false | Get-VirtualDisk | Remove-VirtualDisk -Confirm:$false #-ErrorAction SilentlyContinue
-      Get-StoragePool | ? IsPrimordial -eq $false | Remove-StoragePool -Confirm:$false #-ErrorAction SilentlyContinue
-      Get-PhysicalDisk | Reset-PhysicalDisk #-ErrorAction SilentlyContinue
-      Get-Disk | ? Number -ne $null | ? IsBoot -ne $true | ? IsSystem -ne $true | ? PartitionStyle -ne "RAW" | % {
-          $_ | Set-Disk -isoffline:$false
-          $_ | Set-Disk -isreadonly:$false
-          $_ | Clear-Disk -RemoveData -RemoveOEM -Confirm:$false
-          $_ | Set-Disk -isreadonly:$true
-          $_ | Set-Disk -isoffline:$true
-      }
-      Get-Disk | Where Number -Ne $Null | Where IsBoot -Ne $True | Where IsSystem -Ne $True | Where PartitionStyle -Eq "RAW" | Group -NoElement -Property FriendlyName
-  } | Sort -Property PsComputerName, Count
+  if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
+
+    $Computernames = @(
+        "hv01"
+        "hv02"
+        "hv03"
+    )
 
 
-  Test-Cluster -Node $Computernames -Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
+    Invoke-Command ($Computernames) {
+        Update-StorageProviderCache
+        Get-StoragePool | ? IsPrimordial -eq $false | Set-StoragePool -IsReadOnly:$false #-ErrorAction SilentlyContinue
+        Get-StoragePool | ? IsPrimordial -eq $false | Get-VirtualDisk | Remove-VirtualDisk -Confirm:$false #-ErrorAction SilentlyContinue
+        Get-StoragePool | ? IsPrimordial -eq $false | Remove-StoragePool -Confirm:$false #-ErrorAction SilentlyContinue
+        Get-PhysicalDisk | Reset-PhysicalDisk #-ErrorAction SilentlyContinue
+        Get-Disk | ? Number -ne $null | ? IsBoot -ne $true | ? IsSystem -ne $true | ? PartitionStyle -ne "RAW" | % {
+            $_ | Set-Disk -isoffline:$false
+            $_ | Set-Disk -isreadonly:$false
+            $_ | Clear-Disk -RemoveData -RemoveOEM -Confirm:$false
+            $_ | Set-Disk -isreadonly:$true
+            $_ | Set-Disk -isoffline:$true
+        }
+        Get-Disk | Where Number -Ne $Null | Where IsBoot -Ne $True | Where IsSystem -Ne $True | Where PartitionStyle -Eq "RAW" | Group -NoElement -Property FriendlyName
+    } | Sort -Property PsComputerName, Count
 
-  Enable-ClusterStorageSpacesDirect -CimSession Cluster02 -Confirm:$False
+
+    Test-Cluster -Node $Computernames -Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
+
+    Enable-ClusterStorageSpacesDirect -CimSession Cluster02 -Confirm:$False
 
 
 
-  (Get-Cluster -Name Cluster02).BlockCacheSize = 2048
+    (Get-Cluster -Name Cluster02).BlockCacheSize = 2048
+
+  }
+
 
 }
 
