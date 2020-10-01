@@ -89,12 +89,14 @@ reboot {'after_Hyper_V':
 */
 
 $setipaddress = '
+Clear-DnsClientCache
 $ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
 
 if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex | ?{$_.ipAddress -eq "10.0.0.$ip"})){
 
   New-NetIPAddress -IPAddress "10.0.0.$ip" -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -PrefixLength 24 -verbose
 }
+Register-DnsClient
 '
 
   file { "c:\\scripts\\setipaddress.ps1" :
