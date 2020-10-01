@@ -110,6 +110,8 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   }
 
 $configs2d = '
+
+$ErrorActionPreference = "Stop"
 if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
 
   $Computernames = @(
@@ -421,26 +423,7 @@ exit 0
     }
 
 
-    exec { 'test-demo':
-      command   => '[System.Console]::Error.WriteLine("foo")',
-      provider  => powershell,
-    }
 
-
-    exec { 'test-output':
-      command   => 'write-output "foo"',
-      provider  => powershell,
-    }
-
-    exec { 'test-error':
-      command   => 'write-error "foo"',
-      provider  => powershell,
-    }
-
-    exec { 'test-debug':
-      command   => 'write-debug "foo"',
-      provider  => powershell,
-    }
 
 
   }
