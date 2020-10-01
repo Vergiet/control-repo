@@ -422,13 +422,13 @@ exit 0
       content => $configs2d,
     }
 
-  /*
+  
     exec { 'configs2d':
       command     => '& c:\\scripts\\configs2d.ps1',
       require => [File["c:\\scripts\\configs2d.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
       provider => 'powershell',
     }
-    */
+    
 
     file { "c:\\scripts\\configsddc.ps1" :
       ensure   => present,
