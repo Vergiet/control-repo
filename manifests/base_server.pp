@@ -11,6 +11,31 @@ class base::server {
 
 #include profile::os::windows::winrm
 
+$setipaddress = '
+Clear-DnsClientCache
+if (Get-NetAdapter -Name provider){
+  $ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
+
+  if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex | ?{$_.ipAddress -eq "10.0.0.$ip"})){
+
+    New-NetIPAddress -IPAddress "10.0.0.$ip" -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -PrefixLength 24 -verbose
+  }
+}
+Register-DnsClient
+'
+
+  file { "c:\\scripts\\setipaddress.ps1" :
+    ensure   => present,
+    content => $setipaddress,
+  }
+
+
+  exec { 'setipaddress':
+    command     => '& c:\\scripts\\setipaddress.ps1',
+    require   => File['c:\\scripts\\setipaddress.ps1'],
+    provider => 'powershell',
+  }
+
 
 $ensuredns = '
 
@@ -58,10 +83,6 @@ if (Get-NetAdapter -Name provider){
   }
 
 }
-
-
-
-
 '
 
   $scripts_dir = 'c:\\scripts'

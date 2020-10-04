@@ -4,7 +4,7 @@ class vmm::master (
 
 
   include chocolatey
-
+/*
 $vmmserverconfig = '
 
 [OPTIONS]
@@ -35,7 +35,7 @@ HighlyAvailable = 0
 VmmServerName = vmm01.mshome.net
 # VMMStaticIPAddress = <comma-separated-ip-for-HAVMM>
 '
-
+*/
 
 
 
@@ -62,16 +62,10 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 '
 */
 
-    file { 'vmminstaller-2019':
-      ensure => absent,
-      path => 'c:\\temp\\SCVMM_2019.exe',
-      source => 'http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCVMM_2019.exe',
-    }
-
-    file { 'vmminstaller-2016':
+    file { 'scominstaller-2016':
       ensure => present,
-      path => 'c:\\temp\\SCVMM_2016.exe',
-      source => 'http://download.microsoft.com/download/2/B/8/2B8C6E4F-7918-40A6-9785-986D4D1175A5/SC2016_SCVMM.EXE',
+      path => 'c:\\temp\\SC2016_SCOM_EN.EXE',
+      source => 'http://download.microsoft.com/download/6/4/F/64F31A3C-D4FD-41B9-8EF5-74B1A87721E2/SC2016_SCOM_EN.EXE',
     }
 
 /*
@@ -82,10 +76,12 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     }
     */
 
+/*
     file { 'C:\\Temp\\VMServer.ini':
       ensure => present,
       content => $vmmserverconfig,
     }
+    */
 
 /*
     exec { 'extractvmm-2019':
@@ -96,6 +92,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     }
     */
 
+/*
     exec { 'extractvmm-2016':
       command     => 'start-process "c:\\temp\\SCVMM_2016.exe" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
       subscribe   => File['vmminstaller-2016'],
@@ -103,30 +100,8 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       #unless => 'if (Test-Path -Path "C:\\System Center Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
       unless => 'if (Test-Path -Path "C:\\System Center 2016 Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
     }
+    */
 
-
-    package { 'sql2012.nativeclient':
-      ensure   => installed,
-      provider => 'chocolatey',
-    }
-
-    package { 'git':
-      ensure   => installed,
-      provider => 'chocolatey',
-    }
-
-    package { 'sqlserver-cmdlineutils':
-      ensure   => installed,
-      provider => 'chocolatey',
-      #install_options => ['--version=14.0'],
-      require => Reboot['vmm_dsc_reboot'],
-    }
-
-
-    package { 'windows-adk-all':
-      ensure   => installed,
-      provider => 'chocolatey',
-    }
 
     package { 'microsoft-edge':
       ensure   => installed,
@@ -136,7 +111,8 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
   # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
 
-  if $identity["user"] == "MSHOME\\administrator"{
+  #if $identity["user"] == "MSHOME\\administrator"{
+    /*
     exec { 'installvmm':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
@@ -149,6 +125,9 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
       require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm-2016'], Dsc_disk['DVolume']],
     }
+    */
+
+    /*
 
     service { 'SCVMMService':
       ensure  => running,
@@ -156,44 +135,31 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       require => Exec['installvmm'],
     }
 
+    */
+
+/*
     dsc_xwaitforcluster { 'WaitForCluster':
           dsc_name             => 'Cluster02',
           dsc_retryintervalsec => 10,
           dsc_retrycount       => 60,
           require => Windowsfeature['RSAT-Clustering-CmdInterface'],
     }
+    */
 
+/*
     exec { 'WaitForS2D':
         command     => 'if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){exit -1} else {exit 0}',
         provider => 'powershell',
         require => Exec['installvmm'],
     }
+    */
 
-  }
-
-
-
-
-$setipaddress = '
-$ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
-
-if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex | ?{$_.ipAddress -eq "10.0.0.$ip"})){
-
-  New-NetIPAddress -IPAddress "10.0.0.$ip" -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -PrefixLength 24 -verbose
-}
-'
-
-  file { "c:\\scripts\\setipaddress.ps1" :
-    ensure   => present,
-    content => $setipaddress,
-  }
+  #}
 
 
-  exec { 'setipaddress':
-    command     => '& c:\\scripts\\setipaddress.ps1',
-    require   => File['c:\\scripts\\setipaddress.ps1'],
-    provider => 'powershell',
-  }
+
+
+
 
 
 /* 

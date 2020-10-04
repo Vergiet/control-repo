@@ -87,7 +87,7 @@ reboot {'after_Hyper_V':
   }
 
 */
-
+/*
 $setipaddress = '
 Clear-DnsClientCache
 $ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
@@ -110,6 +110,7 @@ Register-DnsClient
     require   => File['c:\\scripts\\setipaddress.ps1'],
     provider => 'powershell',
   }
+  */
 
 $configs2d = '
 $ErrorActionPreference = "Stop"
