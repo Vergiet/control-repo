@@ -34,12 +34,6 @@ if ($ServerAddresses.count -eq 1 -or $False -eq (Test-NetConnection -ComputerNam
 Register-DnsClient
 '
 
-  $scripts_dir = 'c:\\scripts'
-
-  file { $scripts_dir:
-    ensure => directory,
-  }
-
   file { "c:\\scripts\\ensuredns.ps1" :
     ensure   => present,
     content => $ensuredns,
@@ -50,6 +44,42 @@ Register-DnsClient
   exec { 'ensurednsadres':
     command     => '& c:\\scripts\\ensuredns.ps1',
     subscribe   => File['c:\\scripts\\ensuredns.ps1'],
+    provider => 'powershell',
+  }
+
+$ensurejumbopackets = '
+
+if (Get-NetAdapter -Name provider){
+
+  $NetAdapterAdvancedProperty = Get-NetAdapterAdvancedProperty -Name provider -RegistryKeyword "*JumboPacket"
+
+  if ($NetAdapterAdvancedProperty.RegistryValue -ne 9014){
+    Set-NetAdapterAdvancedProperty -Name "provider" -RegistryKeyword "*JumboPacket" -Registryvalue 9014
+  }
+
+}
+
+
+
+
+'
+
+  $scripts_dir = 'c:\\scripts'
+
+  file { $scripts_dir:
+    ensure => directory,
+  }
+
+  file { "c:\\scripts\\ensurejumbopackets.ps1" :
+    ensure   => present,
+    content => $ensurejumbopackets,
+    require => File[$scripts_dir],
+  }
+
+
+  exec { 'ensurejumbopackets':
+    command     => '& c:\\scripts\\ensurejumbopackets.ps1',
+    subscribe   => File['c:\\scripts\\ensurejumbopackets.ps1'],
     provider => 'powershell',
   }
 
