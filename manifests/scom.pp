@@ -91,7 +91,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       unless => 'if (Test-Path -Path "C:\\System Center Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
     }
     */
-
+/*
 
     exec { 'extractscom-2016':
       command     => 'start-process "c:\\temp\\SC2016_SCOM_EN.EXE" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
@@ -99,6 +99,8 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       provider => 'powershell',
       #unless => 'if (Test-Path -Path "C:\\SC 2016 RTM SCOM\\" -PathType Leaf){exit} else {exit 1}',
     }
+
+    */
 
 
 /*
@@ -183,6 +185,8 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
  */
 
+ /*
+
     reboot {'vmm_dsc_reboot':
       message => 'VMM Reboot has been requested for either dsc, ccm or domain join.',
       when    => pending,
@@ -205,7 +209,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       provider       => 'policy',
     }
 
-
+*/
 
     dsc_disk { 'DVolume':
       dsc_diskid => '1', # Disk 3
@@ -216,6 +220,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       #dsc_allowdestructive => true,
       #dsc_cleardisk => true,
     }
+    
 
 # 
 /* 
@@ -255,12 +260,15 @@ https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d
 # http://download.microsoft.com/download/6/4/F/64F31A3C-D4FD-41B9-8EF5-74B1A87721E2/SC2016_SCOM_EN.EXE
 
   # (Get-WindowsFeature -Name 'RSAT*' | %{('"{0}"' -f $_.name )}) -join ',' | clip
+
+  /*
   $rsat = ["RSAT","RSAT-Feature-Tools","RSAT-SMTP","RSAT-Feature-Tools-BitLocker","RSAT-Feature-Tools-BitLocker-RemoteAdminTool","RSAT-Feature-Tools-BitLocker-BdeAducExt","RSAT-Bits-Server","RSAT-DataCenterBridging-LLDP-Tools","RSAT-Clustering","RSAT-Clustering-Mgmt","RSAT-Clustering-PowerShell","RSAT-Clustering-AutomationServer","RSAT-Clustering-CmdInterface","RSAT-NLB","RSAT-Shielded-VM-Tools","RSAT-SNMP","RSAT-Storage-Replica","RSAT-WINS","RSAT-Role-Tools","RSAT-AD-Tools","RSAT-AD-PowerShell","RSAT-ADDS","RSAT-AD-AdminCenter","RSAT-ADDS-Tools","RSAT-ADLDS","RSAT-Hyper-V-Tools","RSAT-RDS-Tools","RSAT-RDS-Gateway","RSAT-RDS-Licensing-Diagnosis-UI","RSAT-ADCS","RSAT-ADCS-Mgmt","RSAT-Online-Responder","RSAT-ADRMS","RSAT-DHCP","RSAT-DNS-Server","RSAT-Fax","RSAT-File-Services","RSAT-DFS-Mgmt-Con","RSAT-FSRM-Mgmt","RSAT-NFS-Admin","RSAT-NetworkController","RSAT-NPAS","RSAT-Print-Services","RSAT-RemoteAccess","RSAT-RemoteAccess-Mgmt","RSAT-RemoteAccess-PowerShell","RSAT-VA-Tools"]
 
   windowsfeature { $rsat:
     ensure => present,
     installsubfeatures => true,
   }
+  */
 
 
 
