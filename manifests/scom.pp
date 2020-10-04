@@ -97,10 +97,10 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       command     => 'start-process "c:\\temp\\SC2016_SCOM_EN.EXE" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
       subscribe   => File['scominstaller-2016'],
       provider => 'powershell',
-      #unless => 'if (Test-Path -Path "C:\\SC 2016 RTM SCOM\\" -PathType Leaf){exit} else {exit 1}',
+      unless => 'if (Test-Path -Path "C:\\SC 2016 RTM SCOM\\setup.exe" -PathType Leaf){exit} else {exit 1}',
     }
 
-    
+
 
 
 
@@ -114,21 +114,21 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
   # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
 
-  #if $identity["user"] == "MSHOME\\administrator"{
-    /*
-    exec { 'installvmm':
+  if $identity["user"] == "MSHOME\\administrator"{
+    
+    exec { 'installscom':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
-      command     => 'start-process "C:\\System Center 2016 Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      command     => 'start-process "C:\\SC 2016 RTM SCOM\\setup.exe" -ArgumentList "/Silent","/Install","/Components:OMserver,OMConsole" -NoNewWindow -Wait',
       #command => 'c:\\scripts\\vmminstall.ps1',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'cmd',
-      subscribe   => File['vmminstaller-2016'],
+      subscribe   => File['scominstaller-2016'],
       provider => 'powershell',
-      unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
-      require => [File['C:\\Temp\\VMServer.ini'], Package['sqlserver-cmdlineutils'], Package['sql2012.nativeclient'],Package['windows-adk-all'], Exec['extractvmm-2016'], Dsc_disk['DVolume']],
+      #unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
+      require => [File['C:\\Temp\\VMServer.ini'], Exec['extractscom-2016'], Dsc_disk['DVolume']],
     }
-    */
+    
 
     /*
 
@@ -157,7 +157,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     }
     */
 
-  #}
+  }
 
 
 
