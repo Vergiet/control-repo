@@ -92,15 +92,14 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     }
     */
 
-/*
+
     exec { 'extractvmm-2016':
-      command     => 'start-process "c:\\temp\\SCVMM_2016.exe" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
+      command     => 'start-process "c:\\temp\\SC2016_SCOM_EN.EXE" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
       subscribe   => File['vmminstaller-2016'],
       provider => 'powershell',
-      #unless => 'if (Test-Path -Path "C:\\System Center Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
-      unless => 'if (Test-Path -Path "C:\\System Center 2016 Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
+      #unless => 'if (Test-Path -Path "C:\\SC 2016 RTM SCOM\\" -PathType Leaf){exit} else {exit 1}',
     }
-    */
+
 
 
     package { 'microsoft-edge':
