@@ -103,13 +103,13 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     */
 
 
-/*
+
     package { 'microsoft-edge':
       ensure   => installed,
       provider => 'chocolatey',
     }
 
-*/
+
 
 
   # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
