@@ -126,6 +126,17 @@ node 'vmm01.mshome.net' {
 
 }
 
+
+node 'scom01.mshome.net' {
+
+  include site::basic
+  include base::server
+  include nagios::ncpa
+  require temp::folder
+  include scom::master
+
+}
+
 node 'dc01.mshome.net' {
 
   #include site::basic

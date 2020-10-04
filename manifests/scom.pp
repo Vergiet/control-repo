@@ -1,4 +1,4 @@
-class vmm::master (
+class scom::master (
 
 ) {
 
