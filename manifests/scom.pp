@@ -114,12 +114,13 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
   # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
 
-  if $identity["user"] == "MSHOME\\administrator"{
-    
+  #if $identity["user"] == "MSHOME\\administrator"{
+
+/*
     exec { 'installscom':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
-      command     => 'start-process "C:\\SC 2016 RTM SCOM\\setup.exe" -ArgumentList "/Silent","/Install","/Components:OMserver,OMConsole" -NoNewWindow -Wait',
+      command     => 'start-process "C:\\SC 2016 RTM SCOM\\setup.exe" -ArgumentList "/Silent","/Install","/Components:OMserver,OMConsole","/SqlServerInstance:MSSQLSERVER","/UseLocalSystemActionAccount","/UseLocalSystemDASAccount" -NoNewWindow -Wait',
       #command => 'c:\\scripts\\vmminstall.ps1',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'cmd',
@@ -128,7 +129,8 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       #unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center\\Virtual Machine Manager" -PathType Container){exit} else {exit 1}',
       require => [File['C:\\Temp\\VMServer.ini'], Exec['extractscom-2016'], Dsc_disk['DVolume']],
     }
-    
+    */
+
 
     /*
 
@@ -157,7 +159,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     }
     */
 
-  }
+  #}
 
 
 
