@@ -93,9 +93,9 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     */
 
 
-    exec { 'extractvmm-2016':
+    exec { 'extractscom-2016':
       command     => 'start-process "c:\\temp\\SC2016_SCOM_EN.EXE" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
-      subscribe   => File['vmminstaller-2016'],
+      subscribe   => File['scominstaller-2016'],
       provider => 'powershell',
       #unless => 'if (Test-Path -Path "C:\\SC 2016 RTM SCOM\\" -PathType Leaf){exit} else {exit 1}',
     }
