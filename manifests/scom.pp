@@ -109,6 +109,11 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       provider => 'chocolatey',
     }
 
+    package { 'ms-reportviewer2015':
+      ensure   => installed,
+      provider => 'chocolatey',
+    }
+
 
 
 
