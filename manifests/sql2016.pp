@@ -35,7 +35,7 @@ class sql2016::standalone (
       dsc_sourcepath          => 'S:\\',
       dsc_sqlsysadminaccounts => 'Administrators',
       #subscribe               => [Dsc_windowsfeature['NET-Framework-45-Core'], Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso']],
-      subscribe               => Mount_iso['C:\\temp\\SQLServer2016SP2-FullSlipstream-x64-ENU.iso'],
+      require               => Mount_iso['C:\\temp\\SQLServer2016SP2-FullSlipstream-x64-ENU.iso'],
     }
 
     dsc_sqlwindowsfirewall { 'InstallDefaultInstancefw':
