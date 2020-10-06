@@ -1,4 +1,4 @@
-class sql::standalone (
+class sql2016::standalone (
 
 ) {
 
@@ -14,8 +14,8 @@ class sql::standalone (
 
     file { 'downloadsqlinstalleriso':
       ensure => present,
-      path => 'c:\\temp\\SQLServer2019-x64-ENU.iso',
-      source => 'https://dh2euwstodevinfinf01.blob.core.windows.net/temp/iso/SQLServer2019-x64-ENU.iso',
+      path => 'c:\\temp\\SQLServer2016SP2-FullSlipstream-x64-ENU.iso',
+      source => 'https://dh2euwstodevinfinf01.blob.core.windows.net/temp/SQLServer2016SP2-FullSlipstream-x64-ENU.iso',
     }
 
     file { 'downloadsqlssmsinstaller':
@@ -24,7 +24,7 @@ class sql::standalone (
       source => 'https://download.microsoft.com/download/f/e/b/feb0e6be-21ce-4f98-abee-d74065e32d0a/SSMS-Setup-ENU.exe',
     }
 
-    mount_iso { 'C:\\temp\\SQLServer2019-x64-ENU.iso':
+    mount_iso { 'C:\\temp\\SQLServer2016SP2-FullSlipstream-x64-ENU.iso':
       subscribe => File['downloadsqlinstalleriso'],
       drive_letter => 'S',
     }
@@ -35,7 +35,7 @@ class sql::standalone (
       dsc_sourcepath          => 'S:\\',
       dsc_sqlsysadminaccounts => 'Administrators',
       #subscribe               => [Dsc_windowsfeature['NET-Framework-45-Core'], Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso']],
-      subscribe               => Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso'],
+      subscribe               => Mount_iso['C:\\temp\\SQLServer2016SP2-FullSlipstream-x64-ENU.iso'],
     }
 
     dsc_sqlwindowsfirewall { 'InstallDefaultInstancefw':

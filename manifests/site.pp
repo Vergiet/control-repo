@@ -120,7 +120,7 @@ node 'vmm01.mshome.net' {
   include site::basic
   include base::server
   include nagios::ncpa
-  require sql::standalone
+  require sql2019::standalone
   require temp::folder
   include vmm::master
 
@@ -132,7 +132,7 @@ node 'scom01.mshome.net' {
   include site::basic
   include base::server
   include nagios::ncpa
-  require sql::standalone
+  require sql2016::standalone
   require temp::folder
   include scom::master
 
