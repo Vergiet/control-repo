@@ -196,8 +196,34 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   }
   */
 
+$setrunas = '
+if ($Null -eq (Get-SCRunAsAccount -Name "RunAsAccount01")){
+
+    $localAdminCredPassword = ConvertTo-SecureString -String "Beheer123" -Force -AsPlainText
+    $RunAsAccount01Cred = New-Object System.Management.Automation.PSCredential ("mshome\administrator", $localAdminCredPassword)
+    $RunAsAccount01 = New-SCRunAsAccount -Name "RunAsAccount01" -Credential $RunAsAccount01Cred -Verbose
+}
+
+'
+
+  file { "c:\\scripts\\setrunas.ps1" :
+    ensure   => present,
+    content => $setrunas,
+  }
+
+
+  exec { 'setrunas':
+    command     => '& c:\\scripts\\setrunas.ps1',
+    require   => [File['c:\\scripts\\setrunas.ps1'], Exec['installvmm'], Service['SCVMMService']],
+    provider => 'powershell',
+  }
+
 
 /* 
+
+
+
+
     dsc_xscvmmmanagementserversetup { "VMMMS":
         dsc_ensure => "Present",
         subscribe   => Exec['extractvmm'],
