@@ -169,6 +169,13 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
         require => Exec['installvmm'],
     }
 
+    exec { 'setrunas':
+      command     => '& c:\\scripts\\setrunas.ps1',
+      require   => [File['c:\\scripts\\setrunas.ps1'], Exec['installvmm'], Service['SCVMMService']],
+      provider => 'powershell',
+    }
+
+
   }
 
 
@@ -212,11 +219,6 @@ if ($Null -eq (Get-SCRunAsAccount -Name "RunAsAccount01")){
   }
 
 
-  exec { 'setrunas':
-    command     => '& c:\\scripts\\setrunas.ps1',
-    require   => [File['c:\\scripts\\setrunas.ps1'], Exec['installvmm'], Service['SCVMMService']],
-    provider => 'powershell',
-  }
 
 
 /* 
