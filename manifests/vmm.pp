@@ -172,7 +172,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
   }
 
 
-
+/*
 
 $setipaddress = '
 $ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
@@ -194,6 +194,7 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
     require   => File['c:\\scripts\\setipaddress.ps1'],
     provider => 'powershell',
   }
+  */
 
 
 /* 
