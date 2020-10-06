@@ -31,7 +31,7 @@ class sql2016::standalone (
 
     dsc_sqlsetup { 'InstallDefaultInstance':
       dsc_instancename        => 'MSSQLSERVER',
-      dsc_features            => 'SQLENGINE,FULLTEXT',
+      dsc_features            => 'SQLENGINE,FULLTEXT,RS',
       dsc_sourcepath          => 'S:\\',
       dsc_sqlsysadminaccounts => 'Administrators',
       #subscribe               => [Dsc_windowsfeature['NET-Framework-45-Core'], Mount_iso['C:\\temp\\SQLServer2019-x64-ENU.iso']],
