@@ -121,7 +121,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
   #if $identity["user"] == "MSHOME\\administrator"{
 
-
+/*
     exec { 'installscom':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
@@ -136,7 +136,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     }
 
 & "C:\SC 2016 RTM SCOM\setup.exe" /Silent /Install /EnableErrorReporting:Never /SendCEIPReports:0 /UseMicrosoftUpdate:0 /ManagementGroupName:ManagementGroup01 /DWSqlServerInstance:'scom01\MSSQLSERVER' /Components:OMserver,OMConsole /SqlServerInstance:'scom01\MSSQLSERVER' /UseLocalSystemActionAccount /DatareaderUser:mshome\administrator /DatareaderPassword:Beheer123 /DataWriterUser:mshome\administrator /DataWriterPassword:Beheer123 /AcceptEndUserLicenseAgreement:1
-
+*/
     /*
 
     service { 'SCVMMService':
