@@ -286,6 +286,25 @@ Foreach ($Module in $Modules){
       provider => 'powershell',
     }
 
+
+$fwremotereboot = '
+
+get-NetFirewallRule -Group "@firewallapi.dll,-36751" | ?{$_.enabled -eq 'False'} | Set-NetFirewallRule -Profile domain -Enabled true -Verbose
+
+'
+
+
+    file { "c:\\scripts\\fwremotereboot.ps1" :
+      ensure   => present,
+      content => $fwremotereboot,
+    }
+
+    exec { 'fwremotereboot':
+      command     => '& c:\\scripts\\fwremotereboot.ps1',
+      require => File["c:\\scripts\\fwremotereboot.ps1"],
+      provider => 'powershell',
+    }
+
 $cleanupphysdisk = '
   get-PhysicalDisk -Usage Retired | %{remove-PhysicalDisk -Storagepool (Get-StoragePool -FriendlyName "S2D*") -PhysicalDisks $_ -Confirm:$False}
 '
