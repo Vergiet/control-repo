@@ -126,4 +126,14 @@ if (Get-NetAdapter -Name provider){
     onlyif => 'pending_domain_join',
   }
 
+
+  if $os["windows"]["installation_type"] == 'Server Core' {
+
+    package { 'ntop.portable':
+      ensure   => installed,
+      provider => 'chocolatey',
+    }
+
+  }
+
 }
