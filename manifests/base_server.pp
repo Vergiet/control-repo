@@ -136,9 +136,9 @@ if (Get-NetAdapter -Name provider){
 
   }
 
-  $services = ["vmickvpexchange","vmicguestinterface","vmicshutdown","vmicheartbeat","vmcompute","vmicvmsession","vmicrdv","vmictimesync","vmms","vmicvss"]
+  $vmservices = ["vmicguestinterface", "vmicheartbeat", "vmickvpexchange", "vmicrdv", "vmicshutdown", "vmictimesync", "vmicvmsession", "vmicvss"]
 
-  service { $services:
+  service { $vmservices:
     ensure  => running,
     enable  => true,
   }

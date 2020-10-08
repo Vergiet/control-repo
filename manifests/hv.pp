@@ -484,4 +484,12 @@ exit 0
     when      => pending,
   }
 
+
+  $hvhostservices = ["vmcompute","vmms"]
+
+  service { $hvhostservices:
+    ensure  => running,
+    enable  => true,
+  }
+
 }
