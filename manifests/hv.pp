@@ -289,7 +289,7 @@ Foreach ($Module in $Modules){
 
 $fwremotereboot = '
 
-get-NetFirewallRule -Group "@firewallapi.dll,-36751" | ?{$_.enabled -eq 'False'} | Set-NetFirewallRule -Profile domain -Enabled true -Verbose
+get-NetFirewallRule -Group "@firewallapi.dll,-36751" | ?{$_.enabled -eq "False"} | Set-NetFirewallRule -Profile domain -Enabled true -Verbose
 
 '
 
