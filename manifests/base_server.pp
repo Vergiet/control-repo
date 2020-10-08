@@ -136,4 +136,12 @@ if (Get-NetAdapter -Name provider){
 
   }
 
+  $services = ["vmickvpexchange","vmicguestinterface","vmicshutdown","vmicheartbeat","vmcompute","vmicvmsession","vmicrdv","vmictimesync","vmms","vmicvss"]
+
+  service { $services:
+    ensure  => running,
+    enable  => true,
+  }
+
+
 }
