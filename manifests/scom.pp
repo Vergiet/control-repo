@@ -135,6 +135,14 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       unless => 'if (Test-Path -Path "C:\\Program Files\\Microsoft System Center 2016\\Operations Manager" -PathType Container){exit} else {exit 1}',
       require => [Exec['extractscom-2016'], Dsc_disk['DVolume']],
     }
+
+    $scomservices = ['OMSDK', 'cshost']
+
+    service { $scomservices:
+      ensure  => running,
+      enable  => true,
+      require => Exec['installscom'],
+    }
 /*
 & "C:\SC 2016 RTM SCOM\setup.exe" /Silent /Install /EnableErrorReporting:Never /SendCEIPReports:0 /UseMicrosoftUpdate:0 /ManagementGroupName:ManagementGroup01 /DWSqlServerInstance:'scom01\MSSQLSERVER' /Components:'OMserver,OMConsole' /SqlServerInstance:'scom01\MSSQLSERVER' /UseLocalSystemActionAccount /DatareaderUser:'mshome\administrator' /DatareaderPassword:Beheer123 /DataWriterUser:'mshome\administrator' /DataWriterPassword:Beheer123 /AcceptEndUserLicenseAgreement:1 /UseLocalSystemDASAccount
 */
