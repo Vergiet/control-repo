@@ -1,1 +1,1 @@
-write-output "key1=$(get-service | ConvertTo-Json -Depth 4 -Compress)"
+write-output "services=$(get-service | select name,DisplayName,ServiceName,Status,StartType | ConvertTo-Json -Depth 4)"
