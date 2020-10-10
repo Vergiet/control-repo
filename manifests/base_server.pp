@@ -143,7 +143,7 @@ if (Get-NetAdapter -Name provider){
     enable  => true,
   }
 
-  if $healthservice.name == 'healthservice' {
+  if $healthservice == 'healthservice' {
     service { 'healthservice':
       ensure  => running,
       enable  => true,
