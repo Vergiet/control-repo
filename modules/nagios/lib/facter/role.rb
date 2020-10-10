@@ -8,3 +8,13 @@ Facter.add('windows_edition_custom') do
       value
     end
   end
+
+Facter.add('services') do
+    confine :osfamily => :windows
+    setcode do
+      value = nil
+      value = Win32::Service.services
+      end
+      value
+    end
+  end
