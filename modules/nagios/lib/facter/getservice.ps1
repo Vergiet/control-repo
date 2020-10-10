@@ -1,1 +1,1 @@
-get-service | fl *
+write-output "key1=$(get-service | ConvertTo-Json -Depth 4 -Compress)"
