@@ -59,6 +59,32 @@ if (Get-NetAdapter -Name management){
 
 
 
+$profile = '
+
+function invoke-puppet {
+  while (get-item C:/ProgramData/PuppetLabs/puppet/cache/state/agent_catalog_run.lock){get-date; start-sleep -Seconds 10}
+
+  puppet agent -t
+}
+
+get-command -Name invoke-puppet
+
+'
+
+  file { "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1" :
+    ensure   => present,
+    content => $profile,
+  }
+
+
+  exec { 'profile':
+    command     => '& C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1',
+    require   => File['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1'],
+    provider => 'powershell',
+  }
+
+
+
 $ensuredns = '
 
 Clear-DnsClientCache
