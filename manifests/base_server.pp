@@ -38,9 +38,9 @@ Register-DnsClient
 
 $setmetric = '
 
-if (Get-NetAdapter -Name management){
+if (Get-NetAdapter -Name "default switch"){
 
-  Get-NetIPInterface -InterfaceAlias Management -AddressFamily IPv4 | Set-NetIPInterface -InterfaceMetric 0
+  Get-NetIPInterface -InterfaceAlias "default switch" -AddressFamily IPv4 | Set-NetIPInterface -InterfaceMetric 0 -verbose
 }
 
 '
