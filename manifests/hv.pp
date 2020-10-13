@@ -352,7 +352,7 @@ exit 0
 
     dsc_xcluster { 'JoinCluster':
         dsc_name => 'Cluster02',
-        dsc_staticipaddress               => '192.168.1.13/24',
+        dsc_staticipaddress               => '192.168.4.50/24',
         dsc_domainadministratorcredential => {
           'user'     => 'Administrator@mshome.net',
           'password' => Sensitive('Beheer123')
@@ -371,7 +371,7 @@ exit 0
 
     dsc_xcluster { 'CreateCluster':
         dsc_name => 'Cluster02',
-        dsc_staticipaddress               => '192.168.1.13/24',
+        dsc_staticipaddress               => '192.168.4.50/24',
         dsc_domainadministratorcredential => {
           'user'     => 'Administrator@mshome.net',
           'password' => Sensitive('Beheer123')
