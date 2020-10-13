@@ -36,6 +36,28 @@ Register-DnsClient
     provider => 'powershell',
   }
 
+$setmetric = '
+
+if (Get-NetAdapter -Name management){
+
+  Get-NetIPInterface -InterfaceAlias Management -AddressFamily IPv4 | Set-NetIPInterface -InterfaceMetric 0
+}
+
+'
+
+  file { "c:\\scripts\\setmetric.ps1" :
+    ensure   => present,
+    content => $setipaddress,
+  }
+
+
+  exec { 'setmetric':
+    command     => '& c:\\scripts\\setmetric.ps1',
+    require   => File['c:\\scripts\\setmetric.ps1'],
+    provider => 'powershell',
+  }
+
+
 
 $ensuredns = '
 
