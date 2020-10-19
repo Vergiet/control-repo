@@ -3,7 +3,7 @@ class ad::pdc (
 ){
 
 
-
+$domain = 'management.lan'
 
 
   if $osfamily == 'windows' {
@@ -24,7 +24,7 @@ class ad::pdc (
 
     dsc_xaddomain   { 'firstdc':
       subscribe                         => Dsc_windowsfeature['addsinstall'],
-      dsc_domainname                    => 'mshome.net',
+      dsc_domainname                    => $domain,
       dsc_domainadministratorcredential => {
         'user'     => 'pagent',
         'password' => Sensitive('Test12341234')
@@ -52,18 +52,21 @@ class ad::pdc (
 
 $ensuredns = '
 
+$domain = "management.lan"
+
 [array] $Names += [pscustomobject]@{name = "pmom01"; ip = ""}
 [array] $Names += [pscustomobject]@{name = "nagios"; ip = ""}
 [array] $Names += [pscustomobject]@{name = "Cluster02"; ip = "192.168.4.50"}
 
-$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+#$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Management" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
 $Name = $Names[2]
 
 foreach ($Name in $Names){
 
-    $DnsName = ("{0}.mshome.net" -f $Name.name)
+    $DnsName = ("{0}.$domain" -f $Name.name)
   if ([string]::isnullorempty($Name.ip)){
   
   $IPAddress = (Resolve-DnsName -name $DnsName -Server $IPv4DefaultGateway).IPAddress
@@ -73,17 +76,17 @@ foreach ($Name in $Names){
 
 
 
-  $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name $Name.name -ZoneName mshome.net -ErrorAction SilentlyContinue
+  $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name $Name.name -ZoneName $domain -ErrorAction SilentlyContinue
 
   if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
 
       if ($null -ne $DnsServerResourceRecord){
-          Remove-DnsServerResourceRecord -ZoneName mshome.net -Name $Name.name -RRType "A" -Confirm:$False -force
+          Remove-DnsServerResourceRecord -ZoneName $domain -Name $Name.name -RRType "A" -Confirm:$False -force
 
           #restart-computer
       }
 
-      Add-DnsServerResourceRecordA -Name $Name.name -ZoneName mshome.net -IPv4Address $IPAddress
+      Add-DnsServerResourceRecordA -Name $Name.name -ZoneName $domain -IPv4Address $IPAddress
 
   }
 
@@ -91,7 +94,11 @@ foreach ($Name in $Names){
 '
 
 $ensurednsforwarder = '
-$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+
+$domain = "management.lan"
+
+#$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Management" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
 if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString){
@@ -142,7 +149,10 @@ if ($setDnsServerScavenging.Keys.Count -gt 0){
 $task = '
 Start-Sleep -seconds 200
 
-$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+$domain = "management.lan"
+
+#$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Management" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
 if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString){
@@ -193,14 +203,15 @@ Start-DnsServerScavenging -Force -verbose
 [array] $Names += [pscustomobject]@{name = "nagios"; ip = ""}
 [array] $Names += [pscustomobject]@{name = "Cluster02"; ip = "192.168.4.50"}
 
-$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+#$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Management" -AddressFamily IPv4
 $IPv4DefaultGateway = (Get-NetIPConfiguration -InterfaceIndex $NetIPInterface.InterfaceIndex).IPv4DefaultGateway.NextHop
 
 $Name = $Names[2]
 
 foreach ($Name in $Names){
 
-    $DnsName = ("{0}.mshome.net" -f $Name.name)
+    $DnsName = ("{0}.$domain" -f $Name.name)
     $DnsName
   if ([string]::isnullorempty($Name.ip)){
   
@@ -214,18 +225,18 @@ foreach ($Name in $Names){
 
 
   if (-not ([string]::IsNullOrEmpty($IPAddress))){
-      $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name $Name.name -ZoneName mshome.net -ErrorAction SilentlyContinue
+      $DnsServerResourceRecord = Get-DnsServerResourceRecord -Name $Name.name -ZoneName $domain -ErrorAction SilentlyContinue
       $DnsServerResourceRecord
 
       if ($null -eq $DnsServerResourceRecord -or $DnsServerResourceRecord.RecordData.IPv4Address.IPAddressToString -ne $IPAddress){
 
           if ($null -ne $DnsServerResourceRecord){
-              Remove-DnsServerResourceRecord -ZoneName mshome.net -Name $Name.name -RRType "A" -Confirm:$False -force -verbose
+              Remove-DnsServerResourceRecord -ZoneName $domain -Name $Name.name -RRType "A" -Confirm:$False -force -verbose
 
               #restart-computer
           }
 
-          Add-DnsServerResourceRecordA -Name $Name.name -ZoneName mshome.net -IPv4Address $IPAddress -verbose
+          Add-DnsServerResourceRecordA -Name $Name.name -ZoneName $domain -IPv4Address $IPAddress -verbose
 
       }
   }
@@ -257,6 +268,11 @@ $setipaddress = '
 if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex | ?{$_.ipAddress -eq "10.0.0.2"})){
 
   New-NetIPAddress -IPAddress "10.0.0.2" -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -PrefixLength 24 -verbose
+}
+
+if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Management").interfaceindex | ?{$_.ipAddress -eq "192.168.4.2"})){
+
+  New-NetIPAddress -IPAddress "192.168.4.2" -InterfaceIndex (Get-NetAdapter -Name "Management").interfaceindex -PrefixLength 24 -verbose
 }
 '
 
@@ -319,13 +335,13 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   }
 
 
-
+$path = "CN=Users,DC=management,DC=lan"
 
 
   windows_ad::group{'Network Controller Admins':
     ensure               => present,
     displayname          => 'Network Controller Admins',
-    path                 => 'CN=Users,DC=mshome,DC=net',
+    path                 => $path,
     groupname            => 'Network Controller Admins',
     groupscope           => 'Global',
     groupcategory        => 'Security',
@@ -337,7 +353,7 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   windows_ad::group{'NetworkControllers':
     ensure               => present,
     displayname          => 'NetworkControllers',
-    path                 => 'CN=Users,DC=mshome,DC=net',
+    path                 => $path,
     groupname            => 'NetworkControllers',
     groupscope           => 'Global',
     groupcategory        => 'Security',
@@ -349,7 +365,7 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   windows_ad::group{'Network Controller Users':
     ensure               => present,
     displayname          => 'Network Controller Users',
-    path                 => 'CN=Users,DC=mshome,DC=net',
+    path                 => $path,
     groupname            => 'Network Controller Users',
     groupscope           => 'Global',
     groupcategory        => 'Security',

@@ -61,6 +61,17 @@ mkdir /root/.puppetlabs
 echo \$token | awk -F\\\" '{ print \$4 }' > /root/.puppetlabs/token
 "
 
+$puppetconfig = '
+runinterval = 1800
+server = <%= $hostname -%>
+'
+
+file { "/etc/puppetlabs/puppet/puppet.conf" :
+  ensure   => present,
+  content => $puppetconfig,
+  mode => '0655',
+}
+
 
 
 file { "/root/testfile.sh" :
