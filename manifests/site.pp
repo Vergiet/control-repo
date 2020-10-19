@@ -146,6 +146,14 @@ node 'dc01.mshome.net' {
   include ad::pdc
 }
 
+node 'dc01.management.lan' {
+
+  #include site::basic
+  #include nagios::ncpa
+  include site::basic
+  include ad::pdc
+}
+
 node 'ras01.mshome.net' {
 
   include site::basic
