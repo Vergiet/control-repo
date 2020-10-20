@@ -388,6 +388,14 @@ $path = "CN=Users,DC=management,DC=lan"
   }
 
 
+  windows_ad::groupmembers{'Member Domain Admins':
+    ensure    => present,
+    groupname => 'Domain Admins',
+    members   => '"DefaultAdmin"',
+    require               => [Dsc_xaddomain['firstdc'], Windows_ad::user['DefaultAdmin']]
+  }
+
+
   }
 
 }
