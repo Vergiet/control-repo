@@ -133,9 +133,18 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
     $Startdate = get-date
     $realstartdate = $startdate
 
+
+    while (((invoke-command -ComputerName $Computernames -ScriptBlock {(get-date) - [system.Management.ManagementDateTimeConverter]::ToDateTime((Get-WmiObject Win32_OperatingSystem).LastBootUpTime)}) | ?{$_.TotalMinutes -gt 15}).count -lt 3){
+      start-sleep -seconds 10
+    }
+
+    <#
+
+    ($uptime | ?{$_.TotalMinutes -gt 15}).count -eq 3
+
     While (((get-date) - $startdate).TotalMinutes -lt 15){
 
-      $hostavailability = $Computernames | %{ Start-Job -ScriptBlock { param($hostname) Test-Connection -ComputerName $hostname -Count 1} -ArgumentList  $_; write-host "started: $_" } | get-job | Receive-Job -Wait | Select-Object @{Name="ComputerName";Expression={$_.Address}},@{Name="Reachable";Expression={if ($_.StatusCode -eq 0) { $true } else { $false }}}
+      $hostavailability = $Computernames | %{ Start-Job -ScriptBlock { param($hostname) Test-Connection -ComputerName $hostname -Count 1} -ArgumentList  $_} | get-job | Receive-Job -Wait | Select-Object @{Name="ComputerName";Expression={$_.Address}},@{Name="Reachable";Expression={if ($_.StatusCode -eq 0) { $true } else { $false }}}
 
       if ($hostavailability.Reachable -contains $False){
         $Startdate = get-date
@@ -144,7 +153,8 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
     }
 
     $enddate = get-date
-    $enddate - $realstartdate
+    #$enddate - $realstartdate
+    #>
 
     Invoke-Command ($Computernames) {
         Update-StorageProviderCache
