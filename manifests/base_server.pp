@@ -63,7 +63,7 @@ if (Get-NetAdapter -Name "default switch"){
 $profile = '
 
 function invoke-puppet {
-  while (get-item C:/ProgramData/PuppetLabs/puppet/cache/state/agent_catalog_run.lock){get-date; start-sleep -Seconds 10}
+  while (get-item C:/ProgramData/PuppetLabs/puppet/cache/state/agent_catalog_run.lock -erroraction silentlycontinue){get-date; start-sleep -Seconds 10}
 
   puppet agent -t
 }
