@@ -392,7 +392,7 @@ $path = "CN=Users,DC=management,DC=lan"
     ensure    => present,
     groupname => 'Domain Admins',
     members   => '"DefaultAdmin"',
-    require               => [Dsc_xaddomain['firstdc'], Windows_ad::user['DefaultAdmin']]
+    require               => Dsc_xaddomain['firstdc'],
   }
 
 
