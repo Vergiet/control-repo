@@ -208,3 +208,13 @@ node 'hv03.management.lan' {
   include hv::baseline
 
 }
+node 'vmm01.management.lan' {
+
+  include site::basic
+  include base::server
+  include nagios::ncpa
+  require sql2019::standalone
+  require temp::folder
+  include vmm::master
+
+}
