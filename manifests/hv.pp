@@ -122,12 +122,29 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
 
   if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
 
+
     $Computernames = @(
         "hv01"
         "hv02"
         "hv03"
     )
 
+
+    $Startdate = get-date
+    $realstartdate = $startdate
+
+    While (((get-date) - $startdate).TotalMinutes -lt 1){
+
+      $hostavailability = $Computernames | %{ Start-Job -ScriptBlock { param($hostname) Test-Connection -ComputerName $hostname -Count 1} -ArgumentList  $_; write-host "started: $_" } | get-job | Receive-Job -Wait | Select-Object @{Name="ComputerName";Expression={$_.Address}},@{Name="Reachable";Expression={if ($_.StatusCode -eq 0) { $true } else { $false }}}
+
+      if ($hostavailability.Reachable -contains $False){
+        $Startdate = get-date
+      }
+
+    }
+
+    $enddate = get-date
+    $enddate - $realstartdate
 
     Invoke-Command ($Computernames) {
         Update-StorageProviderCache
