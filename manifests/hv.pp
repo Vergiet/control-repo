@@ -4,11 +4,12 @@ class hv::baseline (
 
 
 
-
+/*
   service { 'MSiSCSI':
     ensure  => running,
     enable  => true,
   }
+  */
 
 /*
     package { 'microsoft-monitoring-agent':

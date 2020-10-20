@@ -373,7 +373,17 @@ $path = "CN=Users,DC=management,DC=lan"
     require => Dsc_xaddomain['firstdc'],
   }
 
-
+  windows_ad::user{'DefaultAdmin':
+    ensure                => present,
+    domainname            => 'Management.lan',
+    accountname           => 'DefaultAdmin',
+    fullname              => 'DefaultAdmin',
+    passwordneverexpires  => true,
+    password              => 'Beheer123',
+    writetoxmlflag        => false,
+    path                  => $path,
+    require               => Dsc_xaddomain['firstdc'],
+  }
 
 
   }
