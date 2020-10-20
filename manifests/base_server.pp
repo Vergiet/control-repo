@@ -162,7 +162,7 @@ if (Get-NetAdapter -Name provider){
 
 #$admin = 'Administrator@mshome.net'
 $admin = 'Administrator@management.lan'
-$domainname = 'mshome.net'
+#$domainname = 'mshome.net'
 $domainname = 'management.lan'
 
   dsc_computer { 'joindomain':
