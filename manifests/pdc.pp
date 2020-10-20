@@ -270,10 +270,12 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   New-NetIPAddress -IPAddress "10.0.0.2" -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -PrefixLength 24 -verbose
 }
 
+<#
 if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Management").interfaceindex | ?{$_.ipAddress -eq "192.168.4.2"})){
 
   New-NetIPAddress -IPAddress "192.168.4.2" -InterfaceIndex (Get-NetAdapter -Name "Management").interfaceindex -PrefixLength 24 -verbose
 }
+#>
 '
 
 
