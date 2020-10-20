@@ -32,9 +32,11 @@ MUOptIn = 0
 VmmServiceLocalAccount = 0
 #TopContainerName = VMMServer
 HighlyAvailable = 0
-VmmServerName = vmm01.mshome.net
+#VmmServerName = vmm01.mshome.net
+VmmServerName = vmm01.management.lan
 # VMMStaticIPAddress = <comma-separated-ip-for-HAVMM>
 '
+
 
 
 
@@ -135,12 +137,16 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 
 
   # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
+  #$netbiosname = 'mshome'
+  #$tld = 'net'
+  $netbiosname = 'management'
+  $tld = 'lan'
 
   if $identity["user"] == "MSHOME\\administrator"{
     exec { 'installvmm':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
-      command     => 'start-process "C:\\System Center 2016 Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
+      command     => 'start-process "C:\\System Center 2016 Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain management", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command => 'c:\\scripts\\vmminstall.ps1',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'cmd',
@@ -204,10 +210,16 @@ if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfa
   */
 
 $setrunas = '
+
+  #$netbiosname = "mshome"
+  #$tld = "net"
+  $netbiosname = "management"
+  $tld = "lan"
+
 if ($Null -eq (Get-SCRunAsAccount -Name "RunAsAccount01")){
 
     $localAdminCredPassword = ConvertTo-SecureString -String "Beheer123" -Force -AsPlainText
-    $RunAsAccount01Cred = New-Object System.Management.Automation.PSCredential ("mshome\administrator", $localAdminCredPassword)
+    $RunAsAccount01Cred = New-Object System.Management.Automation.PSCredential ("$netbiosname\administrator", $localAdminCredPassword)
     $RunAsAccount01 = New-SCRunAsAccount -Name "RunAsAccount01" -Credential $RunAsAccount01Cred -Verbose
 }
 
@@ -255,7 +267,7 @@ if ($Null -eq (Get-SCRunAsAccount -Name "RunAsAccount01")){
       ensure         => 'present',
       policy_setting => 'SeInteractiveLogonRight',
       policy_type    => 'Privilege Rights',
-      policy_value   => '*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551,mshome\\administrator',
+      policy_value   => '*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551,management\\administrator',
       provider       => 'policy',
     }
 
@@ -263,7 +275,7 @@ if ($Null -eq (Get-SCRunAsAccount -Name "RunAsAccount01")){
       ensure         => 'present',
       policy_setting => 'SeRemoteInteractiveLogonRight',
       policy_type    => 'Privilege Rights',
-      policy_value   => '*S-1-5-32-544,*S-1-5-32-555,mshome\\administrator',
+      policy_value   => '*S-1-5-32-544,*S-1-5-32-555,management\\administrator',
       provider       => 'policy',
     }
 
