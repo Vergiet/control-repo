@@ -14,7 +14,8 @@ class base::server {
 $setipaddress = '
 Clear-DnsClientCache
 if (Get-NetAdapter -Name provider){
-  $ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
+  #$ip = (Get-NetAdapter -Name "Default Switch" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
+  $ip = (Get-NetAdapter -Name "Management" | Get-NetIPAddress -AddressFamily IPv4).IPAddress.split(".")[3]
 
   if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex | ?{$_.ipAddress -eq "10.0.0.$ip"})){
 
@@ -83,13 +84,14 @@ get-command -Name invoke-puppet
     provider => 'powershell',
   }
 
-
+/*
 
 $ensuredns = '
 
 Clear-DnsClientCache
 
-$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+#$NetIPInterface = Get-NetIPInterface -InterfaceAlias "Default Switch" -AddressFamily IPv4
+$NetIPInterface = Get-NetIPInterface -InterfaceAlias "management" -AddressFamily IPv4
 
 [array] $ServerAddresses = (get-DnsClientServerAddress -InterfaceIndex $NetIPInterface.InterfaceIndex).ServerAddresses
 
@@ -107,6 +109,7 @@ if ($ServerAddresses.count -eq 1 -or $False -eq (Test-NetConnection -ComputerNam
 Register-DnsClient
 '
 
+
   file { "c:\\scripts\\ensuredns.ps1" :
     ensure   => present,
     content => $ensuredns,
@@ -119,6 +122,7 @@ Register-DnsClient
     subscribe   => File['c:\\scripts\\ensuredns.ps1'],
     provider => 'powershell',
   }
+  */
 
 $ensurejumbopackets = '
 
@@ -153,17 +157,22 @@ if (Get-NetAdapter -Name provider){
   }
 
   windowsfeature { 'FS-SMB1':
-    ensure => present,
+    ensure => absent,
   }
+
+#$admin = 'Administrator@mshome.net'
+$admin = 'Administrator@management.lan'
+$domainname = 'mshome.net'
+$domainname = 'management.lan'
 
   dsc_computer { 'joindomain':
     dsc_name => $facts['networking']['hostname'],
-    dsc_domainname => 'mshome.net',
+    dsc_domainname => $domainname,
     dsc_credential => {
-        'user'     => 'Administrator@mshome.net',
+        'user'     => $admin,
         'password' => Sensitive('Beheer123')
       },
-    require => Exec['ensurednsadres'],
+    #require => Exec['ensurednsadres'],
   }
 
 
