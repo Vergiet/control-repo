@@ -20,7 +20,14 @@ if (Get-NetAdapter -Name provider){
   if (!(Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex | ?{$_.ipAddress -eq "10.0.0.$ip"})){
 
     New-NetIPAddress -IPAddress "10.0.0.$ip" -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -PrefixLength 24 -verbose
+    
   }
+
+  if ("10.0.0.2" -ne (Get-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -AddressFamily IPv4).ServerAddresses){
+    Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter -Name "Provider").interfaceindex -ServerAddresses "10.0.0.2" -verbose
+  }
+
+
 }
 Register-DnsClient
 '
