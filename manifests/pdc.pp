@@ -388,13 +388,27 @@ $path = "CN=Users,DC=management,DC=lan"
   }
 
 
-  windows_ad::groupmembers{'Member Domain Admins':
-    ensure    => present,
-    groupname => 'Domain Admins',
-    members   => '"DefaultAdmin","Administrator"',
-    require               => Dsc_xaddomain['firstdc'],
+
+
+$adddomainadmin = '
+
+if (Get-ADUser -Identity "defaultadmin" | tee-object -variable DefaultAdmin){
+  Add-ADGroupMember -Identity "domain admins" -Members $DefaultAdmin
+}
+'
+
+  file { "c:\\scripts\\adddomainadmin.ps1" :
+    ensure   => present,
+    content => $adddomainadmin,
+    require => File[$scripts_dir],
   }
 
+  exec { 'adddomainadmin' :
+    command     => '& c:\\scripts\\adddomainadmin.ps1',
+    subscribe   => File['c:\\scripts\\adddomainadmin.ps1'],
+    provider => 'powershell',
+    require => [Dsc_xaddomain['firstdc'], File["c:\\scripts\\adddomainadmin.ps1"]],
+  }
 
   }
 
