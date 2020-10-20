@@ -130,8 +130,8 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
     )
 
 
-    $Startdate = get-date
-    $realstartdate = $startdate
+    #$Startdate = get-date
+    #$realstartdate = $startdate
 
 
     while (((invoke-command -ComputerName $Computernames -ScriptBlock {(get-date) - [system.Management.ManagementDateTimeConverter]::ToDateTime((Get-WmiObject Win32_OperatingSystem).LastBootUpTime)}) | ?{$_.TotalMinutes -gt 15}).count -lt 3){
