@@ -50,8 +50,8 @@ node default {
 
 node 'hv01.mshome.net' {
 
-    include site::basic
-    include nagios::ncpa
+  include site::basic
+  include nagios::ncpa
   include base::server
   include hv::baseline
 
@@ -146,13 +146,6 @@ node 'dc01.mshome.net' {
   include ad::pdc
 }
 
-node 'dc01.management.lan' {
-
-  #include site::basic
-  #include nagios::ncpa
-  include site::basic
-  include ad::pdc
-}
 
 node 'ras01.mshome.net' {
 
@@ -173,3 +166,45 @@ node /^nagios\..*/ {
   include nagios::export
 }
 
+
+
+
+
+node 'dc01.management.lan' {
+
+  #include site::basic
+  #include nagios::ncpa
+  include site::basic
+  include ad::pdc
+}
+
+
+
+
+
+node 'hv01.management.lan' {
+
+  include site::basic
+  include nagios::ncpa
+  include base::server
+  include hv::baseline
+
+}
+
+node 'hv02.management.lan' {
+
+  include site::basic
+  include nagios::ncpa
+  include base::server
+  include hv::baseline
+
+}
+
+node 'hv03.management.lan' {
+
+  include site::basic
+  include nagios::ncpa
+  include base::server
+  include hv::baseline
+
+}
