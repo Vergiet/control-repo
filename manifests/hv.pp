@@ -2,7 +2,8 @@ class hv::baseline (
 
 ) {
 
-
+#$admin = 'Administrator@mshome.net'
+$admin = 'Administrator@management.lan'
 
 /*
   service { 'MSiSCSI':
@@ -355,7 +356,7 @@ exit 0
         dsc_name => 'Cluster02',
         dsc_staticipaddress               => '192.168.4.50/24',
         dsc_domainadministratorcredential => {
-          'user'     => 'Administrator@mshome.net',
+          'user'     => $admin,
           'password' => Sensitive('Beheer123')
         },
         require => [Windowsfeature['RSAT-Clustering-CmdInterface'], Reboot['before_Hyper_V'], Dsc_xwaitforcluster['WaitForCluster']],
@@ -374,7 +375,7 @@ exit 0
         dsc_name => 'Cluster02',
         dsc_staticipaddress               => '192.168.4.50/24',
         dsc_domainadministratorcredential => {
-          'user'     => 'Administrator@mshome.net',
+          'user'     => $admin,
           'password' => Sensitive('Beheer123')
         },
         require => [Windowsfeature['RSAT-Clustering-CmdInterface'], Reboot['before_Hyper_V']],
@@ -451,13 +452,13 @@ exit 0
       content => $configs2d,
     }
 
-  
+
     exec { 'configs2d':
       command     => '& c:\\scripts\\configs2d.ps1',
       require => [File["c:\\scripts\\configs2d.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
       provider => 'powershell',
     }
-    
+
 
     file { "c:\\scripts\\configsddc.ps1" :
       ensure   => present,
