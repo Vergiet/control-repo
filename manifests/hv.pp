@@ -133,7 +133,7 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
     $Startdate = get-date
     $realstartdate = $startdate
 
-    While (((get-date) - $startdate).TotalMinutes -lt 1){
+    While (((get-date) - $startdate).TotalMinutes -lt 15){
 
       $hostavailability = $Computernames | %{ Start-Job -ScriptBlock { param($hostname) Test-Connection -ComputerName $hostname -Count 1} -ArgumentList  $_; write-host "started: $_" } | get-job | Receive-Job -Wait | Select-Object @{Name="ComputerName";Expression={$_.Address}},@{Name="Reachable";Expression={if ($_.StatusCode -eq 0) { $true } else { $false }}}
 
