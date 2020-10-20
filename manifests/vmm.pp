@@ -142,7 +142,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
   $netbiosname = 'management'
   $tld = 'lan'
 
-  if $identity["user"] == "management\\administrator"{
+  if ($identity["user"] == "management\\administrator" or $identity["user"] == "management\\DefaultAdmin") {
     exec { 'installvmm':
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/SqlDBAdminDomain mshome", "/SqlDBAdminName administrator", "/SqlDBAdminpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
       #command     => 'start-process "C:\\System Center Virtual Machine Manager\\setup.exe" -ArgumentList "/server", "/i", "/f C:\\Temp\\VMServer.ini", "/vmmservicedomain mshome", "/vmmserviceUserName administrator", "/vmmserviceuserpassword Beheer123", "/IACCEPTSCEULA" -NoNewWindow -Wait',
