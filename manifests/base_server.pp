@@ -221,7 +221,7 @@ powershell
 
 $cmdrunreg = '
 
-
+<#
 if ((get-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" | gm -Type NoteProperty).name -notcontains "Autorun"){
   new-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" -name "Autorun" -value "c:\run.cmd" -verbose
 } else {
@@ -229,19 +229,20 @@ if ((get-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" | gm -
     set-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" -name "Autorun" -value "c:\run.cmd" -verbose
   }
 }
+#>
 
-<#
+
 if ((get-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" | gm -Type NoteProperty).name -contains "Autorun"){
   remove-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" -name "Autorun"
 }
-#>
+
 
 '
 
   if $os['windows']['installation_type'] == 'Server Core' {
 
     file { "c:\\run.cmd" :
-      ensure   => present,
+      ensure   => absent,
       content => $cmdrun,
     }
 
