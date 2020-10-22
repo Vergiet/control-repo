@@ -214,5 +214,13 @@ $domainname = 'management.lan'
     }
   }
 
+  if $os['windows']['installation_type'] == 'Server Core' {
+    registry_value { 'HKCU\SOFTWARE\Microsoft\Command Processor\AutoRun':
+      ensure => present,
+      type   => string,
+      data   => "c:\run.cmd",
+    }
+  }
+
 
 }
