@@ -214,25 +214,41 @@ $domainname = 'management.lan'
     }
   }
 
+
+$cmdrun = '
+powershell
+'
+
+$cmdrunreg = '
+
+if ((get-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" | gm -Type NoteProperty).name -notcontains "Autorun"){
+  new-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" -name "Autorun" -value "c:\run.cmd" -verbose
+} else {
+  if ((get-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" -name "Autorun").Autorun -ne "c:\run.cmd"){
+    set-ItemProperty -path  "HKCU:\SOFTWARE\Microsoft\Command Processor" -name "Autorun" -value "c:\run.cmd" -verbose
+  }
+}
+
+'
+
   if $os['windows']['installation_type'] == 'Server Core' {
 
-/*
-    registry_key { 'HKCU\SOFTWARE\Microsoft\Command Processor\AutoRun':
-        ensure => present,
+    file { "c:\\run.cmd" :
+      ensure   => present,
+      content => $cmdrun,
     }
 
-    registry_value { 'HKCU\SOFTWARE\Microsoft\Command Processor\AutoRun':
-      ensure => present,
-      type   => string,
-      data   => "c:\run.cmd",
-      require => Registry_key['HKCU\SOFTWARE\Microsoft\Command Processor\AutoRun'],
+    file { "c:\\scripts\\cmdrunreg.ps1" :
+      ensure   => present,
+      content => $cmdrunreg,
+      require => File[$scripts_dir],
     }
-    */
 
-    registry::value { 'Setting0':
-      key   => 'HKCU\SOFTWARE\Microsoft\Command Processor',
-      value => 'AutoRun',
-      data  => "c:\run.cmd",
+
+    exec { 'cmdrunreg':
+      command     => '& c:\\scripts\\cmdrunreg.ps1',
+      subscribe   => File['c:\\scripts\\cmdrunreg.ps1'],
+      provider => 'powershell',
     }
   }
 
