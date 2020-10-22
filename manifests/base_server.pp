@@ -216,6 +216,7 @@ $domainname = 'management.lan'
 
   if $os['windows']['installation_type'] == 'Server Core' {
 
+/*
     registry_key { 'HKCU\SOFTWARE\Microsoft\Command Processor\AutoRun':
         ensure => present,
     }
@@ -225,6 +226,13 @@ $domainname = 'management.lan'
       type   => string,
       data   => "c:\run.cmd",
       require => Registry_key['HKCU\SOFTWARE\Microsoft\Command Processor\AutoRun'],
+    }
+    */
+
+    registry::value { 'Setting0':
+      key   => 'HKCU\SOFTWARE\Microsoft\Command Processor',
+      value => 'AutoRun',
+      data  => "c:\run.cmd",
     }
   }
 
