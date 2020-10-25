@@ -135,6 +135,12 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       provider => 'chocolatey',
     }
 
+    package { 'notepadplusplus':
+      ensure   => installed,
+      provider => 'chocolatey',
+    }
+
+
 
   # & "C:\System Center Virtual Machine Manager\setup.exe" /server /i /f C:\Temp\VMServer.ini /vmmservicedomain mshome /vmmserviceUserName administrator /vmmserviceuserpassword Beheer123 /IACCEPTSCEULA
   #$netbiosname = 'mshome'
