@@ -48,15 +48,6 @@ node default {
 
 #lookup('classes', {merge => unique}).include
 
-node 'wac01.mshome.net' {
-
-  include site::basic
-  require temp::folder
-  include nagios::ncpa
-  include base::server
-  include wac
-
-}
 
 
 node 'vmm01.mshome.net' {
@@ -71,16 +62,6 @@ node 'vmm01.mshome.net' {
 }
 
 
-node 'scom01.mshome.net' {
-
-  include site::basic
-  include base::server
-  include nagios::ncpa
-  require sql2016::standalone
-  require temp::folder
-  include scom::master
-
-}
 
 node 'dc01.mshome.net' {
 
@@ -88,16 +69,6 @@ node 'dc01.mshome.net' {
   #include nagios::ncpa
   include site::basic
   include ad::pdc
-}
-
-
-node 'ras01.mshome.net' {
-
-  include site::basic
-  include base::server
-  include nagios::ncpa
-  require temp::folder
-  include ras::multitenant
 }
 
 node /^nagios\..*/ {
@@ -114,7 +85,7 @@ node /^nagios\..*/ {
 
 
 
-node 'dc01.management.lan' {
+node /^dc\d*\..*/ {
 
   #include site::basic
   #include nagios::ncpa
@@ -131,8 +102,30 @@ node /^hv\d*\..*/ {
 
 }
 
+node /^scom\d*\..*/ {
 
-node 'vmm01.management.lan' {
+  include site::basic
+  include base::server
+  include nagios::ncpa
+  require sql2016::standalone
+  require temp::folder
+  include scom::master
+
+}
+
+node /^wac\d*\..*/ {
+
+  include site::basic
+  require temp::folder
+  include nagios::ncpa
+  include base::server
+  include wac
+
+}
+
+
+
+node /^vmm\d*\..*/ {
 
   include site::basic
   include base::server
