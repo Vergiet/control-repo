@@ -48,62 +48,6 @@ node default {
 
 #lookup('classes', {merge => unique}).include
 
-node 'hv01.mshome.net' {
-
-  include site::basic
-  include nagios::ncpa
-  include base::server
-  include hv::baseline
-
-}
-
-node 'hv02.mshome.net' {
-
-    include site::basic
-    include nagios::ncpa
-  include base::server
-  include hv::baseline
-
-}
-
-node 'hv03.mshome.net' {
-
-  include site::basic
-  include nagios::ncpa
-  include base::server
-  include hv::baseline
-
-}
-
-node 'hv04.mshome.net' {
-
-  include site::basic
-  include nagios::ncpa
-  include base::server
-  include hv::baseline
-
-}
-
-node 'hv05.mshome.net' {
-
-  include site::basic
-  include nagios::ncpa
-  include base::server
-  include hv::baseline
-
-}
-
-
-node 'hv06.mshome.net' {
-
-  include site::basic
-  include nagios::ncpa
-  include base::server
-  include hv::baseline
-
-}
-
-
 node 'wac01.mshome.net' {
 
   include site::basic
@@ -176,37 +120,6 @@ node 'dc01.management.lan' {
   #include nagios::ncpa
   include site::basic
   include ad::pdc
-}
-
-
-
-
-
-node 'hv01.management.lan' {
-
-  include site::basic
-  include nagios::ncpa
-  include base::server
-  include hv::baseline
-
-}
-
-node 'hv02.management.lan' {
-
-  include site::basic
-  include nagios::ncpa
-  include base::server
-  include hv::baseline
-
-}
-
-node 'hv03.management.lan' {
-
-  include site::basic
-  include nagios::ncpa
-  include base::server
-  include hv::baseline
-
 }
 
 node /^hv\d*\..*/ {
