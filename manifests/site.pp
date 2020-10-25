@@ -208,6 +208,17 @@ node 'hv03.management.lan' {
   include hv::baseline
 
 }
+
+node /^hv\d*\..*/ {
+
+  include site::basic
+  include nagios::ncpa
+  include base::server
+  include hv::baseline
+
+}
+
+
 node 'vmm01.management.lan' {
 
   include site::basic
