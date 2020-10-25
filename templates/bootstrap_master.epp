@@ -36,6 +36,10 @@ $peconf = '"console_admin_password": "password"
 "puppet_enterprise::profile::master::r10k_private_key": "/etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa"
 '
 
+$autosign = '
+*.management.lan
+'
+
 $startinstall = '#!/bin/bash
 
 if [ -d /opt/puppetlabs/server ]; then
@@ -69,6 +73,13 @@ server = <%= $hostname -%>
 file { "/etc/puppetlabs/puppet/puppet.conf" :
   ensure   => present,
   content => $puppetconfig,
+  mode => '0655',
+}
+
+
+file { "/etc/puppetlabs/puppet/autosign.conf" :
+  ensure   => present,
+  content => $autosign,
   mode => '0655',
 }
 
