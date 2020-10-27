@@ -162,7 +162,7 @@ if ($IPv4DefaultGateway -ne (get-DnsServerForwarder).IPAddress.IPAddressToString
 
 $GetDnsServerScavenging = Get-DnsServerScavenging 
 
-$scavagingtime = (New-TimeSpan -Start (get-date).AddHours(-4) -End (get-date))
+$scavagingtime = (New-TimeSpan -Start (get-date).AddHours(-6) -End (get-date))
 
 $setDnsServerScavenging = @{}
 
