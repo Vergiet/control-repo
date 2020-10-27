@@ -50,26 +50,7 @@ node default {
 
 
 
-node 'vmm01.mshome.net' {
 
-  include site::basic
-  include base::server
-  include nagios::ncpa
-  require sql2019::standalone
-  require temp::folder
-  include vmm::master
-
-}
-
-
-
-node 'dc01.mshome.net' {
-
-  #include site::basic
-  #include nagios::ncpa
-  include site::basic
-  include ad::pdc
-}
 
 node /^nagios\..*/ {
 
