@@ -133,15 +133,17 @@ Register-DnsClient
 
 $ensurejumbopackets = '
 
-$NetAdapter = "Management"
+#$NetAdapter = "Management"
 $Mtu = 9014
 
-if (Get-NetAdapter -Name $NetAdapter){
+$NetAdapter = Get-NetAdapter | ?{$_.Name -like "*(NC_LogicalSwitch)*"}
 
-  $NetAdapterAdvancedProperty = Get-NetAdapterAdvancedProperty -Name $NetAdapter -RegistryKeyword "*JumboPacket"
+if ($null -ne $NetAdapter){
+
+  $NetAdapterAdvancedProperty = Get-NetAdapterAdvancedProperty -Name $NetAdapter.name -RegistryKeyword "*JumboPacket"
 
   if ($NetAdapterAdvancedProperty.RegistryValue -ne $Mtu){
-    Set-NetAdapterAdvancedProperty -Name $NetAdapter -RegistryKeyword "*JumboPacket" -Registryvalue $Mtu -verbose
+    Set-NetAdapterAdvancedProperty -Name $NetAdapter.name -RegistryKeyword "*JumboPacket" -Registryvalue $Mtu -verbose
   }
 
 }
