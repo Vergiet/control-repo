@@ -134,13 +134,14 @@ Register-DnsClient
 $ensurejumbopackets = '
 
 $NetAdapter = "Management"
+$Mtu = 9000
 
 if (Get-NetAdapter -Name $NetAdapter){
 
   $NetAdapterAdvancedProperty = Get-NetAdapterAdvancedProperty -Name $NetAdapter -RegistryKeyword "*JumboPacket"
 
-  if ($NetAdapterAdvancedProperty.RegistryValue -ne 9014){
-    Set-NetAdapterAdvancedProperty -Name $NetAdapter -RegistryKeyword "*JumboPacket" -Registryvalue 9014
+  if ($NetAdapterAdvancedProperty.RegistryValue -ne $Mtu){
+    Set-NetAdapterAdvancedProperty -Name $NetAdapter -RegistryKeyword "*JumboPacket" -Registryvalue $Mtu
   }
 
 }
