@@ -195,17 +195,6 @@ if ((Get-Cluster -Name cluster02).S2DEnabled -eq 1){
 }
 '
 
-    file { "c:\\scripts\\configvolume.ps1" :
-      ensure   => present,
-      content => $configvolume,
-    }
-
-    exec { 'configvolume':
-      command     => '& c:\\scripts\\configvolume.ps1',
-      require => [File["c:\\scripts\\configvolume.ps1"], Exec['configs2d']],
-      provider => 'powershell',
-    }
-
 $configsddc = '
 
 if (!(get-ClusterResourceType -Name "SDDC Management")){
