@@ -7,10 +7,12 @@ class site::basic {
     include nagios::export
 
     Package { provider => chocolatey, }
+    /*
     windows_updates::list {'*':
       ensure    => 'present',
       name_mask => '*'
     }
+    */
   }
   else {
     include motd
