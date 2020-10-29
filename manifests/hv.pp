@@ -122,12 +122,16 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
 
   if ((Get-Cluster -Name cluster02).S2DEnabled -eq 0){
 
-
+    <#
     $Computernames = @(
         "hv01"
         "hv02"
         "hv03"
     )
+    #>
+
+    $Computernames = (Get-ADComputer -Filter {name -like "hv*"}).dnshostname
+
 
 
     #$Startdate = get-date
@@ -139,23 +143,6 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
     }
 
     <#
-
-    ($uptime | ?{$_.TotalMinutes -gt 15}).count -eq 3
-
-    While (((get-date) - $startdate).TotalMinutes -lt 15){
-
-      $hostavailability = $Computernames | %{ Start-Job -ScriptBlock { param($hostname) Test-Connection -ComputerName $hostname -Count 1} -ArgumentList  $_} | get-job | Receive-Job -Wait | Select-Object @{Name="ComputerName";Expression={$_.Address}},@{Name="Reachable";Expression={if ($_.StatusCode -eq 0) { $true } else { $false }}}
-
-      if ($hostavailability.Reachable -contains $False){
-        $Startdate = get-date
-      }
-
-    }
-
-    $enddate = get-date
-    #$enddate - $realstartdate
-    #>
-
     Invoke-Command ($Computernames) {
         Update-StorageProviderCache
         Get-StoragePool | ? IsPrimordial -eq $false | Set-StoragePool -IsReadOnly:$false #-ErrorAction SilentlyContinue
@@ -171,6 +158,7 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
         }
         Get-Disk | Where Number -Ne $Null | Where IsBoot -Ne $True | Where IsSystem -Ne $True | Where PartitionStyle -Eq "RAW" | Group -NoElement -Property FriendlyName
     } | Sort -Property PsComputerName, Count
+    #>
 
 
     Test-Cluster -Node $Computernames -Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
@@ -186,15 +174,37 @@ if ((Get-ClusterNode -Cluster Cluster02 | ?{$_.state -eq "up"}).count -ge 3){
 
 }
 
+<#
 if ((Get-Cluster -Name cluster02).S2DEnabled -eq 1){
 
   if (!(Get-Volume | ?{$_.FileSystemLabel -eq "Volume1"})){
     New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 100GB
   } 
 }
+#>
 
 
 '
+
+$configvolume = '
+if ((Get-Cluster -Name cluster02).S2DEnabled -eq 1){
+
+  if (!(Get-Volume | ?{$_.FileSystemLabel -eq "Volume1"})){
+    New-Volume -FriendlyName "Volume1" -FileSystem CSVFS_ReFS -StoragePoolFriendlyName "S2D*" -Size 100GB
+  } 
+}
+'
+
+    file { "c:\\scripts\\configvolume.ps1" :
+      ensure   => present,
+      content => $configvolume,
+    }
+
+    exec { 'configvolume':
+      command     => '& c:\\scripts\\configvolume.ps1',
+      require => [File["c:\\scripts\\configvolume.ps1"], Exec['configs2d']],
+      provider => 'powershell',
+    }
 
 $configsddc = '
 
@@ -483,6 +493,17 @@ exit 0
     exec { 'configs2d':
       command     => '& c:\\scripts\\configs2d.ps1',
       require => [File["c:\\scripts\\configs2d.ps1"], Dsc_xwaitforcluster["WaitForClusterToDeployS2D"]],
+      provider => 'powershell',
+    }
+
+    file { "c:\\scripts\\configvolume.ps1" :
+      ensure   => present,
+      content => $configvolume,
+    }
+
+    exec { 'configvolume':
+      command     => '& c:\\scripts\\configvolume.ps1',
+      require => [File["c:\\scripts\\configvolume.ps1"], Exec['configs2d']],
       provider => 'powershell',
     }
 
