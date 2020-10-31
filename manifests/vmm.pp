@@ -65,7 +65,7 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
 */
 
     file { 'vmminstaller-2019':
-      ensure => absent,
+      ensure => present,
       path => 'c:\\temp\\SCVMM_2019.exe',
       source => 'http://download.microsoft.com/download/C/4/E/C4E93EE0-F2AB-43B9-BF93-32E872E0D9F0/SCVMM_2019.exe',
     }
@@ -89,14 +89,14 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
       content => $vmmserverconfig,
     }
 
-/*
+
     exec { 'extractvmm-2019':
       command     => 'start-process "c:\\temp\\SCVMM_2019.exe" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
       subscribe   => File['vmminstaller-2019'],
       provider => 'powershell',
       unless => 'if (Test-Path -Path "C:\\System Center Virtual Machine Manager\\setup.exe" -PathType Leaf){exit} else {exit 1}',
     }
-    */
+
 
     exec { 'extractvmm-2016':
       command     => 'start-process "c:\\temp\\SCVMM_2016.exe" -ArgumentList "/SP-", "/silent", "/suppressmsgboxes" -NoNewWindow -Wait',
