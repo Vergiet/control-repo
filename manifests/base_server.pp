@@ -136,7 +136,8 @@ $ensurejumbopackets = '
 #$NetAdapter = "Management"
 $Mtu = 9014
 
-$NetAdapter = Get-NetAdapter | ?{$_.Name -like "*(NC_LogicalSwitch)*"}
+#$NetAdapter = Get-NetAdapter | ?{$_.Name -like "*(NC_LogicalSwitch)*"}
+$NetAdapter = Get-NetAdapter | ?{$_.Name -like "*Management*"}
 
 if ($null -ne $NetAdapter){
 
