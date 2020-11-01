@@ -118,9 +118,16 @@ start-process powershell -Credential $credential -ArgumentList "-EncodedCommand 
     }
 
     package { 'sqlserver-cmdlineutils':
-      ensure   => installed,
+      ensure   => absent,
       provider => 'chocolatey',
       #install_options => ['--version=14.0'],
+      require => Reboot['vmm_dsc_reboot'],
+    }
+
+    package { 'sqlserver-cmdlineutils-14':
+      ensure   => installed,
+      provider => 'chocolatey',
+      install_options => ['--version=14.0'],
       require => Reboot['vmm_dsc_reboot'],
     }
 
